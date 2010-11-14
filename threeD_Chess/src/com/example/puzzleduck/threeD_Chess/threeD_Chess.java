@@ -1,11 +1,11 @@
-package com.google.puzzleduck.threeD_Chess;
+package com.example.puzzleduck.threeD_Chess;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 public class threeD_Chess extends Activity {
     
-	private static final String LOG_TAG = threeD_Chess.class.getSimpleName();
+//	private static final String LOG_TAG = threeD_Chess.class.getSimpleName();
 	private threeD_Chess_view _threeD_Chess_view;
 	
 	/** Called when the activity is first created. */

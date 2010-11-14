@@ -1,4 +1,4 @@
-package com.google.puzzleduck.threeD_Chess;
+package com.example.puzzleduck.threeD_Chess;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLSurfaceView;
 
 public class threeD_Renderer implements GLSurfaceView.Renderer {
-	private static final String LOG_TAG = threeD_Chess.class.getSimpleName();
+//	private static final String LOG_TAG = threeD_Chess.class.getSimpleName();
 
 	private ShortBuffer _indexBuffer;
 	private FloatBuffer _vertexBuffer;
@@ -20,6 +20,8 @@ public class threeD_Renderer implements GLSurfaceView.Renderer {
 
 	private float _Xangle;
 	private float _Yangle;
+	private float _width = 320f;
+	private float _height = 480f;
 	
 	public void setXAngle( float angle )
 	{
@@ -103,33 +105,69 @@ public class threeD_Renderer implements GLSurfaceView.Renderer {
 	
 
 	public void onDrawFrame(GL10 gl) {
-		//Define "clipping wall"/clear color
-		gl.glClearColor(0f, 0f, 0f, 1.0f);
 		//clear buffer and reset matrix
-		gl.glLoadIdentity();
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		//Fading colors
-		//_red   = (_red   + 0.01f)%1f;
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT| GL10.GL_DEPTH_BUFFER_BIT);
 		
-		//rotate
-		gl.glRotatef(_Xangle, 1f, 0f, 0f);
-		gl.glRotatef(_Yangle, 0f, 1f, 0f);
-
 		//gl.glColor4f(_red, _green, _blue, 1.0f);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, _vertexBuffer);
-		//enabling color array
 		gl.glColorPointer(4, GL10.GL_FLOAT, 0, _colorBuffer);
-		gl.glDrawElements(GL10.GL_TRIANGLES, _vertexCount, GL10.GL_UNSIGNED_SHORT, _indexBuffer);
 		
+		for(int i = 1; i <= 10; i++)
+		{
+			gl.glLoadIdentity();
+			gl.glTranslatef(0.0f, -1f, -0.1f + -1.5f * i );
+			//rotate
+			gl.glRotatef(_Xangle, 1f, 0f, 0f);
+			gl.glRotatef(_Yangle, 0f, 1f, 0f);
+			gl.glDrawElements(GL10.GL_TRIANGLES, _vertexCount, GL10.GL_UNSIGNED_SHORT, _indexBuffer);
 	
+		}
+		
+		
+		
+		
+//		
+//	    // clear the color buffer and the depth buffer
+//	    gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+//	 
+//	    gl.glVertexPointer(3, GL10.GL_FLOAT, 0, _vertexBuffer);
+//	    gl.glColorPointer(4, GL10.GL_FLOAT, 0, _colorBuffer);
+//	 
+//	    for (int i = 1; i <= 10; i++) {
+//	        gl.glLoadIdentity();
+//	        gl.glTranslatef(0.0f, -1f, -1.0f + -1.5f * i);
+//	        // set rotation
+//	        gl.glRotatef(_Xangle, 1f, 0f, 0f);
+//	        gl.glRotatef(_Yangle, 0f, 1f, 0f);
+//	        gl.glDrawElements(GL10.GL_TRIANGLES, _vertexCount, GL10.GL_UNSIGNED_SHORT, _indexBuffer);
+//	    }
+
+		
+		
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
+		_width = width;
+		_height = height;
 		gl.glViewport(0, 0, width, height);
 		
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		gl.glMatrixMode(GL10.GL_PROJECTION);
+		
+		float size = 0.01f * (float) Math.tan(Math.toRadians(45.0)/2);
+		float ratio = _width/_height;
+		
+//		gl.glOrthof(-1, 1, -1/ratio, 1/ratio, 0.01f, 100.0f);
+		gl.glFrustumf(-size, size, -size/ratio, size/ratio, 0.01f, 100.0f);
+		gl.glViewport(0, 0, (int)_width, (int)_height);
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glEnable(GL10.GL_DEPTH_TEST);//checking z-order
+		
+		
+		//Define "clipping wall"/clear color - once only
+		gl.glClearColor(0f, 0f, 0f, 1.0f);
 		//enable culling
 		gl.glEnable(GL10.GL_CULL_FACE);
 		//winding
@@ -139,6 +177,37 @@ public class threeD_Renderer implements GLSurfaceView.Renderer {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 		initTriangle();
+		
+		
+		
+		
+//	    gl.glMatrixMode(GL10.GL_PROJECTION);
+//	    float size = .01f * (float) Math.tan(Math.toRadians(45.0) / 2); 
+//	    float ratio = _width / _height;
+//	    // perspective:
+//	    gl.glFrustumf(-size, size, -size / ratio, size / ratio, 0.01f, 100.0f);
+//	    // orthographic:
+//	    //gl.glOrthof(-1, 1, -1 / ratio, 1 / ratio, 0.01f, 100.0f);
+//	    gl.glViewport(0, 0, (int) _width, (int) _height);
+//	    gl.glMatrixMode(GL10.GL_MODELVIEW);
+//	    gl.glEnable(GL10.GL_DEPTH_TEST);
+//	 
+//	    // define the color we want to be displayed as the "clipping wall"
+//	    gl.glClearColor(0f, 0f, 0f, 1.0f);
+//	 
+//	    // enable the differentiation of which side may be visible 
+//	    gl.glEnable(GL10.GL_CULL_FACE);
+//	    // which is the front? the one which is drawn counter clockwise
+//	    gl.glFrontFace(GL10.GL_CCW);
+//	    // which one should NOT be drawn
+//	    gl.glCullFace(GL10.GL_BACK);
+//	 
+//	    gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+//	    gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+//	 
+//	    initTriangle();
+
+		
 		
 	}
 	

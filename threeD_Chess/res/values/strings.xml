@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, threeD_Chess!</string>
-    <string name="app_name">3D_Chess</string>
+    <string name="a_name">threeD_Chess</string>
+    
+    <string name="app_name">threeD_Chess</string>
+<string name="hello">threeD_Chess</string>
 </resources>
