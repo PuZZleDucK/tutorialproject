@@ -18,7 +18,7 @@ public class threeD_Renderer implements Renderer {
 	private Square square;
 	
 	
-	
+	private float sqrRot, triRot = 0;
 	
 	
 	public threeD_Renderer(){
@@ -56,57 +56,6 @@ public class threeD_Renderer implements Renderer {
 	{
 		return _Yangle;
 	}
-	
-	
-//	private void initTriangle(){               //  vertex * indicies * float size
-//		
-//		float[] coords = {
-//	            -0.5f, -0.5f, 0.5f, // 0
-//	            0.5f, -0.5f, 0.5f, // 1
-//	            0f, -0.5f, -0.5f, // 2
-//	            0f, 0.5f, 0f, // 3
-//		};
-//		_vertexCount = coords.length;
-//		
-//		float[] colors = {
-//	            1f, 0f, 0f, 1f, // point 0 red
-//	            0f, 1f, 0f, 1f, // point 1 green
-//	            0f, 0f, 1f, 1f, // point 2 blue
-//	            1f, 1f, 1f, 1f, // point 3 white
-//		};
-//		
-//		short[] indicies = new short[]{
-////				0,1,2
-//	            0, 1, 3, // rwg
-//	            0, 2, 1, // rbg
-//	            0, 3, 2, // rbw
-//	            1, 2, 3, // bwg
-//		};
-//		
-//		ByteBuffer vertexbb =  ByteBuffer.allocateDirect(coords.length * 4);
-//		vertexbb.order(ByteOrder.nativeOrder());
-//		_vertexBuffer = vertexbb.asFloatBuffer();
-//		
-//        // vertex * short size
-//		ByteBuffer indexbb =  ByteBuffer.allocateDirect(indicies.length * 3);
-//		indexbb.order(ByteOrder.nativeOrder());
-//		_indexBuffer = indexbb.asShortBuffer();
-//		
-//        // vertex * short size
-//		ByteBuffer colorbb =  ByteBuffer.allocateDirect(colors.length * 4);
-//		colorbb.order(ByteOrder.nativeOrder());
-//		_colorBuffer = colorbb.asFloatBuffer();
-//		
-//
-//		
-//		_vertexBuffer.put(coords);
-//		_indexBuffer.put(indicies);
-//		_colorBuffer.put(colors);
-//		
-//		_vertexBuffer.position(0);
-//		_indexBuffer.position(0);
-//		_colorBuffer.position(0);
-//	}
 		
 
 	public void onDrawFrame(GL10 gl) {
@@ -118,13 +67,17 @@ public class threeD_Renderer implements Renderer {
 		
 
 		gl.glTranslatef(0.0f, -1.2f, -6.0f);
-		gl.glRotatef(_Xangle, 1f, 0f, 0f);
+		gl.glRotatef(sqrRot, 1.0f, 0.0f, 0.0f);
 		square.draw(gl);
+
+		gl.glLoadIdentity(); 
 		
-		gl.glTranslatef(0.0f, 2.5f, 0.0f);
+		gl.glTranslatef(0.0f, 1.3f, -6.0f);
+		gl.glRotatef(triRot, 0.0f, 1.3f, -6.0f);
 		triangle.draw(gl);
-		
-		
+
+		triRot += 1.1f;
+		sqrRot -= 2.2f;
 		
 		//Origional:
 		
