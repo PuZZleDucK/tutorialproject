@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 
 public class threeD_Chess_view extends GLSurfaceView{
 	
-//	private static final String LOG_TAG = threeD_Chess.class.getSimpleName();
 	private threeD_Renderer _renderer;
 	
 
@@ -17,22 +16,11 @@ public class threeD_Chess_view extends GLSurfaceView{
 	
 	public threeD_Chess_view(Context context){
 		super(context);
-//		_renderer = new threeD_Renderer();
-//		setRenderer(_renderer);
 	}
 	
 	
 	@Override
 	public boolean onTouchEvent(final MotionEvent event) {
-//		queueEvent(new Runnable(){
-//			public void run(){
-//				//_renderer.setColor(event.getY()/getWidth(), event.getY()/getHeight(), event.getY()/getHeight());
-//				_renderer.setAngle(event.getX()*2);
-//				
-//			}
-//		});
-//		
-//		return true;
 
 		if(event.getAction() == MotionEvent.ACTION_DOWN)
 		{
