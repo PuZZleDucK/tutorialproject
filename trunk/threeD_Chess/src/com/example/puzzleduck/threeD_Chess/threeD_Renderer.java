@@ -1,10 +1,5 @@
 package com.example.puzzleduck.threeD_Chess;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -16,6 +11,9 @@ public class threeD_Renderer implements Renderer {
 	//NeHe: Adding new object classes
 	private Triangle triangle;
 	private Square square;
+
+	private Pyramid pyramid;
+	private Cube cube;
 	
 	
 	private float sqrRot, triRot = 0;
@@ -24,14 +22,10 @@ public class threeD_Renderer implements Renderer {
 	public threeD_Renderer(){
 		triangle = new Triangle();
 		square = new Square();
+		pyramid = new Pyramid();
+		cube = new Cube();
 	}
 	
-	
-//	private ShortBuffer _indexBuffer;
-//	private FloatBuffer _vertexBuffer;
-//	private FloatBuffer _colorBuffer;
-//	private int _vertexCount = 0;
-
 	private float _Xangle;
 	private float _Yangle;
 	private float _width = 320f;
@@ -64,42 +58,46 @@ public class threeD_Renderer implements Renderer {
 		//clear buffer and reset matrix
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT| GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
-		
+	
+		gl.glTranslatef(0.0f, -1.2f, -26.0f);
+		gl.glRotatef(sqrRot, 1.0f, 0.0f, 0.0f);
+		square.draw(gl);
 
-		gl.glTranslatef(0.0f, -1.2f, -6.0f);
+		gl.glTranslatef(0.0f, -2.6f, -10.0f);
 		gl.glRotatef(sqrRot, 1.0f, 0.0f, 0.0f);
 		square.draw(gl);
 
 		gl.glLoadIdentity(); 
 		
-		gl.glTranslatef(0.0f, 1.3f, -6.0f);
+		gl.glTranslatef(0.0f, 1.3f, -26.0f);
 		gl.glRotatef(triRot, 0.0f, 1.3f, -6.0f);
 		triangle.draw(gl);
 
-		triRot += 1.1f;
-		sqrRot -= 2.2f;
 		
-		//Origional:
+		gl.glLoadIdentity(); 
+		gl.glTranslatef(0.0f, -1.2f, -7.0f);
+		gl.glScalef(0.8f, 0.8f, 0.8f);
+		gl.glRotatef(sqrRot, 1.0f, 1.0f, 1.0f);
+		cube.draw(gl);
 		
-		//gl.glColor4f(_red, _green, _blue, 1.0f);
-//		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, _vertexBuffer);
-//		gl.glColorPointer(4, GL10.GL_FLOAT, 0, _colorBuffer);
-//		
-//		for(int i = 1; i <= 10; i++)
-//		{
-//			gl.glTranslatef(0.0f, -1f, -0.1f + -1.5f * i );
-//			//rotate
-//			gl.glRotatef(_Xangle, 1f, 0f, 0f);
-//			gl.glRotatef(_Yangle, 0f, 1f, 0f);
-//			gl.glDrawElements(GL10.GL_TRIANGLES, _vertexCount, GL10.GL_UNSIGNED_SHORT, _indexBuffer);
-//	
-//		}
-				
+		
+		gl.glLoadIdentity(); 
+		gl.glTranslatef(0.0f, 1.3f, -6.0f);
+		gl.glRotatef(triRot, 0.0f, 1.0f, 0.0f);
+		pyramid.draw(gl);
+		
+		
+		
+		
+		
+		triRot += 2.0f;
+		sqrRot -= 1.0f;
+						
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
-//		_width = width;
-//		_height = height;
+		_width = width;
+		_height = height;
 		if( height == 0 )
 		{
 			height = 1;
@@ -109,7 +107,7 @@ public class threeD_Renderer implements Renderer {
 		gl.glLoadIdentity();
 		
 		//aspect ratio
-		GLU.gluPerspective(gl, 45.0f, (float)width / (float)height, 1.0f, 100.0f);
+		GLU.gluPerspective(gl, 45.0f, (float)width / (float)height, 0.1f, 100.0f);
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		
@@ -127,25 +125,6 @@ public class threeD_Renderer implements Renderer {
 		//perspective
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 		
-//		//Origional
-//		
-//		float size = 0.01f * (float) Math.tan(Math.toRadians(45.0)/2);
-//		float ratio = _width/_height;
-//		
-////		gl.glOrthof(-1, 1, -1/ratio, 1/ratio, 0.01f, 100.0f);
-//		gl.glFrustumf(-size, size, -size/ratio, size/ratio, 0.01f, 100.0f);
-//		gl.glViewport(0, 0, (int)_width, (int)_height);
-//		
-//		
-//		//enable culling
-//		gl.glEnable(GL10.GL_CULL_FACE);
-//		//winding
-//		gl.glFrontFace(GL10.GL_CCW);
-//		gl.glCullFace(GL10.GL_BACK);
-//		
-//		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-//		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-//		initTriangle();
 	
 	}
 	
