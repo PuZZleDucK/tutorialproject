@@ -17,8 +17,8 @@ public class threeD_Chess_view extends GLSurfaceView{
 	
 	public threeD_Chess_view(Context context){
 		super(context);
-		_renderer = new threeD_Renderer();
-		setRenderer(_renderer);
+//		_renderer = new threeD_Renderer();
+//		setRenderer(_renderer);
 	}
 	
 	
