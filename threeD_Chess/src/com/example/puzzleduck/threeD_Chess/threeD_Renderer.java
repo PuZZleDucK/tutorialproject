@@ -3,54 +3,50 @@ package com.example.puzzleduck.threeD_Chess;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.opengl.GLU;
+import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
+import android.opengl.GLU;
 
 public class threeD_Renderer implements Renderer {
 	
 	//NeHe: Adding new object classes
-	private Triangle triangle;
-	private Square square;
+//	private Triangle triangle;
+//	private Square square;
 
-	private Pyramid pyramid;
+//	private Pyramid pyramid;
 	private Cube cube;
 	
+	private float xRot, yRot, zRot;
+//	private float sqrRot, triRot = 0;
 	
-	private float sqrRot, triRot = 0;
+	private Context context;
 	
 	
-	public threeD_Renderer(){
-		triangle = new Triangle();
-		square = new Square();
-		pyramid = new Pyramid();
+	public threeD_Renderer(Context context){
+		this.context = context;
 		cube = new Cube();
 	}
 	
-	private float _Xangle;
-	private float _Yangle;
-	private float _width = 320f;
-	private float _height = 480f;
-	
-	public void setXAngle( float angle )
-	{
-		_Xangle = angle;
-	}
-	
-	public void setYAngle( float angle )
-	{
-		_Yangle = angle;
-	}
-	
-	public float getXAngle()
-	{
-		return _Xangle;
-	}
-	
-	public float getYAngle()
-	{
-		return _Yangle;
-	}
+
+	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
+		cube.loadGLTexture(gl, this.context);
+		gl.glEnable(GL10.GL_TEXTURE_2D);
 		
+		gl.glShadeModel(GL10.GL_SMOOTH);
+		//Define "clipping wall"/clear color - lower transparency than origional?
+		gl.glClearColor(0f, 0f, 0f, 0.5f);
+		//Clear depth
+		gl.glClearDepthf(1.0f);
+		gl.glEnable(GL10.GL_DEPTH_TEST);//checking z-order
+		gl.glDepthFunc(GL10.GL_LEQUAL);
+		//perspective
+		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
+		
+	
+	}
+	
+
 
 	public void onDrawFrame(GL10 gl) {
 		//NeHe:		
@@ -58,46 +54,26 @@ public class threeD_Renderer implements Renderer {
 		//clear buffer and reset matrix
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT| GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
-	
-		gl.glTranslatef(0.0f, -1.2f, -26.0f);
-		gl.glRotatef(sqrRot, 1.0f, 0.0f, 0.0f);
-		square.draw(gl);
-
-		gl.glTranslatef(0.0f, -2.6f, -10.0f);
-		gl.glRotatef(sqrRot, 1.0f, 0.0f, 0.0f);
-		square.draw(gl);
-
-		gl.glLoadIdentity(); 
-		
-		gl.glTranslatef(0.0f, 1.3f, -26.0f);
-		gl.glRotatef(triRot, 0.0f, 1.3f, -6.0f);
-		triangle.draw(gl);
 
 		
-		gl.glLoadIdentity(); 
-		gl.glTranslatef(0.0f, -1.2f, -7.0f);
+		
+		gl.glTranslatef(0.0f, 0.0f, -5.0f);
 		gl.glScalef(0.8f, 0.8f, 0.8f);
-		gl.glRotatef(sqrRot, 1.0f, 1.0f, 1.0f);
+		gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
+		gl.glRotatef(yRot, 0.0f, 1.0f, 0.0f);
+		gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
+		
 		cube.draw(gl);
 		
-		
-		gl.glLoadIdentity(); 
-		gl.glTranslatef(0.0f, 1.3f, -6.0f);
-		gl.glRotatef(triRot, 0.0f, 1.0f, 0.0f);
-		pyramid.draw(gl);
-		
-		
-		
-		
-		
-		triRot += 2.0f;
-		sqrRot -= 1.0f;
+		xRot += 1.0f;
+		yRot += 1.5f;
+		zRot += 0.5f;
 						
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
-		_width = width;
-		_height = height;
+//		_width = width;
+//		_height = height;
 		if( height == 0 )
 		{
 			height = 1;
@@ -112,21 +88,5 @@ public class threeD_Renderer implements Renderer {
 		gl.glLoadIdentity();
 		
 	}
-
-	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		//NeHe:
-		gl.glShadeModel(GL10.GL_SMOOTH);
-		//Define "clipping wall"/clear color - lower transparency than origional?
-		gl.glClearColor(0f, 0f, 0f, 0.5f);
-		//Clear depth
-		gl.glClearDepthf(1.0f);
-		gl.glEnable(GL10.GL_DEPTH_TEST);//checking z-order
-		gl.glDepthFunc(GL10.GL_LEQUAL);
-		//perspective
-		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
-		
-	
-	}
-	
 	
 }
