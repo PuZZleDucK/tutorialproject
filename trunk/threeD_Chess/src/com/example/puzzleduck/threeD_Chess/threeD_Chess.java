@@ -21,7 +21,7 @@ public class threeD_Chess extends Activity {
         _threeD_Chess_view = new GLSurfaceView(this);
 
         //NeHe tutorial: adding custom renderer:
-        _threeD_Chess_view.setRenderer(new threeD_Renderer());
+        _threeD_Chess_view.setRenderer(new threeD_Renderer(this));
         setContentView(_threeD_Chess_view);
     }
     
