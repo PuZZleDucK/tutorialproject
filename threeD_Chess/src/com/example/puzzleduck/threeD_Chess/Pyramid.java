@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 		private static final int BYTE_SIZE = 4;
 		private FloatBuffer vertexBuffer, colorBuffer;
-		private ByteBuffer indexBuffer;
+//		private ByteBuffer indexBuffer;
 		private float vertices[] ={
 			 	0.0f,  1.0f,  0.0f,		//Top Of Triangle (Front)
 				-1.0f, -1.0f, 1.0f,		//Left Of Triangle (Front)
