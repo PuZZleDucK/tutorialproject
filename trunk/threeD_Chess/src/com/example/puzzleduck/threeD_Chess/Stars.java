@@ -92,10 +92,6 @@ public class Stars
 	}
 	
 	
-	
-	
-	
-	
 	public void loadGLTexture(GL10 gl, Context context) {
 		InputStream inStream = context.getResources().openRawResource(R.drawable.star);
 		Bitmap bitmap = null;
@@ -125,13 +121,6 @@ public class Stars
 		bitmap.recycle();
 		
 	}	
-	
-	
-	
-	
-	
-	
-	
 	
 
 }

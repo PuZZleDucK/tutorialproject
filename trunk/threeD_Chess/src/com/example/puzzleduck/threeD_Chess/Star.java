@@ -47,7 +47,6 @@ public class Star
 	
 	public void draw(GL10 gl)
 	{
-
 		//enable buffers
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
@@ -56,7 +55,6 @@ public class Star
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
 		
-
 		//draw triangles
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length/3);
 
