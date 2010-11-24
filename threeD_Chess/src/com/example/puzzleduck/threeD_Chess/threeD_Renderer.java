@@ -15,27 +15,31 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class threeD_Renderer extends GLSurfaceView implements Renderer {
-	
+
 	private static final int BYTE_SIZE = 4;
+	private final int numStars = 50;
+	private Stars stars;
 
-	private Cube cube;
+	private boolean twinkle = true;
+	private boolean blend = true;
+	
+//	private Cube cube;
 
-	private float xRot, yRot;
-	private float xSpeed, ySpeed;
-	private float depth = -5.0f;
+//	private float xRot, yRot;
+//	private float xSpeed, ySpeed;
+//	private float depth = -5.0f;
 	
 	private int filter;
 	
-	private boolean light = true;
-	private boolean blend = true;
+//	private boolean light = true;
 
-	private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f,};
-	private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f,};
-	private float[] lightPosition = {0.0f, 0.0f, 2.0f, 1.0f,};
+//	private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f,};
+//	private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f,};
+//	private float[] lightPosition = {0.0f, 0.0f, 2.0f, 1.0f,};
 	
-	private FloatBuffer lightAmbientBuffer, lightDiffuseBuffer, lightPositionBuffer;
+//	private FloatBuffer lightAmbientBuffer, lightDiffuseBuffer, lightPositionBuffer;
 	
-	private float oldX, oldY;
+//	private float oldX, oldY;
 	
 	private final float TOUCH_SCALE = 0.2f;
 	
@@ -50,55 +54,59 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		this.setFocusableInTouchMode(true);
 		this.context = context;
 		
-		ByteBuffer bBuff = ByteBuffer.allocateDirect(lightAmbient.length * BYTE_SIZE);
-		bBuff.order(ByteOrder.nativeOrder());
-		lightAmbientBuffer = bBuff.asFloatBuffer();
-		lightAmbientBuffer.put(lightAmbient);
-		lightAmbientBuffer.position(0);
-
-		bBuff = ByteBuffer.allocateDirect(lightDiffuse.length * BYTE_SIZE);
-		bBuff.order(ByteOrder.nativeOrder());
-		lightDiffuseBuffer = bBuff.asFloatBuffer();
-		lightDiffuseBuffer.put(lightDiffuse);
-		lightDiffuseBuffer.position(0);
-
-		bBuff = ByteBuffer.allocateDirect(lightPosition.length * BYTE_SIZE);
-		bBuff.order(ByteOrder.nativeOrder());
-		lightPositionBuffer = bBuff.asFloatBuffer();
-		lightPositionBuffer.put(lightPosition);
-		lightPositionBuffer.position(0);
-		
-		
-		cube = new Cube();
+//		ByteBuffer bBuff = ByteBuffer.allocateDirect(lightAmbient.length * BYTE_SIZE);
+//		bBuff.order(ByteOrder.nativeOrder());
+//		lightAmbientBuffer = bBuff.asFloatBuffer();
+//		lightAmbientBuffer.put(lightAmbient);
+//		lightAmbientBuffer.position(0);
+//
+//		bBuff = ByteBuffer.allocateDirect(lightDiffuse.length * BYTE_SIZE);
+//		bBuff.order(ByteOrder.nativeOrder());
+//		lightDiffuseBuffer = bBuff.asFloatBuffer();
+//		lightDiffuseBuffer.put(lightDiffuse);
+//		lightDiffuseBuffer.position(0);
+//
+//		bBuff = ByteBuffer.allocateDirect(lightPosition.length * BYTE_SIZE);
+//		bBuff.order(ByteOrder.nativeOrder());
+//		lightPositionBuffer = bBuff.asFloatBuffer();
+//		lightPositionBuffer.put(lightPosition);
+//		lightPositionBuffer.position(0);
+//		
+//		
+//		cube = new Cube();
 	}
 	
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
 		//lights:
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, lightAmbientBuffer);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightDiffuseBuffer);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
-		gl.glEnable(GL10.GL_LIGHT0);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, lightAmbientBuffer);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightDiffuseBuffer);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
+//		gl.glEnable(GL10.GL_LIGHT0);
 		
 		//blending
-		gl.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-		
-		
-		gl.glDisable(GL10.GL_DITHER);
+//		gl.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+//		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+//		
+//		
+//		gl.glDisable(GL10.GL_DITHER);
 		gl.glEnable(GL10.GL_TEXTURE_2D);
-		
 		gl.glShadeModel(GL10.GL_SMOOTH);
 		
 		gl.glClearColor(0f, 0f, 0f, 0.5f);
 		gl.glClearDepthf(1.0f);
-		gl.glEnable(GL10.GL_DEPTH_TEST);//checking z-order
-		gl.glDepthFunc(GL10.GL_LEQUAL);
-		//perspective
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 		
-		cube.loadGLTexture(gl, this.context);
+		
+		gl.glEnable(GL10.GL_BLEND);//checking z-order
+		gl.glEnable(GL10.GL_DEPTH_TEST);//checking z-order
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+		//perspective
+		
+//		cube.loadGLTexture(gl, this.context);
+		stars = new Stars(numStars);
+		stars.loadGLTexture(gl, this.context);
 	
 	}
 	
@@ -107,36 +115,38 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 	public void onDrawFrame(GL10 gl) {
 		//NeHe:  clear buffer and reset matrix
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT| GL10.GL_DEPTH_BUFFER_BIT);
-		gl.glLoadIdentity();
+//		gl.glLoadIdentity();
 
-		if(light)
-		{
-			gl.glEnable(GL10.GL_LIGHTING);
-		}else
-		{
-			gl.glDisable(GL10.GL_LIGHTING);
-		}
-		
 		if(blend)
 		{
 			gl.glEnable(GL10.GL_BLEND);
 			gl.glDisable(GL10.GL_DEPTH_TEST);
 		}else
 		{
-			gl.glDisable(GL10.GL_BLEND);
 			gl.glEnable(GL10.GL_DEPTH_TEST);
+			gl.glDisable(GL10.GL_BLEND);
 		}
+//		
+//		if(blend)
+//		{
+//			gl.glEnable(GL10.GL_BLEND);
+//			gl.glDisable(GL10.GL_DEPTH_TEST);
+//		}else
+//		{
+//			gl.glDisable(GL10.GL_BLEND);
+//			gl.glEnable(GL10.GL_DEPTH_TEST);
+//		}
+//		
+//		
+//		gl.glTranslatef(0.0f, 0.0f, depth);
+//		gl.glScalef(0.8f, 0.8f, 0.8f);
+//		gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
+//		gl.glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 		
-		
-		gl.glTranslatef(0.0f, 0.0f, depth);
-		gl.glScalef(0.8f, 0.8f, 0.8f);
-		gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(yRot, 0.0f, 1.0f, 0.0f);
-		
-		cube.draw(gl, filter);
-		
-		xRot += xSpeed;
-		yRot += ySpeed;
+//		cube.draw(gl, filter);
+		stars.draw(gl, twinkle);
+//		xRot += xSpeed;
+//		yRot += ySpeed;
 						
 	}
 
@@ -157,29 +167,29 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 	}
 
 
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) 
-	{
-		if( keyCode == KeyEvent.KEYCODE_DPAD_LEFT)
-		{
-			ySpeed -= 0.1f;
-		}else if( keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)
-		{
-			ySpeed += 0.1f;
-		}else if( keyCode == KeyEvent.KEYCODE_DPAD_UP)
-		{
-			xSpeed -= 0.1f;
-		}else if( keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
-		{
-			ySpeed += 0.1f;
-		}else if( keyCode == KeyEvent.KEYCODE_DPAD_CENTER)
-		{
-			filter += 1;
-			if(filter > 2){filter = 0;}
-		}
-		
-		return true;
-	}
+//	@Override
+//	public boolean onKeyUp(int keyCode, KeyEvent event) 
+//	{
+//		if( keyCode == KeyEvent.KEYCODE_DPAD_LEFT)
+//		{
+//			ySpeed -= 0.1f;
+//		}else if( keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)
+//		{
+//			ySpeed += 0.1f;
+//		}else if( keyCode == KeyEvent.KEYCODE_DPAD_UP)
+//		{
+//			xSpeed -= 0.1f;
+//		}else if( keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
+//		{
+//			ySpeed += 0.1f;
+//		}else if( keyCode == KeyEvent.KEYCODE_DPAD_CENTER)
+//		{
+//			filter += 1;
+//			if(filter > 2){filter = 0;}
+//		}
+//		
+//		return true;
+//	}
 
 
 	@Override
@@ -187,35 +197,22 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 	{
 		float x = event.getX();
 		float y = event.getY();
-		if( event.getAction() == MotionEvent.ACTION_MOVE)
+		if( event.getAction() == MotionEvent.ACTION_UP )
 		{
-			float deltaX = x - oldX;
-			float deltaY = y - oldY;
 			int upperArea = this.getHeight()/10;
+			int lowerArea = this.getHeight()-upperArea;
 			
 			//zoom in top 10% of screen
-			if(y < upperArea)
+			if(y < lowerArea)
 			{
-				depth -= deltaX * TOUCH_SCALE /2;
-			}else
-			{
-				//or rotate
-				xRot -= deltaY * TOUCH_SCALE;
-				yRot -= deltaX * TOUCH_SCALE;
-			}
-		}else if(event.getAction() == MotionEvent.ACTION_UP)
-		{
-			if(x < (this.getWidth()/2))
-			{
-				blend = !blend;
-			}else
-			{
-				light = !light;		
+				if(x < (this.getWidth()/2))
+				{
+					blend = !blend;
+				}else{
+					twinkle = !twinkle;
+				}
 			}
 		}
-		
-		oldX = x;
-		oldY = y;
 		return true;
 	}
 	
