@@ -26,7 +26,8 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 	
 	private int filter;
 	
-	private boolean light = false;
+	private boolean light = true;
+	private boolean blend = true;
 
 	private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f,};
 	private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f,};
@@ -80,6 +81,11 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
 		gl.glEnable(GL10.GL_LIGHT0);
 		
+		//blending
+		gl.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+		
+		
 		gl.glDisable(GL10.GL_DITHER);
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		
@@ -110,6 +116,17 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		{
 			gl.glDisable(GL10.GL_LIGHTING);
 		}
+		
+		if(blend)
+		{
+			gl.glEnable(GL10.GL_BLEND);
+			gl.glDisable(GL10.GL_DEPTH_TEST);
+		}else
+		{
+			gl.glDisable(GL10.GL_BLEND);
+			gl.glEnable(GL10.GL_DEPTH_TEST);
+		}
+		
 		
 		gl.glTranslatef(0.0f, 0.0f, depth);
 		gl.glScalef(0.8f, 0.8f, 0.8f);
@@ -188,7 +205,13 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 			}
 		}else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
-			light = !light;
+			if(x < (this.getWidth()/2))
+			{
+				blend = !blend;
+			}else
+			{
+				light = !light;		
+			}
 		}
 		
 		oldX = x;
