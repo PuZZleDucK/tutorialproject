@@ -120,32 +120,13 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 
 	
 	
-//	 * local.h
-//	 * Application-independant defines.
 
-//	#ifndef _LOCAL_H
-//	#define _LOCAL_H
-
-//	#ifndef Boolean
-//	#define Boolean int
-//	#endif /* Boolean */
-//	#ifndef TRUE
-//	#define TRUE 1
-//	#define FALSE 0
-//	#endif /* True */
-//	#ifndef NULL
-//	#define NULL 0
-//	#endif /* NULL */
-
-//	#ifndef ABS
 //	#define ABS(a) ((a) < 0 ? -(a) : (a))
 	public float ABS(float x)
 	{
 		return (x > 0) ? x : -x;
 	}
-//	#endif /* ABS */
 
-//	#ifndef MAX
 //	#define MAX(a,b) ((a) < (b) ? (b) : (a))
 //	#define MIN(a,b) ((a) > (b) ? (b) : (a))
 	public float MAX(float x, float y)
@@ -156,79 +137,7 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 	{
 		return (x > y) ? x : y;
 	}
-//	#endif /* MAX */
 
-//	/* Abstractions */
-//	#define Global extern
-//	#define Local  static
-
-//	#ifdef DEBUG
-//	# define D(debug_code) debug_code
-//	# define CHECK(bool) ((bool)?1:(fprintf(stderr, "Assertion failed on line %i of %s\n", __LINE__, __FILE__),0))
-//	#else /* DEBUG */
-//	# define D(debug_code)
-//	# define CHECK(bool) ((bool)?1:0)
-//	#endif /* DEBUG */
-
-//	/* The empty function (for empty loops etc.) */
-//	#define nop()
-//	/* The fall-through case for switch statements */
-//	#define FallThrough()
-
-//	#ifdef GCC
-//	#define Inline inline
-//	#else /* GCC */
-//	#define Inline
-//	#endif /* GCC */
-
-//	#endif /* _LOCAL_H */
-	
-
-	
-	
-	
-//	 * x3Dc.h
-//	 * Definitions for 3Dc X interface
-
-//	    3Dc, a game of 3-Dimensional Chess
-//	    Copyright (C) 1995  Paul Hicks
-
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-//	    E-Mail: paulh@euristix.ie
-
-//	#ifndef __x3Dc_H
-//	#define __x3Dc_H
-//	#include <X11/Intrinsic.h> /* For all other X stuff */
-//	#include "local.h"
-
-//	/*****************************************************************************
-//	 * Platform-dependent graphics info
-//	 */
-//	typedef struct
-//	{
-//	  GC
-//	#ifndef FONTCURSOR
-//	    monoGC,             /* Mono GC for cursor */
-//	#endif /* FONTCURSOR */
-//	    gc;                 /* Graphics context */
-
-	
-//	  Widget
-//	    mainWindow,                                /* Toplevel widget */
-	// ^--- main window handled by GL
 	
 //	    muster,                                    /* Display area    */
 //	    remark,                                    /* Message area    */
@@ -241,13 +150,10 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 //	} GfxInfo;
 //
 //	Global GfxInfo *firstGFX, *secondGFX;
+
 //	#define XPM_SIZE 32
-//
-//	/*
-//	 * End of graphics info
-//	 ****************************************************************************/
-//
-//	/****************************************************************************/
+	private int XPM_SIZE = 32;
+
 //	/* Functions */
 //	/* Interface stuff */
 //	Global int Init3DcGFX(int, char **);
@@ -320,6 +226,8 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 //	#include "3Dc.h"
 //
 //	int n3DcErr;
+	private int n3DcErr;
+	
 //	Piece *SQUARE_EMPTY, *SQUARE_INVALID;
 //
 //	stack *MoveStack; /* The history of moves */
@@ -339,6 +247,20 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 //	  /* galley   */ 4,
 //	  /* pawn     */ 24
 //	};
+	private int TITLES = 11;
+	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
+//		  /* king     */ 1,
+//		  /* queen    */ 1,
+//		  /* bishop   */ 2,
+//		  /* knight   */ 2,
+//		  /* rook     */ 2,
+//		  /* prince   */ 2,
+//		  /* princess */ 2,
+//		  /* abbey    */ 4,
+//		  /* cannon   */ 4,
+//		  /* galley   */ 4,
+//		  /* pawn     */ 24
+		
 //
 //	/*
 //	 * This function sets up the board
