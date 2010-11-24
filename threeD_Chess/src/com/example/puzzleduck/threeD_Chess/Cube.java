@@ -27,7 +27,7 @@ public class Cube {
 			-1.0f, 1.0f, 1.0f, 	//v2
 			1.0f, 1.0f, 1.0f, 	//v3
 
-			1.0f, -1.0f, 1.0f, 	// ...
+			1.0f, -1.0f, 1.0f, 	//...
 			1.0f, -1.0f, -1.0f, 
 			1.0f, 1.0f, 1.0f, 
 			1.0f, 1.0f, -1.0f,
@@ -54,7 +54,6 @@ public class Cube {
 	};
 	
 	private float normals[] ={
-			// Normals
 			0.0f, 0.0f, 1.0f, 						
 			0.0f, 0.0f, -1.0f, 
 			0.0f, 1.0f, 0.0f, 
@@ -156,7 +155,7 @@ public class Cube {
 		
 	}
 	
-	//Self Rendering
+
 	public void draw(GL10 gl, int filter)
 	{
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[filter]);
@@ -184,7 +183,7 @@ public class Cube {
 	}
 
 	public void loadGLTexture(GL10 gl, Context context) {
-		InputStream inStream = context.getResources().openRawResource(R.drawable.crate);
+		InputStream inStream = context.getResources().openRawResource(R.drawable.glass);
 		Bitmap bitmap = null;
 		
 		try
