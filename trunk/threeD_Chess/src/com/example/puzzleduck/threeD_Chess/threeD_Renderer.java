@@ -176,6 +176,18 @@ private static int PROMOTE = 4;
 //	  prince, princess, abbey, cannon, galley, /* Nobility */
 //	  pawn, none
 //	} Title;
+private static int KING = 0;
+private static int QUEEN = 1;
+private static int BISHOP = 2;
+private static int KNIGHT = 3;
+private static int ROOK = 4;
+private static int PRINCE = 5;
+private static int PRINCESS = 6;
+private static int ABBEY = 7;
+private static int CANNON = 8;
+private static int GALLEY = 9;
+private static int PAWN = 10;
+private static int NONE = 11;
 
 
 
@@ -187,7 +199,9 @@ private static int PIECES = 48;
 //	{
 //	  NOCOL = -1, WHITE, BLACK
 //	} Colour;
-private static int COLOURS = 2;
+private static int NOCOL = -1;
+private static int WHITE = 0;
+private static int BLACK = 1;
 
 //	typedef struct
 //	{
@@ -283,48 +297,94 @@ private static int NODIR  = 0;
 //	 */
 
 	
-//	typedef struct
-//	{
-//	  Coord xyzPos;
-//	  Colour bwSide;
-//	  Title nName;
-//	  unsigned bVisible :1,
-//	           bHasMoved:1; /* For king, rook, pawn only */
-//	} Piece;
-
-	// of course... typedefs should become objects... start making new files :)
+	
+	// of course... typedefs should become objects... start making new files :)... Piece class created !!!
+	
 	
 	
 	//
 //	Global Piece *SQUARE_INVALID, *SQUARE_EMPTY;
 
 	//	Global Boolean IsMoveLegal( const Piece *, const Piece *);
-//	private boolean IsMoveLegal(Piece attacker, Piece defender);
+	private boolean IsMoveLegal(Piece attacker, Piece defender)
+	{
+		//TODO:
+		return true;
+	}
+
+	//	Global Boolean PieceMayMove(Piece *, const File, const Rank, const Level);
+	private boolean PieceMayMove(Piece piece, int File, int Rank, int Level)
+	{
+		//TODO:
+		return true;
+	}
 
 	
 	
+	//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
+	private boolean PieceMove(Piece piece, int File, int Rank, int Level)
+	{
+		//TODO:
+		return true;
+	}
+	
+	//	Global Boolean PieceUndo(void);
+	private boolean PieceUndo()
+	{
+		//TODO:
+		return true;
+	}
+
+	
+	//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
+	private Piece SquareThreatened(int color, int File, int Rank, int Level)
+	{
+		//TODO:
+		return new Piece(1, 1, 1, 1, 0);
+	}
+	
+	//	Global Boolean IsKingChecked(Colour);
+	private boolean IsKingChecked(int color)
+	{
+		//TODO:
+		return true;
+	}
+	
+	
+	//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
+	//	                                        const File, const Rank, const Level);
+	private boolean FakeMoveAndIsKingChecked(Piece piece, int File, int Rank, int Level)
+	{
+		//TODO:
+		return true;
+	}
 	
 	
 	
-	
-	
-	//	Global Boolean PieceMayMove(Piece *, const File, const Rank, const Level);
-//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
-//	Global Boolean PieceUndo(void);
-//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
-//	Global Boolean IsKingChecked(Colour);
-//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
-//	                                        const File, const Rank, const Level);
-//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
-//	Global Piece *PieceNew(const Title, const File, const Rank, const Level,
+//wtf is Dir?!?! ... leaving this for later
+	//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
+
+	//replacing with constructor for piece
+	//	Global Piece *PieceNew(const Title, const File, const Rank, const Level,
 //	                       const Colour);
-//	Global void PieceDelete(Piece *);
-//	/*
-//	 * End piece definitions
-//	 ****************************************************************************/
-//
-//	/*****************************************************************************
-//	 * The move-stack (for undos, checking for en passant, etc)
+	//testing... making prototype for class
+//	Piece blackKing = new Piece(KING, //title/type
+//								1, //file
+//								1, //rank
+//								1, //level
+//								BLACK); //side?
+	
+	
+	//	Global void PieceDelete(Piece *);
+	private void PieceDelete(Piece piece)
+	{
+	
+	}
+	
+	
+
+	
+	//* The move-stack (for undos, checking for en passant, etc)
 //	 */
 //
 //	typedef struct
@@ -336,7 +396,10 @@ private static int NODIR  = 0;
 //	   *  TRUE, FALSE, PROMOTE, CASTLE or EnPASSANT. */
 //	  int nHadMoved;
 //	} Move;
-//
+// new class Move... might leave this one for a bit...
+	
+	
+	//
 //	struct stack_el
 //	{
 //	  Move *mvt;
@@ -367,15 +430,30 @@ private static int NODIR  = 0;
 //
 //	/****************************************************************************/
 //	Global Piece *Board[LEVELS][RANKS][FILES];
-//	Global Piece *Muster[COLOURS][PIECES]; /* Database of all pieces */
-//	Global Colour bwToMove;
-//	#include "x3Dc.h"
-//	#include "3DcErr.h"
-//
-//	/* And finally the function prototypes for the game itself */
+	private Piece[][][] Board;
+	
+	
+	//	Global Piece *Muster[COLOURS][PIECES]; /* Database of all pieces */
+	private Piece[][] Muster;
+	
+	//	Global Colour bwToMove;
+	private int bwToMove;
+	
+	
+//not sure how much of this i'll need
+	//	/* And finally the function prototypes for the game itself */
 //	Global Boolean Init3Dc(void);
+	
+	
 //	Global int MusterIdx(const Title, const int);
-//	Global char *Piece2String( Piece * );
+	private int MusterIdx(int title, int thisCount)
+	{
+		//TODO:
+		return 0;
+	}
+
+	
+	//	Global char *Piece2String( Piece * );
 //	Global Colour Computer(void);
 //	Global void PauseGame(void);
 //	Global void ResumeGame(void);
@@ -387,21 +465,11 @@ private static int NODIR  = 0;
 //	/* ComputerPlay stuff */
 //	Global Boolean    GenMove(const Colour, Move **);
 //	Global Boolean GenAltMove(const Colour, Move **);
-//
-//	#endif /* __3Dc_h */	
 	
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+//not sure if i need these either... open GL may take care of this	
+//	
 //	    muster,                                    /* Display area    */
 //	    remark,                                    /* Message area    */
 //	    undo,                                      /* Undo button     */
@@ -424,10 +492,29 @@ private static int NODIR  = 0;
 //	Global int InitMainWindow( GfxInfo * );
 //	Global int InitBoardWindows( GfxInfo * );
 //	Global void Draw3DcBoard(void);
+	
+	
+	
 //	Global void UpdateMuster(Colour, Title, Boolean);
-//	Global void PieceDisplay(const Piece *, const Boolean);
-//	Global void PiecePromote( Piece * );
-//
+	private void UpdateMuster(int color, int title, boolean notSureYet)
+	{
+		//TODO:
+		// notSureYet could be delete?
+	}
+	
+	//	Global void PieceDisplay(const Piece *, const Boolean);
+	private void PieceDisplay(Piece piece, boolean display)
+	{
+		//TODO:
+	}
+	
+	//	Global void PiecePromote( Piece * );
+	private void PiecePromote(Piece piece)
+	{
+		//TODO:
+	}
+	
+	
 //	/* 2nd interface stuff */
 //	Global Boolean Open2ndDisplay(const char *);
 //
@@ -449,69 +536,27 @@ private static int NODIR  = 0;
 //	#define SQ_POS_Y(gfx, boardNum, y) \
 //	  (((gfx->height[(boardNum)]%RANKS) / 2) + \
 //	   ((gfx->height[(boardNum)]/RANKS) * (y)))
-//
-//	#endif /* __x3Dc_h */	
-	
-	
-	
+
 	
 //	 * init.c
-//	 *
 //	 * Initialisations for 3Dc engine and pieces.
 //	 * Interface initialisation is external.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
-//	    Copyright (C) 1995  Paul Hicks
-//
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//	#include <malloc.h>
-//	#include <sys/time.h>
-//	#include "machine.h"
+
+
+	//	#include "machine.h"
 //	#include "3Dc.h"
 //
 //	int n3DcErr;
 	private int n3DcErr;
 	
 //	Piece *SQUARE_EMPTY, *SQUARE_INVALID;
-//
-//	stack *MoveStack; /* The history of moves */
-//	Piece *Board[LEVELS][RANKS][FILES]; /* The board */
-//	Piece *Muster[COLOURS][PIECES]; /* The list of pieces */
-//	int titleCount[TITLES] =
-//	{
-//	  /* king     */ 1,
-//	  /* queen    */ 1,
-//	  /* bishop   */ 2,
-//	  /* knight   */ 2,
-//	  /* rook     */ 2,
-//	  /* prince   */ 2,
-//	  /* princess */ 2,
-//	  /* abbey    */ 4,
-//	  /* cannon   */ 4,
-//	  /* galley   */ 4,
-//	  /* pawn     */ 24
-//	};
+	private Piece SQUARE_EMPTY, SQUARE_INVALID;
+	
 
-	//removed duplicate definition.
+//	stack *MoveStack; /* The history of moves */
+
+
+	//removed duplicate definition. again
 	//private int TITLES = 11;
 	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
 //		  /* king     */ 1,
@@ -526,101 +571,102 @@ private static int NODIR  = 0;
 //		  /* galley   */ 4,
 //		  /* pawn     */ 24
 		
-//
-//	/*
 //	 * This function sets up the board
-//	 */
-//	Global Boolean
 //	Init3Dc(void)
-//	{
+	private void Init3Dc()
+	{
 //	  File x;
+		int thisFile;
 //	  Rank y;
+		int thisRank;
 //	  Level z;
+		int thisLevel;
 //	  Colour bw;
+		int thisColor;
 //	  int count[COLOURS][TITLES] = {{0,0,0,0,0,0,0,0,0,0,0},
 //	                                {0,0,0,0,0,0,0,0,0,0,0}};
-//	  Title name;
+		int[][] count = {{0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0}};
+		
+	//	  Title name;
+		int thisTitle;
+
 //	  /* This structure is mainly for "obviousness"; it is entirely trivial */
-//	  Title StartBoard[LEVELS][RANKS][FILES] =
-//
-//	  { /* The boards */
-//	    { /* Bottom board */
-//	      { galley,  cannon, abbey, prince, princess,abbey, cannon, galley},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      { galley,  cannon, abbey, prince, princess,abbey, cannon, galley},
-//	    },
-//	    { /* Middle board */
-//	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook}
-//	    },
-//	    { /* Top board */
-//	      { galley,  cannon, abbey, prince, princess,abbey, cannon, galley},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   none,   none,   none,   none,   none,   none,   none,   none},
-//	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-//	      { galley,  cannon, abbey, prince, princess,abbey, cannon, galley},
-//	    }
-//	  }; /* StartBoard */
-//
-//	  for (z = 0; z < LEVELS; ++z)
-//	    {
-//	      bw = WHITE;
-//	      for (y = 0; y < RANKS; ++y)
-//	        {
+//		  Title StartBoard[LEVELS][RANKS][FILES] =
+		int StartBoard[][][] =
+	  { /* The boards */
+	    { /* Bottom board */
+	      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+	      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+	    },
+	    { /* Middle board */
+	      {   ROOK, KNIGHT, BISHOP,   KING,  QUEEN, BISHOP, KNIGHT,   ROOK},
+	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+	      {   ROOK, KNIGHT, BISHOP,   KING,  QUEEN, BISHOP, KNIGHT,   ROOK}
+	    },
+	    { /* Top board */
+		      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+		      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
+		      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
+		      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+	    }
+	  }; /* StartBoard */
+
+
+//		  for (z = 0; z < LEVELS; ++z)
+		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
+	    {
+			thisColor = WHITE;
+//		      for (y = 0; y < RANKS; ++y)
+		      for (thisRank = 0; thisRank < RANKS; ++thisRank)
+		      {
 //	          /* From the 4th rank on is black's half of the board */
-//	          if (y == 4)
-//	            bw = BLACK;
-//
+	          if (thisRank == 4)
+	            thisColor = BLACK;
+
 //	          for (x = 0; x < FILES; ++x)
-//	            {
+	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
+	            {
 //	              name = StartBoard[z][y][x];
-//	              if ((name != none)
-//	                  /*
-//	                   * this part of the conditional is unnecessary as
-//	                   * there are no "unknown" variables
-//	                   */
-//	                  /*
-//	                   * && (count[bw][name] < titleCount[name])
-//	                   */
-//	                  )
-//	                {
-//	                  Muster[bw][MusterIdx(name, count[bw][name])] = 
+	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
+//		              if ((name != none)
+		            if(thisTitle != NONE)
+		            {
+//		                  Muster[bw][MusterIdx(name, count[bw][name])] = 
 //	                    Board[z][y][x] =
 //	                      PieceNew(name, x, y, z, bw);
 //	                  (count[bw][name])++;
-//	                }
-//	            }
-//	        }
-//	    }
-//
+		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = 
+		                Board[thisLevel][thisRank][thisFile] =
+	                      new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+	                    (count[thisColor][thisTitle])++;
+	                }
+	            }
+		      }
+	    }
 //	  /* That's the pieces done.  Now for the move stack */
 //	  MoveStack = StackNew();
-//
-//	  /* Start the random number generator */
-//	  srandom((unsigned)time(NULL));
-//
-//	  /*
-//	   * And finally initialise the global variables:
+
 //	   * these are really dynamic global identifiers, in that they
 //	   * are read-only interfaces to various modules; kind of like
 //	   * getopt()'s optind and optarg.
 //	   */
-//	  n3DcErr = 0;
-//
+	  n3DcErr = 0;
+
 //	  SQUARE_INVALID = (Piece *)malloc(sizeof(Piece));
 //	  SQUARE_EMPTY = (Piece *)malloc(sizeof(Piece));
 //	  if (!CHECK(SQUARE_INVALID != NULL) &&
@@ -628,7 +674,7 @@ private static int NODIR  = 0;
 //	    return FALSE; /* If there's no memory now there never will be.. */
 //
 //	  return TRUE;
-//	}
+	}
 
 	
 	
