@@ -1,6 +1,8 @@
 package com.example.puzzleduck.threeD_Chess;
 
 
+import java.util.Random;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -138,6 +140,267 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		return (x > y) ? x : y;
 	}
 
+
+	
+	
+	
+	
+	
+	
+	
+	
+//	 * 3Dc.h
+//	 * Definitions file for 3Dc
+//
+//	#include "local.h"
+//	#include "machine.h"
+//
+//	/*****************************************************************************
+//	 * A miscellany of useful tidbits
+
+
+//think i already did this one...	
+//	#ifndef ABS
+//	#define ABS(a) ((a) < 0 ? -(a) : (a))
+//	#endif /* ABS */
+
+//	/* Returns from pieceMayMove */
+private static int CASTLE = 2;
+private static int EnPASSANT = 3;
+private static int PROMOTE = 4;
+
+//not sure what to make typedefs into... ints/array?
+//	typedef enum
+//	{                                          /* Misnomers (but handy) */
+//	  king, queen, bishop, knight, rook,       /* Royalty  */
+//	  prince, princess, abbey, cannon, galley, /* Nobility */
+//	  pawn, none
+//	} Title;
+
+
+
+private static int TITLES = 11;
+//	Global int titleCount[TITLES];
+private static int PIECES = 48;
+
+//	typedef enum
+//	{
+//	  NOCOL = -1, WHITE, BLACK
+//	} Colour;
+private static int COLOURS = 2;
+
+//	typedef struct
+//	{
+//	  unsigned
+//	    xFile  :3,
+//	    yRank  :3,
+//	    zLevel :2;
+//	} Coord;
+//
+//	typedef int File;
+private static int FILES = 8;
+//	typedef int Rank;
+private static int RANKS = 8;
+//	typedef int Level;
+private static int LEVELS = 3;
+
+//	/* Directions */
+//	typedef int Dir;
+private static int LEFT  = -1;
+private static int RIGHT  = 1;
+private static int FORW   = 1;  /* if colour is black => -1 */
+private static int BACK  = -1;  /* if colour is black => +1 */
+private static int UP    = 1;
+private static int DOWN  = -1;
+private static int NODIR  = 0;
+
+
+
+
+
+
+
+
+
+
+	private Random rng = new Random();
+
+
+//	#define RANDDIR() ((random()%3)-1)
+	private int RANDDIR()
+	{
+		return rng.nextInt(2);
+			// not sure if this is 1-2 or 0-2
+		
+	}
+
+//
+//	#define HORZ(x, y) ( ((x)==0) ^ ((y)==0) )
+	private boolean HORZ(int x, int y)
+	{
+		return ((x)==0) ^ ((y)==0);
+	}
+	
+//	#define DIAG(x, y) ((x)!=0 && (ABS(x)==ABS(y)))
+	private boolean DIAG(int x, int y)
+	{
+		return (x)!=0 && (ABS(x)==ABS(y));
+	}
+
+	//	#define HORZ2D(x, y, z) (HORZ(x, y) && (z)==0)
+	private boolean HORZ2D(int x, int y, int z)
+	{
+		return HORZ(x, y) && (z)==0;
+	}
+	
+//	#define DIAG2D(x, y, z) (DIAG(x, y) && (z)==0)
+	private boolean DIAG2D(int x, int y, int z)
+	{
+		return DIAG(x, y) && (z)==0;
+	}
+	
+	//	/* Don't have to check for z==0 in 2nd line below bcs at least one of
+//	 * x,y is 0 so the check is implicit */
+//	#define HORZ3D(x, y, z) ((HORZ(x, y) && \
+//	                          ((ABS(z)==ABS(x)) || \
+//	                           (ABS(z)==ABS(y)) || ((z)==0))) || \
+//	                         ((x)==0 && (y)==0 && (z)!=0))
+	private boolean HORZ3D(int x, int y, int z)
+	{
+		return ((HORZ(x, y) && ((ABS(z)==ABS(x)) || (ABS(z)==ABS(y)) || ((z)==0))) || ((x)==0 && (y)==0 && (z)!=0));
+	}
+	
+	
+	//	#define DIAG3D(x, y, z) (DIAG(x, y) && \
+//	                          ((z)==0 || ABS(z)==ABS(x)))
+	private boolean DIAG3D(int x, int y, int z)
+	{
+		return DIAG(x, y) && ((z)==0 || ABS(z)==ABS(x));
+	}
+	
+//	/*****************************************************************************
+//	 * Piece definitions for all pieces
+//	 */
+
+	
+//	typedef struct
+//	{
+//	  Coord xyzPos;
+//	  Colour bwSide;
+//	  Title nName;
+//	  unsigned bVisible :1,
+//	           bHasMoved:1; /* For king, rook, pawn only */
+//	} Piece;
+
+	// of course... typedefs should become objects... start making new files :)
+	
+	
+	//
+//	Global Piece *SQUARE_INVALID, *SQUARE_EMPTY;
+
+	//	Global Boolean IsMoveLegal( const Piece *, const Piece *);
+//	private boolean IsMoveLegal(Piece attacker, Piece defender);
+
+	
+	
+	
+	
+	
+	
+	
+	//	Global Boolean PieceMayMove(Piece *, const File, const Rank, const Level);
+//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
+//	Global Boolean PieceUndo(void);
+//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
+//	Global Boolean IsKingChecked(Colour);
+//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
+//	                                        const File, const Rank, const Level);
+//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
+//	Global Piece *PieceNew(const Title, const File, const Rank, const Level,
+//	                       const Colour);
+//	Global void PieceDelete(Piece *);
+//	/*
+//	 * End piece definitions
+//	 ****************************************************************************/
+//
+//	/*****************************************************************************
+//	 * The move-stack (for undos, checking for en passant, etc)
+//	 */
+//
+//	typedef struct
+//	{
+//	  Coord xyzBefore;
+//	  Coord xyzAfter;
+//	  Piece *pVictim;
+//	  /*  Status of bHasMoved before move.  Relevant to Kings, Rooks, and Pawns.
+//	   *  TRUE, FALSE, PROMOTE, CASTLE or EnPASSANT. */
+//	  int nHadMoved;
+//	} Move;
+//
+//	struct stack_el
+//	{
+//	  Move *mvt;
+//	  struct stack_el *below;
+//	};
+//
+//	typedef struct
+//	{
+//	  int nSize;
+//	  struct stack_el *top;
+//	} stack;
+//
+//	Global stack *StackNew(void);
+//	Global void StackDelete(stack *);
+//	Global void StackPush(stack *, const Move *);
+//	Global Move *StackPop(stack *);
+//	Global Move *StackPeek(stack *, int); /* Returns move n places down stack.  Do not free! */
+//	#ifdef DEBUG
+//	Global void StackDump(stack *);
+//	#endif /* DEBUG */
+//
+//	Global stack *FindAllMoves(Piece *);
+//
+//	Global stack *MoveStack;
+//	/*
+//	 * End of the move stack
+//	 ****************************************************************************/
+//
+//	/****************************************************************************/
+//	Global Piece *Board[LEVELS][RANKS][FILES];
+//	Global Piece *Muster[COLOURS][PIECES]; /* Database of all pieces */
+//	Global Colour bwToMove;
+//	#include "x3Dc.h"
+//	#include "3DcErr.h"
+//
+//	/* And finally the function prototypes for the game itself */
+//	Global Boolean Init3Dc(void);
+//	Global int MusterIdx(const Title, const int);
+//	Global char *Piece2String( Piece * );
+//	Global Colour Computer(void);
+//	Global void PauseGame(void);
+//	Global void ResumeGame(void);
+//	Global Boolean IsGamePaused(void);
+//	Global Boolean IsGameFinished(void);
+//	Global void FinishGame(Colour);
+//	Global void PrintMove( const Move * );
+//
+//	/* ComputerPlay stuff */
+//	Global Boolean    GenMove(const Colour, Move **);
+//	Global Boolean GenAltMove(const Colour, Move **);
+//
+//	#endif /* __3Dc_h */	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 //	    muster,                                    /* Display area    */
 //	    remark,                                    /* Message area    */
@@ -247,7 +510,9 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 //	  /* galley   */ 4,
 //	  /* pawn     */ 24
 //	};
-	private int TITLES = 11;
+
+	//removed duplicate definition.
+	//private int TITLES = 11;
 	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
 //		  /* king     */ 1,
 //		  /* queen    */ 1,
@@ -4361,207 +4626,6 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 //
 //	#endif /* __3DcErr_h */
 
-	
-	
-//	/*
-//	 * 3Dc.h
-//	 *
-//	 * Definitions file for 3Dc
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
-//	    Copyright (C) 1995  Paul Hicks
-//
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
-//	#ifndef __3Dc_H
-//	#define __3Dc_H
-//
-//	#include <X11/Intrinsic.h> /* For all other X stuff */
-//	#include "local.h"
-//	#include "machine.h"
-//
-//	/*****************************************************************************
-//	 * A miscellany of useful tidbits
-//	 */
-//	#ifndef ABS
-//	#define ABS(a) ((a) < 0 ? -(a) : (a))
-//	#endif /* ABS */
-//
-//	/* Returns from pieceMayMove */
-//	#define CASTLE 2
-//	#define EnPASSANT 3
-//	#define PROMOTE 4
-//
-//	typedef enum
-//	{                                          /* Misnomers (but handy) */
-//	  king, queen, bishop, knight, rook,       /* Royalty  */
-//	  prince, princess, abbey, cannon, galley, /* Nobility */
-//	  pawn, none
-//	} Title;
-//	#define TITLES 11
-//	Global int titleCount[TITLES];
-//	#define PIECES 48
-//
-//	typedef enum
-//	{
-//	  NOCOL = -1, WHITE, BLACK
-//	} Colour;
-//	#define COLOURS 2
-//
-//	typedef struct
-//	{
-//	  unsigned
-//	    xFile  :3,
-//	    yRank  :3,
-//	    zLevel :2;
-//	} Coord;
-//
-//	typedef int File;
-//	#define FILES 8
-//	typedef int Rank;
-//	#define RANKS 8
-//	typedef int Level;
-//	#define LEVELS 3
-//
-//	/* Directions */
-//	typedef int Dir;
-//	#define LEFT  -1
-//	#define RIGHT  1
-//	#define FORW   1  /* if colour is black => -1 */
-//	#define BACK  -1  /* if colour is black => +1 */
-//	#define UP     1
-//	#define DOWN  -1
-//	#define NODIR  0
-//	#define RANDDIR() ((random()%3)-1)
-//
-//	#define HORZ(x, y) ( ((x)==0) ^ ((y)==0) )
-//	#define DIAG(x, y) ((x)!=0 && (ABS(x)==ABS(y)))
-//	#define HORZ2D(x, y, z) (HORZ(x, y) && (z)==0)
-//	#define DIAG2D(x, y, z) (DIAG(x, y) && (z)==0)
-//	/* Don't have to check for z==0 in 2nd line below bcs at least one of
-//	 * x,y is 0 so the check is implicit */
-//	#define HORZ3D(x, y, z) ((HORZ(x, y) && \
-//	                          ((ABS(z)==ABS(x)) || \
-//	                           (ABS(z)==ABS(y)) || ((z)==0))) || \
-//	                         ((x)==0 && (y)==0 && (z)!=0))
-//	#define DIAG3D(x, y, z) (DIAG(x, y) && \
-//	                          ((z)==0 || ABS(z)==ABS(x)))
-//
-//	/*
-//	 * End miscellany
-//	 ****************************************************************************/
-//
-//	/*****************************************************************************
-//	 * Piece definitions for all pieces
-//	 */
-//	typedef struct
-//	{
-//	  Coord xyzPos;
-//	  Colour bwSide;
-//	  Title nName;
-//	  unsigned bVisible :1,
-//	           bHasMoved:1; /* For king, rook, pawn only */
-//	} Piece;
-//
-//	Global Piece *SQUARE_INVALID, *SQUARE_EMPTY;
-//	Global Boolean IsMoveLegal( const Piece *, const Piece *);
-//	Global Boolean PieceMayMove(Piece *, const File, const Rank, const Level);
-//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
-//	Global Boolean PieceUndo(void);
-//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
-//	Global Boolean IsKingChecked(Colour);
-//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
-//	                                        const File, const Rank, const Level);
-//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
-//	Global Piece *PieceNew(const Title, const File, const Rank, const Level,
-//	                       const Colour);
-//	Global void PieceDelete(Piece *);
-//	/*
-//	 * End piece definitions
-//	 ****************************************************************************/
-//
-//	/*****************************************************************************
-//	 * The move-stack (for undos, checking for en passant, etc)
-//	 */
-//
-//	typedef struct
-//	{
-//	  Coord xyzBefore;
-//	  Coord xyzAfter;
-//	  Piece *pVictim;
-//	  /*  Status of bHasMoved before move.  Relevant to Kings, Rooks, and Pawns.
-//	   *  TRUE, FALSE, PROMOTE, CASTLE or EnPASSANT. */
-//	  int nHadMoved;
-//	} Move;
-//
-//	struct stack_el
-//	{
-//	  Move *mvt;
-//	  struct stack_el *below;
-//	};
-//
-//	typedef struct
-//	{
-//	  int nSize;
-//	  struct stack_el *top;
-//	} stack;
-//
-//	Global stack *StackNew(void);
-//	Global void StackDelete(stack *);
-//	Global void StackPush(stack *, const Move *);
-//	Global Move *StackPop(stack *);
-//	Global Move *StackPeek(stack *, int); /* Returns move n places down stack.  Do not free! */
-//	#ifdef DEBUG
-//	Global void StackDump(stack *);
-//	#endif /* DEBUG */
-//
-//	Global stack *FindAllMoves(Piece *);
-//
-//	Global stack *MoveStack;
-//	/*
-//	 * End of the move stack
-//	 ****************************************************************************/
-//
-//	/****************************************************************************/
-//	Global Piece *Board[LEVELS][RANKS][FILES];
-//	Global Piece *Muster[COLOURS][PIECES]; /* Database of all pieces */
-//	Global Colour bwToMove;
-//	#include "x3Dc.h"
-//	#include "3DcErr.h"
-//
-//	/* And finally the function prototypes for the game itself */
-//	Global Boolean Init3Dc(void);
-//	Global int MusterIdx(const Title, const int);
-//	Global char *Piece2String( Piece * );
-//	Global Colour Computer(void);
-//	Global void PauseGame(void);
-//	Global void ResumeGame(void);
-//	Global Boolean IsGamePaused(void);
-//	Global Boolean IsGameFinished(void);
-//	Global void FinishGame(Colour);
-//	Global void PrintMove( const Move * );
-//
-//	/* ComputerPlay stuff */
-//	Global Boolean    GenMove(const Colour, Move **);
-//	Global Boolean GenAltMove(const Colour, Move **);
-//
-//	#endif /* __3Dc_h */	
 	
 	
 	
