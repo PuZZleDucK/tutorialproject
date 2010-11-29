@@ -15,6 +15,75 @@ public class threeD_Chess extends Activity {
         super.onCreate(savedInstanceState);
 
 
+      //main(int argc, char **argv)
+      //{
+      //
+      //  printf("3Dc version %s, Copyright (C) 1995,1996 Paul Hicks\n", VERSION);
+      //  printf("3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL file for details\n");
+      //  printf("This is free software: you are welcome to redistribute it\n");
+      //  printf("    under certain conditions (see the GPL file).\n");
+      //
+      Init3Dc();
+
+      
+      //eventually replace this with android propperties/settings
+      //  if (Init3DcGFX(argc, argv) == FALSE)
+//          return 1;
+      //
+      //  for (argNum = 1; argNum < argc; ++argNum)
+//          {
+//            if (!strcmp(argv[argNum], "-play"))
+//              {
+//                if (++argNum >= argc)
+//                  {
+//                    fprintf(stderr,
+//                            "%s: -play requires a colour (black or white)\n",
+//                            argv[0]);
+//                    return 1;
+//                  }
+      //
+//                if (SetupAutoplay(argv[argNum]) == FALSE)
+//                  {
+//                    fprintf(stderr,
+//                            "%s: %s is not a colour (must be black or white)\n",
+//                            argv[0], argv[argNum]);
+//                    return 1;
+//                  }
+//              } /* End autoplay setup */
+//            else if (!strcmp(argv[argNum], "-altdisplay") ||
+//                     !strcmp(argv[argNum], "-ad"))
+//              {
+//                /* If no more params   or next param is a new option */
+//                if ((++argNum == argc) || argv[argNum][0] == '-')
+//                  {
+//                    fprintf(stderr,
+//                            "%s: option %s requires a display name parameter\n",
+//                            argv[0], argv[argNum -1]);
+//                    return 1;
+//                  }
+//                else
+//                  {
+//                    Open2ndDisplay(argv[argNum]);
+//                  }
+//              } /* End net setup */
+//            else /* The help option */
+//              {
+//                fprintf(stderr, "Usage:\n");
+      //%s ; play 3Dc, two humans on one display\n\
+      //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
+      //%s -play colour ; play against the computer, which plays colour\n",
+//                       argv[0], argv[0], argv[0]);
+//                return 1;
+//              }
+//          } /* Finish parameters */
+      //
+      DoMain3DcLoop();
+      //
+      //  return 0;
+      //}
+
+        
+        
         
         _threeD_Chess_view = new threeD_Renderer(this);
         setContentView(_threeD_Chess_view);
@@ -613,73 +682,11 @@ private static int NODIR  = 0;
 //Local Boolean SetupAutoplay(char *);
 //Local void DoMain3DcLoop(void);
 //
-//int
-//main(int argc, char **argv)
-//{
-//  int argNum;
-//
-//  printf("3Dc version %s, Copyright (C) 1995,1996 Paul Hicks\n", VERSION);
-//  printf("3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL file for details\n");
-//  printf("This is free software: you are welcome to redistribute it\n");
-//  printf("    under certain conditions (see the GPL file).\n");
-//
-//  Init3Dc();
-//  if (Init3DcGFX(argc, argv) == FALSE)
-//    return 1;
-//
-//  for (argNum = 1; argNum < argc; ++argNum)
-//    {
-//      if (!strcmp(argv[argNum], "-play"))
-//        {
-//          if (++argNum >= argc)
-//            {
-//              fprintf(stderr,
-//                      "%s: -play requires a colour (black or white)\n",
-//                      argv[0]);
-//              return 1;
-//            }
-//
-//          if (SetupAutoplay(argv[argNum]) == FALSE)
-//            {
-//              fprintf(stderr,
-//                      "%s: %s is not a colour (must be black or white)\n",
-//                      argv[0], argv[argNum]);
-//              return 1;
-//            }
-//        } /* End autoplay setup */
-//      else if (!strcmp(argv[argNum], "-altdisplay") ||
-//               !strcmp(argv[argNum], "-ad"))
-//        {
-//          /* If no more params   or next param is a new option */
-//          if ((++argNum == argc) || argv[argNum][0] == '-')
-//            {
-//              fprintf(stderr,
-//                      "%s: option %s requires a display name parameter\n",
-//                      argv[0], argv[argNum -1]);
-//              return 1;
-//            }
-//          else
-//            {
-//              Open2ndDisplay(argv[argNum]);
-//            }
-//        } /* End net setup */
-//      else /* The help option */
-//        {
-//          fprintf(stderr, "Usage:\n");
-//          fprintf(stderr, "\
-//%s ; play 3Dc, two humans on one display\n\
-//%s -ad|-altdisplay [display] ; black plays on display `display'\n\
-//%s -play colour ; play against the computer, which plays colour\n",
-//                 argv[0], argv[0], argv[0]);
-//          return 1;
-//        }
-//    } /* Finish parameters */
-//
-//  DoMain3DcLoop();
-//
-//  return 0;
-//}
-//
+
+	
+	
+	
+	//
 ///* Set up the computer intelligence and all that */
 //Local Boolean
 //SetupAutoplay(char *colourName)
@@ -694,16 +701,18 @@ private static int NODIR  = 0;
 //    }
 //  return TRUE;
 //}
-//
-//Local void
-//DoMain3DcLoop(void)
-//{
+
+	//DoMain3DcLoop(void)
+	private void DoMain3DcLoop()
+	{
 //  Move *automove;
 //  XEvent event;
-//  Local Boolean retry = FALSE;
+	//  Local Boolean retry = FALSE;
+	  boolean retry = FALSE;
 //
-//  while (firstGFX->mainWindow)
-//    {
+	//  while (firstGFX->mainWindow)
+	  while (true)//?? game loop
+	  {
 //      /* First thing to do: check for end of game! */
 //      if (IsGameFinished() && !gamePaused)
 //        FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
@@ -773,11 +782,13 @@ private static int NODIR  = 0;
 //          XtDispatchEvent(&event);
 //        }
 //
-//    } /* End game loop */
+	  } /* End game loop */
 //
 //  return;
-//}
-//
+	}
+
+	
+
 ///*************************************************************/
 ///* Utility functions */
 //Global int
