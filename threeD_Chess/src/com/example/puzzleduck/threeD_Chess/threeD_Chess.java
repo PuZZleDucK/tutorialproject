@@ -213,7 +213,7 @@ private static int DOWN  = -1;
 private static int NODIR  = 0;
 
 
-
+private String winString = "";
 
 
 
@@ -289,10 +289,22 @@ private static int NODIR  = 0;
 	//
 //	Global Piece *SQUARE_INVALID, *SQUARE_EMPTY;
 
-	//	Global Boolean IsMoveLegal( const Piece *, const Piece *);
 	private boolean IsMoveLegal(Piece attacker, Piece defender)
 	{
-		//TODO:
+//		/* This function interprets the result of TraverseDir(piece...) */
+//		IsMoveLegal(const Piece *piece, const Piece *dest)
+		if (defender == SQUARE_EMPTY)
+			return TRUE;
+		  if (defender == SQUARE_INVALID)
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+//		  else if ( piece->bwSide == dest->bwSide )
+//		    {
+//		      n3DcErr = E3DcBLOCK;
+//		      return FALSE;
+//		    }
 		return true;
 	}
 
@@ -714,7 +726,9 @@ private static int NODIR  = 0;
 	  while (true)//?? game loop
 	  {
 //      /* First thing to do: check for end of game! */
-//      if (IsGameFinished() && !gamePaused)
+//	      if (IsGameFinished() && !gamePaused)
+//	      if (IsGameFinished() && !gamePaused)
+		      if (IsGameFinished() ){}
 //        FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
 //      
 //      if ( (bwToMove == computer) && !gamePaused)
@@ -848,53 +862,73 @@ private static int NODIR  = 0;
 //{
 //  return gamePaused;
 //}
-//
-//Global Boolean
-//IsGameFinished(void)
-//{
-//  Boolean
-//    blackKingVisible, whiteKingVisible,
-//    blackFirstPrinceVisible, whiteFirstPrinceVisible,
-//    blackSecondPrinceVisible, whiteSecondPrinceVisible;
-//
-//  blackKingVisible = Muster[BLACK][MusterIdx(king, 0)]->bVisible;
-//  whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)]->bVisible;
-//  blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)]->bVisible;
-//  whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)]->bVisible;
-//  blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)]->bVisible;
-//  whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)]->bVisible;
-//
-//  if ((!whiteKingVisible ||
-//       (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
-//      (!blackKingVisible ||
-//       (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
-//    {
-//      return TRUE;
-//    }
-//
-//  return FALSE;
-//}
-//
+
+
+	//IsGameFinished(void)
+	private boolean IsGameFinished()
+	{
+
+		   boolean blackKingVisible, whiteKingVisible,
+		    blackFirstPrinceVisible, whiteFirstPrinceVisible,
+		    blackSecondPrinceVisible, whiteSecondPrinceVisible;
+		
+		//  blackKingVisible = Muster[BLACK][MusterIdx(king, 0)]->bVisible;
+		   blackKingVisible = Muster[BLACK][MusterIdx(KING, 0)].bVisible;
+
+		   //  whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)]->bVisible;
+		   whiteKingVisible = Muster[WHITE][MusterIdx(KING, 0)].bVisible;
+		   
+		   //  blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)]->bVisible;
+		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(PRINCE, 0)].bVisible;
+		   
+		//  whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)]->bVisible;
+		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(PRINCE, 0)].bVisible;
+		   
+		//  blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)]->bVisible;
+		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(PRINCE, 1)].bVisible;
+
+		//  whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)]->bVisible;
+		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(PRINCE, 1)].bVisible;
+
+		//  if ((!whiteKingVisible ||
+//	       (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
+//	      (!blackKingVisible ||
+//	       (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
+//	    {
+//	      return TRUE;
+//	    }
+		   if ((!whiteKingVisible || 
+				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
+				   (!blackKingVisible ||
+				   (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
+		   {
+			   return TRUE;
+		   }
+		   return FALSE;
+	}
+
+
 //Global void
 //FinishGame(const Colour bwWinner)
-//{
-//  char winString[19];
-//
-//  gamePaused = TRUE;
+	private void FinishGame(int bwWinner)
+{
+  gamePaused = TRUE;
 //  sprintf(winString, "%s player wins!",
 //          (bwWinner == BLACK) ? "Black" : "White");
-//  
+  winString = (bwWinner == BLACK) ? "Black wins!" : "White wins!";
+
 //  XtSetSensitive(firstGFX->undo, FALSE);
-//  Err3Dc(firstGFX, winString, TRUE);
-//
+//  Err3Dc(firstGFX, =;winString, TRUE);
+
 //  if (secondGFX != NULL)
 //    {
 //      XtSetSensitive(secondGFX->undo, FALSE);
 //      Err3Dc(secondGFX, winString, TRUE);
 //    }
-//}
-//
-//Global void
+}
+
+
+	//Global void
 //PrintMove( const Move *move )
 //{
 //  char *moveString = NULL;
@@ -964,73 +998,26 @@ private static int NODIR  = 0;
 	
 	
 	
-//	/*
 //	 * piece.c
-//	 *
 //	 * Rules for all pieces.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
-//	    Copyright (C) 1995  Paul Hicks
-//
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
-//
-//	#include <malloc.h>
-//	#include "machine.h"
 //	#include "3Dc.h"
 //
-//	#define PARAMS (Piece *, File, Rank, Level)
+
+
 //
 //	Local INLINE Boolean
-//	  KingMayMove     PARAMS,
-//	  QueenMayMove    PARAMS,
-//	  BishopMayMove   PARAMS,
-//	  KnightMayMove   PARAMS,
-//	  RookMayMove     PARAMS,
-//	  PrinceMayMove   PARAMS,
-//	  PrincessMayMove PARAMS,
-//	  AbbeyMayMove    PARAMS,
-//	  CannonMayMove   PARAMS,
-//	  GalleyMayMove   PARAMS,
-//	  PawnMayMove     PARAMS;
+//	  KingMayMove     (Piece *, File, Rank, Level),
+//	  QueenMayMove    (Piece *, File, Rank, Level),
+//	  BishopMayMove   (Piece *, File, Rank, Level),
+//	  KnightMayMove   (Piece *, File, Rank, Level),
+//	  RookMayMove     (Piece *, File, Rank, Level),
+//	  PrinceMayMove   (Piece *, File, Rank, Level),
+//	  PrincessMayMove (Piece *, File, Rank, Level),
+//	  AbbeyMayMove    (Piece *, File, Rank, Level),
+//	  CannonMayMove   (Piece *, File, Rank, Level),
+//	  GalleyMayMove   (Piece *, File, Rank, Level),
+//	  PawnMayMove     (Piece *, File, Rank, Level);
 //
-//	#undef PARAMS
-//
-//	/* This function interprets the result of TraverseDir(piece...) */
-//	Global Boolean
-//	IsMoveLegal(const Piece *piece, const Piece *dest)
-//	{
-//	  if (dest == SQUARE_EMPTY)
-//	    return TRUE;
-//	  if (dest == SQUARE_INVALID)
-//	    {
-//	      n3DcErr = E3DcSIMPLE;
-//	      return FALSE;
-//	    }
-//	  else if ( piece->bwSide == dest->bwSide )
-//	    {
-//	      n3DcErr = E3DcBLOCK;
-//	      return FALSE;
-//	    }
-//
-//	  return TRUE;
-//	}
 //
 //	Global Piece *
 //	PieceNew(const Title nType,
@@ -4542,9 +4529,18 @@ private static int NODIR  = 0;
 //	{
 //	  E3DcSIMPLE, E3DcLEVEL, E3DcCHECK, E3DcDIST, E3DcINVIS,
 //	  E3DcBLOCK, E3DcMOVED
-//	} Error;
-//
-//	typedef struct
+//	} Error;//	typedef enum
+
+	private int E3DcSIMPLE	= 0;
+	private int E3DcLEVEL	= 1;
+	private int E3DcCHECK	= 2;
+	private int E3DcDIST	= 3;
+	private int E3DcINVIS	= 4;
+	private int E3DcBLOCK	= 5;
+	private int E3DcMOVED	= 6;
+
+
+	//	typedef struct
 //	{
 //	  Error nErrNum;
 //	  char *pszErrStr;
