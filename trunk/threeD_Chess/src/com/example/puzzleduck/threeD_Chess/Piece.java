@@ -12,6 +12,8 @@ package com.example.puzzleduck.threeD_Chess;
 
 public class Piece {
 
+	public boolean bVisible;
+
 	public Piece(int type, int file, int rank, int level, int side) {
 //EXAMPLE USAGE
 //		Piece blackKing = new Piece(KING, //title/type
