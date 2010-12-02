@@ -1106,106 +1106,121 @@ private String winString = "";
 			  xDiff = ABS(xDiff);
 			  yDiff = ABS(yDiff);
 			  zDiff = ABS(zDiff);
-	//
-//		  /* Not allowed move more than 1 except when castling */
-//		  if ( (piece->bHasMoved && (xDiff > 2)) ||
-//		       (yDiff > 1) || (zDiff > 1) )
-//		    {
-//		      n3DcErr = E3DcDIST;
-//		      return FALSE;
-//		    }
-	//
+	
+		  /* Not allowed move more than 1 except when castling */
+		  if ( (piece.bHasMoved && (xDiff > 2)) ||
+		       (yDiff > 1) || (zDiff > 1) )
+		    {
+		      n3DcErr = E3DcDIST;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  if (FakeMoveAndIsKingChecked( piece, xNew, yNew, zNew) ||
-//		      ( (xDiff == 2) &&
-//		       FakeMoveAndIsKingChecked( piece, (xNew + piece->xyzPos.xFile)/2,
-//		                                yNew, zNew ) ))
-//		    {
-//		      n3DcErr = E3DcCHECK;
-//		      return FALSE;
-//		    }
-	//
-//		  if (xDiff == 2)
-//		    { /* Castling */
-//		      File xRook;
-	//
-//		      if (yDiff || zDiff)
+		  if (FakeMoveAndIsKingChecked( piece, xNew, yNew, zNew) ||
+		      ( (xDiff == 2) &&
+		       FakeMoveAndIsKingChecked( piece, (xNew + piece.xyzPos.xFile)/2,
+		                                yNew, zNew ) ))
+		    {
+		      n3DcErr = E3DcCHECK;
+		      return FALSE;
+		    }
+	
+		  if (xDiff == 2)
+		  { /* Castling */
+		      int xRook;
+	
+		      if (yDiff > 0 || zDiff > 0)
+		        {
+		          n3DcErr = E3DcSIMPLE;
+		          return FALSE;
+		        }
+	
+		      /*
+		       * Determine x-pos of castling rook
+		       */
+		      if (xNew > piece.xyzPos.xFile)
+		        xRook = FILES-1;//right edge
+		      else
+		        xRook = 0;//left edge
+	
+		      if (piece.bHasMoved || Board[1][yNew][xRook].bHasMoved)
+		        {
+		          n3DcErr = E3DcMOVED;
+		          return FALSE;
+		        }
+		      //else if (!Board[1][yNew][xRook]) //testing for null???
+//			  else if (!Board[1][yNew][xRook])
 //		        {
 //		          n3DcErr = E3DcSIMPLE;
 //		          return FALSE;
 //		        }
-	//
-//		      /*
-//		       * Determine x-pos of castling rook
-//		       */
-//		      if (xNew > piece->xyzPos.xFile)
-//		        xRook = FILES-1;
-//		      else
-//		        xRook = 0;
-	//
-//		      if (piece->bHasMoved ||
-//		               Board[1][yNew][xRook]->bHasMoved)
-//		        {
-//		          n3DcErr = E3DcMOVED;
-//		          return FALSE;
-//		        }
-//		      else if (!Board[1][yNew][xRook])
-//		        {
-//		          n3DcErr = E3DcSIMPLE;
-//		          return FALSE;
-//		        }
-	//
-//		      xInc = ( xRook == 0 ) ? -1 : 1 ;
-	//
-//		      for (xCur = piece->xyzPos.xFile + xInc; xCur != xRook; xCur += xInc)
-//		        {  /* Is the castle blocked? */
+	
+		      xInc = ( xRook == 0 ) ? -1 : 1 ;
+	
+		      for (xCur = piece.xyzPos.xFile + xInc; xCur != xRook; xCur += xInc)
+		      {  /* Is the castle blocked? */
 //		          if (Board[1][yNew][xCur])
-//		            {
-//		              n3DcErr = E3DcBLOCK;
-//		              return FALSE;
-//		            }
-//		        }
+			        if (Board[1][yNew][xCur] != null)
+		            {
+		              n3DcErr = E3DcBLOCK;
+		              return FALSE;
+		            }
+		      }
 	//
 //		      return CASTLE;
-//		    }
+		      return true;
+		    }
 	//
 		  return TRUE;
 		}
 		
 	
 //		Local INLINE Boolean
-//		QueenMayMove(Piece *piece,
-//		             const File xNew, const Rank yNew, const Level zNew)
+//			QueenMayMove(Piece *piece,
+//          const File xNew, const Rank yNew, const Level zNew)
+			
+		  private boolean QueenMayMove(Piece piece, int xNew, int yNew, int zNew)
+	{	
 //		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Level zDiff;
-//		  Piece
-//		    *pDestSquare;
+//			  File xDiff;
+//			  Rank yDiff;
+//			  Level zDiff;
+			  int xDiff;
+			  int yDiff;
+			  int zDiff;
+//			  Piece
+//			    *pDestSquare;
+			  Piece pDestSquare;
 	//
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
-//		  zDiff = zNew - piece->xyzPos.zLevel;
+//			  xDiff = xNew - piece->xyzPos.xFile;
+//			  yDiff = yNew - piece->xyzPos.yRank;
+//			  zDiff = zNew - piece->xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+			  zDiff = zNew - piece.xyzPos.zLevel;
 	//
-//		  if ((xDiff && yDiff && (ABS(xDiff) != ABS(yDiff))) ||
+//			  if ((xDiff && yDiff && (ABS(xDiff) != ABS(yDiff))) ||
 //		      (xDiff && zDiff && (ABS(xDiff) != ABS(zDiff))) ||
 //		      (yDiff && zDiff && (ABS(yDiff) != ABS(zDiff))))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return False;
-//		    }
+			  if ((xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff))) ||
+				      (xDiff > 0 && zDiff > 0 && (ABS(xDiff) != ABS(zDiff))) ||
+				      (yDiff > 0 && zDiff > 0 && (ABS(yDiff) != ABS(zDiff))))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return false;
+		    }
 	//
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
-//		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
+		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
 	//
 //		Local INLINE Boolean
 //		BishopMayMove(Piece *piece,
@@ -1551,57 +1566,57 @@ private String winString = "";
 		
 	  
 	  
-	  switch (piece.nName)
-	    {
-	    case king:
-	      retval = KingMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case queen:
-	      retval = QueenMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case bishop:
-	      retval = BishopMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case knight:
-	      retval = KnightMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case rook:
-	      retval = RookMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case prince:
-	      retval = PrinceMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case princess:
-	      retval = PrincessMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case abbey:
-	      retval = AbbeyMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case cannon:
-	      retval = CannonMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case galley:
-	      retval = GalleyMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    case pawn:
-	      retval = PawnMayMove(piece, xNew, yNew, zNew);
-	      break;
-	    default:
-	      retval = FALSE;
-	      n3DcErr = E3DcSIMPLE;
-	    }
-
-	  if ( retval != FALSE )
-	    {
-	      if ( FakeMoveAndIsKingChecked(piece, xNew, yNew, zNew) == TRUE )
-	        {
-	          n3DcErr = E3DcCHECK;
-	          return FALSE;
-	        }
-	    }
-
-	  return retval;
-	}
+//	  switch (piece.nName)
+//	    {
+//	    case king:
+//	      retval = KingMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case queen:
+//	      retval = QueenMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case bishop:
+//	      retval = BishopMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case knight:
+//	      retval = KnightMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case rook:
+//	      retval = RookMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case prince:
+//	      retval = PrinceMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case princess:
+//	      retval = PrincessMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case abbey:
+//	      retval = AbbeyMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case cannon:
+//	      retval = CannonMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case galley:
+//	      retval = GalleyMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    case pawn:
+//	      retval = PawnMayMove(piece, xNew, yNew, zNew);
+//	      break;
+//	    default:
+//	      retval = FALSE;
+//	      n3DcErr = E3DcSIMPLE;
+//	    }
+//
+//	  if ( retval != FALSE )
+//	    {
+//	      if ( FakeMoveAndIsKingChecked(piece, xNew, yNew, zNew) == TRUE )
+//	        {
+//	          n3DcErr = E3DcCHECK;
+//	          return FALSE;
+//	        }
+//	    }
+//
+//	  return retval;
+//	}
 
 
 	
@@ -2687,9 +2702,10 @@ private String winString = "";
 //	 * members of the xyzPos struct are equal to UINT_MAX then there was
 //	 * error which utterly precludes moving (e.g. dist == 0).
 //	 */
-//	Global Piece *
-//	TraverseDir(const Piece *piece, Dir xDir, Dir yDir, Dir zDir, unsigned dist)
-//	{
+//			Global Piece *
+//			TraverseDir(const Piece *piece, Dir xDir, Dir yDir, Dir zDir, unsigned dist)
+	private Piece TraverseDir(Piece piece, int xDir, int yDir, int zDir, int dist)
+	{
 //	  int x, y, z, d = 0;
 //
 //	  /* Most move at least one in a real direction */
@@ -2774,8 +2790,8 @@ private String winString = "";
 //	  SQUARE_INVALID->xyzPos.yRank = y - yDir;
 //	  SQUARE_INVALID->xyzPos.zLevel = z - zDir;
 //
-//	  return SQUARE_INVALID;
-//	}
+	  return SQUARE_INVALID;
+	}
 //
 //	/*
 //	 * Return TRUE if the king is checked in the current board layout.
