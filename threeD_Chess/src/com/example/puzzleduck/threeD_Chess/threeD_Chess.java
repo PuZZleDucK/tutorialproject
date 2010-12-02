@@ -1221,35 +1221,41 @@ private String winString = "";
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	//
-//		Local INLINE Boolean
-//		BishopMayMove(Piece *piece,
-//		              const File xNew, const Rank yNew, const Level zNew)
-//		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Level zDiff;
-//		  Piece *pDestSquare;
-	//
+	
+//			Local INLINE Boolean
+//			BishopMayMove(Piece *piece,
+		  private boolean BishopMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
+//			  File xDiff;
+//			  Rank yDiff;
+//			  Level zDiff;
+//			  Piece *pDestSquare;
+		  int xDiff;
+		  int yDiff;
+		  int zDiff;
+		  Piece pDestSquare;
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
 //		  zDiff = zNew - piece->xyzPos.zLevel;
-	//
-//		  if (!DIAG3D(xDiff, yDiff, zDiff))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+		  xDiff = xNew - piece.xyzPos.xFile;
+		  yDiff = yNew - piece.xyzPos.yRank;
+		  zDiff = zNew - piece.xyzPos.zLevel;
+	
+		  if (!DIAG3D(xDiff, yDiff, zDiff))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
-//		                            MAX(ABS(xDiff), ABS(yDiff)));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
-	//
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
+	
 //		Local INLINE Boolean
 //		KnightMayMove(Piece *piece,
 //		              const File xNew, const Rank yNew, const Level zNew)
