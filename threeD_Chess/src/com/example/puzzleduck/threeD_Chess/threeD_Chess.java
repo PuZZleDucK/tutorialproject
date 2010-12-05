@@ -1259,247 +1259,307 @@ private String winString = "";
 //		Local INLINE Boolean
 //		KnightMayMove(Piece *piece,
 //		              const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean KnightMayMove(Piece piece, int xNew, int yNew, int zNew)
+			{	
 //		  File xDiff;
 //		  Rank yDiff;
-	//
-//		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Knights may not change level */
-//		    }
-	//
+			  int xDiff;
+			  int yDiff;
+	
+//			  if (zNew != piece->xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Knights may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+	
 //		  xDiff = ABS(xDiff);
 //		  yDiff = ABS(yDiff);
-	//
+			  xDiff = ABS(xDiff);
+			  yDiff = ABS(yDiff);
+	
 //		  if ((xDiff == 0) ||
 //		      (yDiff == 0) ||
 //		      ((xDiff + yDiff) != 3))
 //		    return FALSE;
-	//
-//		  return TRUE;
-//		}
-	//
+			  if ((xDiff == 0) || (yDiff == 0) || ((xDiff + yDiff) != 3))
+				  return FALSE;
+	
+		  return TRUE;
+		}
+	
+		  
+		  
 //		Local INLINE Boolean
 //		RookMayMove(Piece *piece,
 //		            const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean RookMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff;
 //		  Level zDiff;
 //		  Piece *pDestSquare;
-	//
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
-//		  zDiff = zNew - piece->xyzPos.zLevel;
-	//
-//		  if (!HORZ3D(xDiff, yDiff, zDiff))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
+			  int xDiff;
+			  int yDiff;
+			  int zDiff;
+			  Piece pDestSquare;
+	
+//			  xDiff = xNew - piece->xyzPos.xFile;
+//			  yDiff = yNew - piece->xyzPos.yRank;
+//			  zDiff = zNew - piece->xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+			  zDiff = zNew - piece.xyzPos.zLevel;
+	
+		  if (!HORZ3D(xDiff, yDiff, zDiff))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
 	//
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
-//		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
+		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
 	//
 //		Local INLINE Boolean
 //		PrinceMayMove(Piece *piece,
 //		              const File xNew, const Rank yNew, const Level zNew)
-//		{
-//		  File xDiff;
-//		  Rank yDiff;
-	//
-//		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Princes may not change level */
-//		    }
-	//
+		  private boolean PrinceMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
+//			  File xDiff;
+//			  Rank yDiff;
+			  int xDiff;
+			  int yDiff;
+	
+//			  if (zNew != piece->xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Princes may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
-	//
-//		  xDiff = ABS(xDiff);
-//		  yDiff = ABS(yDiff);
-	//
-//		  if (xDiff > 1 || yDiff > 1) /* Not allowed move more than 1 */
-//		    {
-//		      n3DcErr = E3DcDIST;
-//		      return FALSE;
-//		    }
-	//
-//		  return TRUE;
-//		}
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+	
+		  xDiff = ABS(xDiff);
+		  yDiff = ABS(yDiff);
+	
+		  if (xDiff > 1 || yDiff > 1) /* Not allowed move more than 1 */
+		    {
+		      n3DcErr = E3DcDIST;
+		      return FALSE;
+		    }
+	
+		  return TRUE;
+		}
+	
 //		Local INLINE Boolean
 //		PrincessMayMove(Piece *piece,
 //		                const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean PrincessMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff;
 //		  Piece * pDestSquare;
-	//
-//		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Princesses may not change level */
-//		    }
-	//
+			  int xDiff;
+			  int yDiff;
+			  Piece pDestSquare;
+	
+//			  if (zNew != piece->xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Princesses may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+	
 //		  if (xDiff && yDiff && (ABS(xDiff) != ABS(yDiff)))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+			  if (xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff)))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0,
-//		                            MAX(ABS(xDiff), ABS(yDiff)));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
-	//
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0,
+		                            MAX(ABS(xDiff), ABS(yDiff)));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
+	
 //		Local INLINE Boolean
 //		AbbeyMayMove(Piece *piece,
 //		             const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean AbbeyMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff;
 //		  Piece *pDestSquare;
-	//
-//		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Abbies may not change level */
-//		    }
-	//
+			  int xDiff;
+			  int yDiff;
+			  Piece pDestSquare;
+	
+//			  if (zNew != piece->xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Abbies may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
-	//
-//		  if (!DIAG(xDiff, yDiff))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+		
+			  if (!DIAG(xDiff, yDiff))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0,
-//		                            MAX(ABS(xDiff), ABS(yDiff)));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
 	//
 //		Local INLINE Boolean
 //		CannonMayMove(Piece *piece,
 //		              const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean CannonMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff;
 //		  Level zDiff;
-	//
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
-//		  zDiff = zNew - piece->xyzPos.zLevel;
-	//
-//		  xDiff = ABS(xDiff);
-//		  yDiff = ABS(yDiff);
-//		  zDiff = ABS(zDiff);
-	//
+			  int xDiff;
+			  int yDiff;
+			  int zDiff;
+	
+//			  xDiff = xNew - piece->xyzPos.xFile;
+//			  yDiff = yNew - piece->xyzPos.yRank;
+//			  zDiff = zNew - piece->xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+			  zDiff = zNew - piece.xyzPos.zLevel;
+	
+		  xDiff = ABS(xDiff);
+		  yDiff = ABS(yDiff);
+		  zDiff = ABS(zDiff);
+	
 //		  if (((xDiff + yDiff + zDiff) != 6) ||
-//		      ((xDiff != 3) && (yDiff != 3)) ||
-//		      ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
-//		  return TRUE;
-//		}
-	//
+//	      ((xDiff != 3) && (yDiff != 3)) ||
+//	      ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
+		  if (((xDiff + yDiff + zDiff) != 6) || ((xDiff != 3) && (yDiff != 3)) || ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
+		  return TRUE;
+		}
+	
 //		Local INLINE Boolean
 //		GalleyMayMove(Piece *piece,
 //		              const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean GalleyMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff;
 //		  Piece *pDestSquare;
-	//
-//		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Gallies may not change level */
-//		    }
-	//
+			  int xDiff;
+			  int yDiff;
+			  Piece pDestSquare;
+	
+//			  if (zNew != piece->xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Gallies may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yDiff = yNew - piece->xyzPos.yRank;
-	//
-//		  if (!HORZ(xDiff, yDiff))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yDiff = yNew - piece.xyzPos.yRank;
+	
+		  if (!HORZ(xDiff, yDiff))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-//		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0,
-//		                            MAX(ABS(xDiff), ABS(yDiff)));
-//		  return IsMoveLegal(piece, pDestSquare);
-//		}
-	//
+		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  return IsMoveLegal(piece, pDestSquare);
+		}
+	
 //		Local INLINE Boolean
 //		PawnMayMove(Piece *piece,
 //		            const File xNew, const Rank yNew, const Level zNew)
-//		{
+		  private boolean PawnMayMove(Piece piece, int xNew, int yNew, int zNew)
+		{
 //		  File xDiff;
 //		  Rank yDiff, yInc;
-	//
+			  int xDiff;
+			  int yDiff, yInc;
+	
 //		  if (zNew != piece->xyzPos.zLevel)
-//		    {
-//		      n3DcErr = E3DcLEVEL;
-//		      return FALSE; /* Pawns may not change level */
-//		    }
-	//
+			  if (zNew != piece.xyzPos.zLevel)
+		    {
+		      n3DcErr = E3DcLEVEL;
+		      return FALSE; /* Pawns may not change level */
+		    }
+	
 //		  xDiff = xNew - piece->xyzPos.xFile;
 //		  yInc = yDiff = yNew - piece->xyzPos.yRank;
-	//
-//		  xDiff = ABS(xDiff);
-//		  yDiff = ABS(yDiff);
-	//
+			  xDiff = xNew - piece.xyzPos.xFile;
+			  yInc = yDiff = yNew - piece.xyzPos.yRank;
+	
+		  xDiff = ABS(xDiff);
+		  yDiff = ABS(yDiff);
+	
 //		  /*
 //		   * Pawns must move at least 1 forward
 //		   */
 //		  if ((yDiff == 0) ||
 //		      ((yInc < 0) && (piece->bwSide == WHITE)) ||
 //		      ((yInc > 0) && (piece->bwSide == BLACK))) /* Moving backwards */
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+		  if ((yDiff == 0) || ((yInc < 0) && (piece.bwSide == WHITE)) || ((yInc > 0) && (piece.bwSide == BLACK))) /* Moving backwards */
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /* Check the definitely-illegal moves first.. */
-//		  if (xDiff > 1 ||
-//		      (xDiff == 1 && yDiff != 1))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+		  if (xDiff > 1 || (xDiff == 1 && yDiff != 1))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+	
 //		  /*
 //		   * It is difficult to cater for 'en passant' in the middle of a
 //		   * conditional.  So, against all convention laid out in other
@@ -1521,6 +1581,7 @@ private String winString = "";
 //		   )
 //		#endif /* 0 */
 //		    if (xDiff == 1 && yDiff == 1 && !Board[zNew][yNew][xNew])
+//		    if (xDiff == 1 && yDiff == 1 && Board[zNew][yNew][xNew] == null)
 //		      { /* En passant? */
 //		        if (Board[zNew][yNew - yInc][xNew] && /* 'Takable' piece */
 //		            Board[zNew][yNew - yInc][xNew]->nName == pawn && /* Is pawn */
@@ -1531,11 +1592,11 @@ private String winString = "";
 //		          }
 //		        else
 //		          {
-//		            n3DcErr = E3DcSIMPLE;
-//		            return FALSE;
+		            n3DcErr = E3DcSIMPLE;
+		            return FALSE;
 //		          }
-//		      }
-	//
+		      }
+	
 //		  /*
 //		   * Pawns can not move forward under these conditions:
 //		   *  They move more than 2
