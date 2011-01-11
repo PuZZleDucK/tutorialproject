@@ -2947,18 +2947,6 @@ private String winString = "";
 
 //	/* DrawingA.c: The DrawingArea Widget Methods */
 //
-//	/* Copyright 1990, David Nedde
-//	 *
-//	 * Permission to use, copy, modify, and distribute this
-//	 * software and its documentation for any purpose and without fee
-//	 * is granted provided that the above copyright notice appears in all copies.
-//	 * It is provided "as is" without express or implied warranty.
-//	 */
-//
-//	#include <X11/IntrinsicP.h>
-//	#include <X11/StringDefs.h>
-//	#include <X11/CoreP.h>
-//	#include <X11/Xaw/SimpleP.h>
 //	#include "DrawingAP.h"
 //
 //	static void	Initialize();
@@ -3134,36 +3122,9 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //	    E-Mail: paulh@euristix.ie
 //	*/
-//	#include <stdio.h>
-//	#include <string.h>
-//	#include <sys/types.h>
-//	#include <sys/socket.h>
-//
-//	#include <X11/X.h>
-//	#include <X11/Intrinsic.h>
-//	#include <X11/StringDefs.h>
-//	#include <X11/cursorfont.h>
-//	#include <X11/Shell.h>
-//	#include <X11/Xaw/Form.h>
-//	#include <X11/Xaw/Viewport.h>
-//	#include <X11/Xaw/Command.h>
-//	#include <X11/Xaw/AsciiText.h>
-//	#include <X11/Xaw/List.h>
 //	#include "DrawingA.h"
-//
-//	#include <X11/xpm.h>
 //
 //	#include "local.h"
 //	#include "machine.h"
@@ -3833,35 +3794,16 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //	    E-Mail: paulh@euristix.ie
 //	*/
 //	#ifdef DEBUG
 //	#include <stdio.h>
 //	#endif /* DEBUG */
-//
-//	#include <stdlib.h>
-//	#include <limits.h>
-//	#include <sys/time.h>
-//
+
 //	#include "machine.h"
 //	#include "3Dc.h"
-//
-//	#ifndef MAX
-//	#define MAX(a,b) ((a) < (b) ? (b) : (a))
-//	#define MIN(a,b) ((a) > (b) ? (b) : (a))
-//	#endif /* MAX */
-//
-//	#define BEST_STACKS 5
+
+//making stack list class
 //	Local struct stackList
 //	{
 //	  stack *stacks[BEST_STACKS];
