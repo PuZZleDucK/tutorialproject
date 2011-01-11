@@ -437,7 +437,7 @@ private String winString = "";
 	
 	
 
-//not sure if i need these either... open GL may take care of this	
+//not sure if i need these either... open GL may take care of this... now i know it won't	
 //	
 //	    muster,                                    /* Display area    */
 //	    remark,                                    /* Message area    */
@@ -465,23 +465,23 @@ private String winString = "";
 	
 	
 //	Global void UpdateMuster(Colour, Title, Boolean);
-	private void UpdateMuster(int color, int title, boolean notSureYet)
-	{
-		//TODO:
-		// notSureYet could be delete?
-	}
-	
-	//	Global void PieceDisplay(const Piece *, const Boolean);
-	private void PieceDisplay(Piece piece, boolean display)
-	{
-		//TODO:
-	}
-	
-	//	Global void PiecePromote( Piece * );
-	private void PiecePromote(Piece piece)
-	{
-		//TODO:
-	}
+//	private void UpdateMuster(int color, int title, boolean notSureYet)
+//	{
+//		//TODO:
+//		// notSureYet could be delete?
+//	}
+//	
+//	//	Global void PieceDisplay(const Piece *, const Boolean);
+//	private void PieceDisplay(Piece piece, boolean display)
+//	{
+//		//TODO:
+//	}
+//	
+//	//	Global void PiecePromote( Piece * );
+//	private void PiecePromote(Piece piece)
+//	{
+//		//TODO:
+//	}
 	
 	
 //	/* 2nd interface stuff */
@@ -638,6 +638,8 @@ private String winString = "";
 
 //	  SQUARE_INVALID = (Piece *)malloc(sizeof(Piece));
 //	  SQUARE_EMPTY = (Piece *)malloc(sizeof(Piece));
+	  SQUARE_INVALID = new Piece(0,0,0,0,0);
+	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
 
 	}
 
@@ -2006,57 +2008,75 @@ private String winString = "";
 	
 	
 //Global void
-//StackPush(stack *s, const Move *newMove)
-//public void StackPush(stack s, Move newMove)
-//{
-//struct stack_el *newEl;
-//
+	//StackPush(stack *s, const Move *newMove)
+	private void StackPush(Move newMove)
+	{
+		//struct stack_el *newEl;
+		Stack_el newEl = new Stack_el();
+
 //newEl = (struct stack_el *)malloc(sizeof(struct stack_el));
 //if (!CHECK( newEl != NULL ))
 //return;
-//newEl->mvt = (Move *)malloc(sizeof(Move));
+		//newEl->mvt = (Move *)malloc(sizeof(Move));
 //if (!CHECK( newEl->mvt != NULL ))
 //return;
 //memcpy(newEl->mvt, newMove, sizeof(Move));
-//newEl->below = s->top;
+		newEl.mvt = newMove;
+		//newEl->below = s->top;
+//		newEl.below = stack.firstElement();
 //s->top = newEl;
 //s->nSize++;
-//return;
-//}
-//
-//Global Move *
-//StackPop(stack *s)
-//{
-//Move *oldMove;
+		stack.add(newEl);
+		//return;
+	}
+
+	//Global Move *
+	//StackPop(stack *s)
+	public Move StackPop()
+	{
+		Move oldMove;
 //struct stack_el *oldEl;
-//
+
 //if (s->top == NULL)
 //return NULL;
-//
-//oldMove = s->top->mvt;
+		if(stack.empty())
+		{
+			return null;
+		}
+		
+		//oldMove = s->top->mvt;
+		oldMove = ((Stack_el)stack.pop()).mvt;
 //oldEl = s->top;
 //s->top = s->top->below;
 //s->nSize--;
 //free(oldEl);
 //
-//return oldMove;
-//}
-//
+		return oldMove;
+	}
+
 ///* Don't delete returned value; it's still on the stack! */
-//Global Move *
-//StackPeek(stack *s, int numMoves)
-//{
+	//Global Move *
+	//StackPeek(stack *s, int numMoves)
+	public Move StackPeek(int numMoves)
+	{
 //struct stack_el *oldEl;
-//
-//if (numMoves >= s->nSize)
-//return NULL;
-//
+
+		//if (numMoves >= s->nSize)
+		//return NULL;
+		if (numMoves >= stack.size())
+		{
+			return null;
+		}
+
 //for (oldEl = s->top; numMoves > 0; --numMoves)
 //oldEl = oldEl->below;
-//
+
+		return (Move)stack.elementAt(numMoves);
 //return oldEl->mvt;
-//}
-//
+	}
+
+	
+	//leave debug for later... whaen I'm debugging?
 //#ifdef DEBUG
 //Global void
 //StackDump( stack *s )
@@ -2100,38 +2120,9 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//	#include <string.h>
-//	#include <malloc.h>
-//	#include <sys/types.h>
-//	#include <sys/socket.h>
-//
-//	#include <X11/X.h>
-//	#include <X11/Intrinsic.h>
-//	#include <X11/StringDefs.h>
-//	#include <X11/cursorfont.h>
-//	#include <X11/Shell.h>
-//	#include <X11/Xaw/Form.h>
-//	#include <X11/Xaw/Viewport.h>
-//	#include <X11/Xaw/Command.h>
-//	#include <X11/Xaw/AsciiText.h>
-//	#include <X11/Xaw/List.h>
+
 //	#include "DrawingA.h"
 //
-//	#include <X11/xpm.h>
 //	#include "pieces.xpm"
 //
 //	#include "3Dc.h"
@@ -2519,7 +2510,8 @@ private String winString = "";
 //	/* Prompt for piece type to which to promote the pawn */
 //	Global void
 //	PiecePromote(Piece *piece)
-//	{
+	public void PiecePromote(Piece piece)
+	{
 //	  Widget dialog, list;
 //	  GfxInfo *gfx;
 //
@@ -2559,14 +2551,15 @@ private String winString = "";
 //	  XtAddCallback(list, XtNcallback, PromotePiece, (XtPointer)piece);
 //	  XtManageChild(dialog);
 //
-//	  return;
-//	}
+	  return;
+	}
 //
 //	/* Update the muster count for the given type/colour in the muster window */
 //	Global void
 //	UpdateMuster(Colour bwSide, Title nType, Bool redisplay)
-//	{
-//	  int count, i, curX, curY;
+	public void UpdateMuster(int bwSide, int nType, Boolean redisplay)
+	{
+	  int count, i, curX, curY;
 //	  Dimension mWidth, mHeight;
 //	  char cnt[2] = {' ', '0'};
 //	  GfxInfo *gfx;
@@ -2577,12 +2570,13 @@ private String winString = "";
 //	      XSetClipMask(XtDisplay(gfx->muster), gfx->gc, None);
 //	      XSetForeground(XtDisplay(gfx->muster), gfx->gc, gfx->blackPixel);
 //
-//	      count = 0;
-//	      for (i = 0; i < titleCount[nType]; ++i)
-//	        {
+	      count = 0;
+	      for (i = 0; i < titleCount[nType]; ++i)
+	        {
 //	          if (Muster[bwSide][MusterIdx(nType, i)]->bVisible)
-//	            ++count;
-//	        }
+	          if (Muster[bwSide][MusterIdx(nType, i)].bVisible)
+	            ++count;
+	        }
 //
 //	      cnt[0] = '0' + (count / 10);
 //	      cnt[1] = '0' + (count % 10);
@@ -2631,7 +2625,7 @@ private String winString = "";
 //	    }
 //
 //	  return;
-//	}
+	}
 
 //	
 //	/*
@@ -2646,29 +2640,13 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //	    E-Mail: paulh@euristix.ie
 //	*/
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//	#include <string.h>
-//	#include <sys/types.h>
-//	#include <sys/time.h>
 //
 //	#include "machine.h"
 //
 //	/* AutoInclude all necessary files */
 //	#include "3Dc.h"
-//	#include <X11/Shell.h>
 //
 //	Local GfxInfo GFX2;
 //
@@ -2741,21 +2719,8 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //	    E-Mail: paulh@euristix.ie
 //	*/
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//	#include <limits.h>
 //
 //	#include "machine.h"
 //	#include "3Dc.h"
@@ -2767,21 +2732,23 @@ private String winString = "";
 //	 */
 //	Global Piece *
 //	SquareThreatened(Colour bwSide,
-//	                 const File xFile, const Rank yRank, const Level zLevel)
-//	{
-//	  int pieceIdx;
-//
-//	  for (pieceIdx = 0; pieceIdx < PIECES; ++pieceIdx)
-//	    {
+//    const File xFile, const Rank yRank, const Level zLevel)
+	public Piece SquareThreatened(int bwSide, int xFile, int yRank, int zLevel)
+	{
+	  int pieceIdx;
+
+	  for (pieceIdx = 0; pieceIdx < PIECES; ++pieceIdx)
+	    {
 //	      if (Muster[bwSide][pieceIdx]->bVisible &&
-//	          PieceMayMove( Muster[bwSide][pieceIdx],
-//	                        xFile, yRank, zLevel ))
-//	        return Muster[bwSide][pieceIdx];
-//	    }
-//
-//	  return NULL;
-//	}
-//
+//          PieceMayMove( Muster[bwSide][pieceIdx],
+//                        xFile, yRank, zLevel ))
+	      if (Muster[bwSide][pieceIdx].bVisible && PieceMayMove( Muster[bwSide][pieceIdx], xFile, yRank, zLevel ))
+	        return Muster[bwSide][pieceIdx];
+	    }
+
+	  return NULL;
+	}
+
 //	/* Go dist in given direction.  Direction is positive, negative, 0,
 //	 * with obvious meanings (think of the axes).
 //	 * Return SQUARE_EMPTY, SQUARE_INVALID, or a pointer to the piece
@@ -2797,22 +2764,29 @@ private String winString = "";
 //	 */
 //			Global Piece *
 //			TraverseDir(const Piece *piece, Dir xDir, Dir yDir, Dir zDir, unsigned dist)
+	
+	public static final int UINT_MAX = 99;
+	
 	private Piece TraverseDir(Piece piece, int xDir, int yDir, int zDir, int dist)
 	{
-//	  int x, y, z, d = 0;
-//
+	  int x, y, z, d = 0;
+
 //	  /* Most move at least one in a real direction */
 //	  if ((dist == 0) ||
-//	      ((xDir == 0) &&
-//	       (yDir == 0) &&
-//	       (zDir == 0)))
-//	    {
+//      ((xDir == 0) &&
+//       (yDir == 0) &&
+//       (zDir == 0)))
+	  if ((dist == 0) || ((xDir == 0) && (yDir == 0) && (zDir == 0)))
+	    {
 //	      SQUARE_INVALID->xyzPos.xFile =
 //	        SQUARE_INVALID->xyzPos.yRank =
 //	          SQUARE_INVALID->xyzPos.zLevel = UINT_MAX;
-//
-//	      return SQUARE_INVALID;
-//	    }
+	      SQUARE_INVALID.xyzPos.xFile = UINT_MAX;
+	      SQUARE_INVALID.xyzPos.yRank = UINT_MAX;
+	      SQUARE_INVALID.xyzPos.zLevel = UINT_MAX;
+
+	      return SQUARE_INVALID;
+	    }
 //
 //	  if ((piece->nName != knight) &&
 //	      (piece->nName != cannon))

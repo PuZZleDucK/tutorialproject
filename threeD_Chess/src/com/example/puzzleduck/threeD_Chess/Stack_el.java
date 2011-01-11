@@ -15,11 +15,11 @@ public class Stack_el {
 //	};
 
 	public Move mvt;
-	public Stack_el below;
+//	public Stack_el below;
 	
 	public void Stack_el(){
 		mvt = null;
-		below = null;
+//		below = null;
 	}
 	
 }
