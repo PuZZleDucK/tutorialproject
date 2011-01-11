@@ -312,11 +312,11 @@ private String winString = "";
 	
 	
 	//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
-	private boolean PieceMove(Piece piece, int File, int Rank, int Level)
-	{
-		//TODO:
-		return true;
-	}
+//	private boolean PieceMove(Piece piece, int File, int Rank, int Level)
+//	{
+//		//TODO:
+//		return true;
+//	}
 	
 	//	Global Boolean PieceUndo(void);
 	private boolean PieceUndo()
@@ -633,7 +633,7 @@ private String winString = "";
 		      }
 	    }
 //	  /* That's the pieces done.  Now for the move stack */
-//	  MoveStack = StackNew();
+	  MoveStack = StackNew();
 
 //	   * these are really dynamic global identifiers, in that they
 //	   * are read-only interfaces to various modules; kind of like
@@ -1567,34 +1567,27 @@ private String winString = "";
 //		   * is valid, rather than returning FALSE if it is invalid.
 //		   */
 //		#if 0
-//		   /*
-//		    * TODO:
-//		    *  Only allow en passant taking of pawns that moved two spaces
-//		    * forward in one go (in the previous move only?)
-//		    *  Each piece must have an identifier; either its memory location
-//		    *  or its offset into the Muster.  That way this can be used as the
-//		    *  4th line of this conditional.
-//		    */
-//		  (  StackPeek(MoveStack, 1)->nId == Board[zNew][yNew - yInc][xNew]->nId &&
-//		    !(StackPeek(MoveStack, 1)->nHadMoved) &&
-//		      Board[zNew][yNew - yInc][xNew]->bHasMoved /* Moved only once */
-//		   )
 //		#endif /* 0 */
 //		    if (xDiff == 1 && yDiff == 1 && !Board[zNew][yNew][xNew])
-//		    if (xDiff == 1 && yDiff == 1 && Board[zNew][yNew][xNew] == null)
-//		      { /* En passant? */
+		    if (xDiff == 1 && yDiff == 1 && Board[zNew][yNew][xNew] != null)
+		      { /* En passant? */
 //		        if (Board[zNew][yNew - yInc][xNew] && /* 'Takable' piece */
 //		            Board[zNew][yNew - yInc][xNew]->nName == pawn && /* Is pawn */
 //		            Board[zNew][yNew - yInc][xNew]->bwSide != piece->bwSide && /* Is enemy */
 //		            1) /* Dummy line to reduce no. of changes */
-//		          {
+
+		        if (Board[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
+	            (Board[zNew][yNew - yInc][xNew].nName == pawn) && /* Is pawn */
+	            (Board[zNew][yNew - yInc][xNew].bwSide != piece.bwSide) ) /* Dummy line to reduce no. of changes */
+		          {
 //		            return EnPASSANT;
-//		          }
-//		        else
-//		          {
+		            return true;
+		          }
+		        else
+		          {
 		            n3DcErr = E3DcSIMPLE;
 		            return FALSE;
-//		          }
+		          }
 		      }
 	
 //		  /*
@@ -1605,11 +1598,13 @@ private String winString = "";
 //		   */
 //		  if (yDiff > 2 || /* Move too far */
 //		      (piece->bHasMoved && yDiff == 2)) /* Move too far */
-//		    {
-//		      n3DcErr = E3DcDIST;
-//		      return FALSE;
-//		    }
-	//
+			  if (yDiff > 2 || /* Move too far */
+					  (piece.bHasMoved && yDiff == 2)) /* Move too far */
+		    {
+		      n3DcErr = E3DcDIST;
+		      return FALSE;
+		    }
+
 //		  /*
 //		   * Pawns may not take anything under these conditions:
 //		   *  They do not move diagonally forward one space
@@ -1618,21 +1613,28 @@ private String winString = "";
 //		  if (Board[zNew][yNew][xNew]  && /* Taking something */
 //		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
 //		       Board[zNew][yNew][xNew]->bwSide == piece->bwSide))
-//		    {
-//		      n3DcErr = E3DcSIMPLE;
-//		      return FALSE;
-//		    }
-	//
+			  if (Board[zNew][yNew][xNew] != null  && /* Taking something */
+		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
+		       Board[zNew][yNew][xNew].bwSide == piece.bwSide))
+		    {
+		      n3DcErr = E3DcSIMPLE;
+		      return FALSE;
+		    }
+
 //		  /* Check for possible promotion */
 //		  if ((yNew == FILES-1 && piece->bwSide == WHITE) ||
 //		      (yNew == 0 && piece->bwSide == BLACK))
 //		    return PROMOTE;
-	//
-//		  return TRUE;
-//		}
+			  if ((yNew == FILES-1 && piece.bwSide == WHITE) ||
+		      (yNew == 0 && piece.bwSide == BLACK))
+		    return true;
+
+			  //
+		  return TRUE;
+		}
 		
 	  
-	  
+// TODO: promotion code	  
 //	  switch (piece.nName)
 //	    {
 //	    case king:
@@ -1672,7 +1674,7 @@ private String winString = "";
 //	      retval = FALSE;
 //	      n3DcErr = E3DcSIMPLE;
 //	    }
-//
+//   //TODO: not sure what is happening here yet...
 //	  if ( retval != FALSE )
 //	    {
 //	      if ( FakeMoveAndIsKingChecked(piece, xNew, yNew, zNew) == TRUE )
@@ -1694,12 +1696,15 @@ private String winString = "";
 //	Global Boolean
 //	PieceMove(Piece *piece,
 //	          const File xNew, const Rank yNew, const Level zNew)
-//	{
-//	  Move thisMove;
+		  private boolean PieceMove(Piece piece, int xNew, int yNew, int zNew)
+	{
+	  Move thisMove = new Move();
 //	  Boolean moveType; /* Not quite Boolean... */
-//
+	  boolean moveType; /* Not quite Boolean... */
+
 //	  if (!(moveType = PieceMayMove(piece, xNew, yNew, zNew)))
-//	    return FALSE;
+	  if (!(moveType = PieceMayMove(piece, xNew, yNew, zNew)))
+	    return FALSE;
 //
 //	  /*
 //	   * Keep record of move
@@ -1707,10 +1712,15 @@ private String winString = "";
 //	  thisMove.xyzBefore.xFile = piece->xyzPos.xFile;
 //	  thisMove.xyzBefore.yRank = piece->xyzPos.yRank;
 //	  thisMove.xyzBefore.zLevel = piece->xyzPos.zLevel;
-//	  thisMove.xyzAfter.xFile = xNew;
-//	  thisMove.xyzAfter.yRank = yNew;
-//	  thisMove.xyzAfter.zLevel = zNew;
-//
+	  thisMove.xyzBefore.xFile = piece.xyzPos.xFile;
+	  thisMove.xyzBefore.yRank = piece.xyzPos.yRank;
+	  thisMove.xyzBefore.zLevel = piece.xyzPos.zLevel;
+	  
+	  thisMove.xyzAfter.xFile = xNew;
+	  thisMove.xyzAfter.yRank = yNew;
+	  thisMove.xyzAfter.zLevel = zNew;
+
+	  //TODO: EnPassant handling
 //	  if (moveType == EnPASSANT)
 //	    {
 //	      thisMove.nHadMoved = EnPASSANT;
@@ -1732,9 +1742,9 @@ private String winString = "";
 //	      thisMove.nHadMoved = piece->bHasMoved;
 //	      thisMove.pVictim = Board[zNew][yNew][xNew];
 //	    }
-//
-//	  StackPush(MoveStack, &thisMove);
-//
+
+	  StackPush(MoveStack, thisMove);
+//        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
 //	  Board[piece->xyzPos.zLevel][piece->xyzPos.yRank][piece->xyzPos.xFile] = NULL;
@@ -1818,8 +1828,8 @@ private String winString = "";
 //	      PiecePromote(piece); /* This function asks for promotion type, etc. */
 //	    }
 //
-//	  return TRUE;
-//	}
+	  return TRUE;
+	}
 //
 //	/*
 //	 * Undo the move
@@ -1961,104 +1971,7 @@ private String winString = "";
 //	#include "machine.h"
 //	#include "3Dc.h"
 //	#include "3DcErr.h"
-//
-//	Global stack *
-//	StackNew(void)
-//	{
-//	  stack *s;
-//
-//	  s = (stack *)malloc(sizeof(stack));
-//	  if (!CHECK( s != NULL ))
-//	    return NULL;
-//	  s->top = NULL;
-//	  s->nSize = 0;
-//	  return s;
-//	}
-//
-//	Global void
-//	StackDelete(stack *s)
-//	{
-//	  while(StackPop(s) != NULL)
-//	    nop();
-//
-//	  free(s);
-//	  return;
-//	}
-//
-//	Global void
-//	StackPush(stack *s, const Move *newMove)
-//	{
-//	  struct stack_el *newEl;
-//
-//	  newEl = (struct stack_el *)malloc(sizeof(struct stack_el));
-//	  if (!CHECK( newEl != NULL ))
-//	    return;
-//	  newEl->mvt = (Move *)malloc(sizeof(Move));
-//	  if (!CHECK( newEl->mvt != NULL ))
-//	    return;
-//	  memcpy(newEl->mvt, newMove, sizeof(Move));
-//	  newEl->below = s->top;
-//	  s->top = newEl;
-//	  s->nSize++;
-//	  return;
-//	}
-//
-//	Global Move *
-//	StackPop(stack *s)
-//	{
-//	  Move *oldMove;
-//	  struct stack_el *oldEl;
-//
-//	  if (s->top == NULL)
-//	    return NULL;
-//
-//	  oldMove = s->top->mvt;
-//	  oldEl = s->top;
-//	  s->top = s->top->below;
-//	  s->nSize--;
-//	  free(oldEl);
-//
-//	  return oldMove;
-//	}
-//
-//	/* Don't delete returned value; it's still on the stack! */
-//	Global Move *
-//	StackPeek(stack *s, int numMoves)
-//	{
-//	  struct stack_el *oldEl;
-//
-//	  if (numMoves >= s->nSize)
-//	    return NULL;
-//
-//	  for (oldEl = s->top; numMoves > 0; --numMoves)
-//	    oldEl = oldEl->below;
-//
-//	  return oldEl->mvt;
-//	}
-//
-//	#ifdef DEBUG
-//	Global void
-//	StackDump( stack *s )
-//	{
-//	  int i;
-//	  struct stack_el *el;
-//
-//	  el = s->top;
-//	  for (i=0; i<s->nSize; ++i)
-//	    {
-//	      printf("%i: %s at (%i,%i,%i) to (%i,%i,%i)\n",i,
-//	             Piece2String( Board[el->mvt->xyzBefore.zLevel][el->mvt->xyzBefore.yRank][ el->mvt->xyzBefore.xFile] ),
-//	             el->mvt->xyzBefore.xFile,
-//	             el->mvt->xyzBefore.yRank,
-//	             el->mvt->xyzBefore.zLevel,
-//	             el->mvt->xyzAfter.xFile,
-//	             el->mvt->xyzAfter.yRank,
-//	             el->mvt->xyzAfter.zLevel);
-//	      el = el->below;
-//	    }
-//	}
-//	#endif /* DEBUG */
-	
+
 	
 //	
 //	

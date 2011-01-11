@@ -5,11 +5,11 @@ public class Move {
 	//typedef struct
 	//{
 	//  Coord xyzBefore;
-	private Coord xyzBefore;
+	public Coord xyzBefore;
 	//  Coord xyzAfter;
-	private Coord xyzAfter;
+	public Coord xyzAfter;
 	//  Piece *pVictim;
-	private Piece pVictim;
+	public Piece pVictim;
 	//  /*  Status of bHasMoved before move.  Relevant to Kings, Rooks, and Pawns.
 	//   *  TRUE, FALSE, PROMOTE, CASTLE or EnPASSANT. */
 	//  int nHadMoved;
