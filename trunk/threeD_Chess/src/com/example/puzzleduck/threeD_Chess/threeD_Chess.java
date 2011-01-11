@@ -319,37 +319,37 @@ private String winString = "";
 //		return true;
 //	}
 	
-	//	Global Boolean PieceUndo(void);
-	private boolean PieceUndo()
-	{
-		//TODO:
-		return true;
-	}
-
-	
-	//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
-	private Piece SquareThreatened(int color, int File, int Rank, int Level)
-	{
-		//TODO:
-		return new Piece(1, 1, 1, 1, 0);
-	}
-	
-	//	Global Boolean IsKingChecked(Colour);
-	private boolean IsKingChecked(int color)
-	{
-		//TODO:
-		return true;
-	}
-	
-	
-	//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
-	//	                                        const File, const Rank, const Level);
-	private boolean FakeMoveAndIsKingChecked(Piece piece, int File, int Rank, int Level)
-	{
-		//TODO:
-		return true;
-	}
-	
+//	//	Global Boolean PieceUndo(void);
+//	private boolean PieceUndo()
+//	{
+//		//TODO:
+//		return true;
+//	}
+//
+//	
+//	//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
+//	private Piece SquareThreatened(int color, int File, int Rank, int Level)
+//	{
+//		//TODO:
+//		return new Piece(1, 1, 1, 1, 0);
+//	}
+//	
+//	//	Global Boolean IsKingChecked(Colour);
+//	private boolean IsKingChecked(int color)
+//	{
+//		//TODO:
+//		return true;
+//	}
+//	
+//	
+//	//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
+//	//	                                        const File, const Rank, const Level);
+//	private boolean FakeMoveAndIsKingChecked(Piece piece, int File, int Rank, int Level)
+//	{
+//		//TODO:
+//		return true;
+//	}
+//	
 	
 	
 //wtf is Dir?!?! ... leaving this for later
@@ -2787,68 +2787,84 @@ private String winString = "";
 
 	      return SQUARE_INVALID;
 	    }
-//
+
 //	  if ((piece->nName != knight) &&
-//	      (piece->nName != cannon))
-//	    {
+//      (piece->nName != cannon))
+	  if ((piece.nName != knight) && (piece.nName != cannon))
+	    {
 //	      /* Make all directions be 1, -1 or 0 */
-//	      if (xDir != 0) xDir /= ABS(xDir);
-//	      if (yDir != 0) yDir /= ABS(yDir);
-//	      if (zDir != 0) zDir /= ABS(zDir);
-//	    }
-//	  else
-//	    dist = 1;
-//
+	      if (xDir != 0) xDir /= ABS(xDir);
+	      if (yDir != 0) yDir /= ABS(yDir);
+	      if (zDir != 0) zDir /= ABS(zDir);
+	    }
+	  else
+	    dist = 1;
+
 //	  x = piece->xyzPos.xFile;
 //	  y = piece->xyzPos.yRank;
 //	  z = piece->xyzPos.zLevel;
-//
-//	  do
-//	    {
-//	      x += xDir;
-//	      y += yDir;
-//	      z += zDir;
-//
+	  x = piece.xyzPos.xFile;
+	  y = piece.xyzPos.yRank;
+	  z = piece.xyzPos.zLevel;
+
+	  do{
+	      x += xDir;
+	      y += yDir;
+	      z += zDir;
+
 //	      if (!((x >= 0)    && (y >= 0)    && (z >= 0) &&
-//	          (x < FILES) && (y < RANKS) && (z < LEVELS)))
-//	        {
+//          (x < FILES) && (y < RANKS) && (z < LEVELS)))
+	      if (!((x >= 0) && (y >= 0) && (z >= 0) && (x < FILES) && (y < RANKS) && (z < LEVELS)))
+	        {
 //	          SQUARE_INVALID->xyzPos.xFile = x;
 //	          SQUARE_INVALID->xyzPos.yRank = y;
 //	          SQUARE_INVALID->xyzPos.zLevel = z;
-//	          return SQUARE_INVALID;
-//	        }
-//
-//	      if (Board[z][y][x])
-//	        {
+	          SQUARE_INVALID.xyzPos.xFile = x;
+	          SQUARE_INVALID.xyzPos.yRank = y;
+	          SQUARE_INVALID.xyzPos.zLevel = z;
+	          return SQUARE_INVALID;
+	        }
+
+	      if (Board[z][y][x] != null)
+	        {
 //	          if (Board[z][y][x]->bwSide == piece->bwSide)
-//	            {
+	          if (Board[z][y][x].bwSide == piece.bwSide)
+	            {
 //	              SQUARE_INVALID->xyzPos.xFile = x;
 //	              SQUARE_INVALID->xyzPos.yRank = y;
 //	              SQUARE_INVALID->xyzPos.zLevel = z;
-//	              return SQUARE_INVALID;
-//	            }
-//	          else
-//	            return Board[z][y][x];
-//	        }
-//	    }
-//	  while (++d < dist);
-//
+	              SQUARE_INVALID.xyzPos.xFile = x;
+	              SQUARE_INVALID.xyzPos.yRank = y;
+	              SQUARE_INVALID.xyzPos.zLevel = z;
+	              return SQUARE_INVALID;
+	            }
+	          else
+	          {
+	            return Board[z][y][x];
+	          }
+	        }
+	    } while (++d < dist);
+
 //	  /*
 //	   * At this point, because we haven't returned, we know these things:
 //	   *  We have not encountered another piece.
 //	   *  We have moved dist spaces.
 //	   */
 //	  if ((x >= 0)     && (y >= 0)    && (z >= 0) &&
-//	      (z < LEVELS) && (y < RANKS) && (x < FILES))
-//	    {
+//      (z < LEVELS) && (y < RANKS) && (x < FILES))
+	  if ((x >= 0) && (y >= 0) && (z >= 0) && (z < LEVELS) && (y < RANKS) && (x < FILES))
+	    {
 //	      /* Valid (empty) square */
 //	      SQUARE_EMPTY->xyzPos.xFile = x;
 //	      SQUARE_EMPTY->xyzPos.yRank = y;
 //	      SQUARE_EMPTY->xyzPos.zLevel = z;
-//
-//	      return SQUARE_EMPTY;
-//	    }
-//
+	      SQUARE_EMPTY.xyzPos.xFile = x;
+	      SQUARE_EMPTY.xyzPos.yRank = y;
+	      SQUARE_EMPTY.xyzPos.zLevel = z;
+
+	      return SQUARE_EMPTY;
+	    }
+
 //	  /*
 //	   * We fell off the board. Go back one place to the last valid
 //	   * location.
@@ -2856,59 +2872,79 @@ private String winString = "";
 //	  SQUARE_INVALID->xyzPos.xFile = x - xDir;
 //	  SQUARE_INVALID->xyzPos.yRank = y - yDir;
 //	  SQUARE_INVALID->xyzPos.zLevel = z - zDir;
-//
+	  SQUARE_INVALID.xyzPos.xFile = x - xDir;
+	  SQUARE_INVALID.xyzPos.yRank = y - yDir;
+	  SQUARE_INVALID.xyzPos.zLevel = z - zDir;
+
 	  return SQUARE_INVALID;
 	}
-//
+
 //	/*
 //	 * Return TRUE if the king is checked in the current board layout.
 //	 */
 //	Inline Global Boolean
 //	IsKingChecked( Colour bwSide )
-//	{
-//	  Coord xyz;
-//
+	public Boolean IsKingChecked( int bwSide )
+	{
+	  Coord xyz;
+
 //	  xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ]->xyzPos;
-//
+	  xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ].xyzPos;
+
 //	  return ( SquareThreatened( (bwSide == WHITE) ? BLACK : WHITE,
-//	                             xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
-//	}
-//
+//      xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
+	  return ( SquareThreatened( (bwSide == WHITE) ? BLACK : WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
+	}
+
 //	/* Check move re. putting own king in check */
 //	Inline Global Boolean
 //	FakeMoveAndIsKingChecked( Piece *piece,
 //	                         const File x, const Rank y, const Level z)
-//	{
-//	  Piece *temp;
-//	  Boolean retVal;
-//	  Coord xyz;
-//
+	public Boolean FakeMoveAndIsKingChecked( Piece piece, int x, int y, int z)
+	{
+//		  Piece *temp;
+		  Piece temp;
+	  Boolean retVal;
+	  Coord xyz;
+
 //	  xyz = piece->xyzPos;
-//	  temp = Board[z][y][x];
-//	  if ( temp != NULL )
-//	    temp->bVisible = FALSE;
-//	  Board[z][y][x] = piece;
-//	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = NULL;
-//
+	  xyz = piece.xyzPos;
+	  temp = Board[z][y][x];
+	  if ( temp != NULL )
+//		    temp->bVisible = FALSE;
+	  {
+		    temp.bVisible = FALSE;
+	  }
+	  Board[z][y][x] = piece;
+	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
+
 //	  if (piece->nName == king)
-//	    {
+	  if (piece.nName == king)
+	    {
 //	      /* We're moving the king, so it's xyzPos may not be accurate.
 //	       * check manually. */
 //	      retVal = (SquareThreatened( (piece->bwSide == WHITE) ? BLACK : WHITE,
-//	                                x, y, z ) != NULL) ;
-//	    }
-//	  else
-//	    retVal = IsKingChecked(piece->bwSide);
-//
-//	  Board[z][y][x] = temp;
-//	  if ( temp != NULL )
-//	    temp->bVisible = TRUE;
-//	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
-//
-//	  return retVal;
-//	}	
+//          x, y, z ) != NULL) ;
+	      retVal = (SquareThreatened( (piece.bwSide == WHITE) ? BLACK : WHITE, x, y, z ) != NULL) ;
+	    }
+	  else
+	  {
+//		    retVal = IsKingChecked(piece->bwSide);
+		    retVal = IsKingChecked(piece.bwSide);
+	  }
+	  
+	  Board[z][y][x] = temp;
+	  if ( temp != NULL )
+	  {
+//		    temp->bVisible = TRUE;
+		    temp.bVisible = TRUE;
+	  }
+	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
+
+	  return retVal;
+	}	
 	
-//	
+
 //	/* DrawingA.c: The DrawingArea Widget Methods */
 //
 //	/* Copyright 1990, David Nedde
