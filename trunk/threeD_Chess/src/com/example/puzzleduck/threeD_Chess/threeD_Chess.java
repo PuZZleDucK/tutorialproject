@@ -3803,15 +3803,8 @@ private String winString = "";
 //	#include "machine.h"
 //	#include "3Dc.h"
 
-//making stack list class
-//	Local struct stackList
-//	{
-//	  stack *stacks[BEST_STACKS];
-//	  int   ratings[BEST_STACKS];
-//	} bestMoves = {
-//	{ NULL, NULL, NULL, NULL, NULL },
-//	{ INT_MIN, INT_MIN, INT_MIN, INT_MIN, INT_MIN }
-//	};
+//moved stuff here to stack list class
+
 //
 //	Local int values[ TITLES ] = 
 //	{
@@ -3819,59 +3812,80 @@ private String winString = "";
 //	  45, 21, 12, 24, 15, /* Nobility */
 //	  6 /* Pawn */
 //	};
-//
-//
+	public int values[] = { 26, 42, 22, 10, 25, /* Royalty */
+							45, 21, 12, 24, 15, /* Nobility */
+							6 /* Pawn */
+	};
+
+	
+//	bestMoves = {
+//			{ NULL, NULL, NULL, NULL, NULL },
+//			{ INT_MIN, INT_MIN, INT_MIN, INT_MIN, INT_MIN }
+//			};
+	
+	stackList bestMoves = new stackList();
+	public int BEST_STACKS = 5;
+	public int INT_MIN = -99;
+	
 //	Local void
 //	PushMove(Move *move, int value)
-//	{
-//	  int i;
-//
-//	  if ( value == INT_MIN )
-//	    return;
-//
+	public void PushMove(Move move, int value)
+	{
+	  int i;
+
+	  if ( value == INT_MIN )
+	    return;
+
 //	  for ( i = 0; (bestMoves.stacks [i] != NULL) &&
 //	               (bestMoves.ratings[i] > value) &&
 //	               (i < BEST_STACKS);
 //	       ++i )
+	  for ( i = 0; 
+	  		(bestMoves.stacks [i] != NULL) && (bestMoves.ratings[i] > value) && (i < BEST_STACKS);
+	  		++i )
+	  {
 //	    nop();
-//
-//	  if ( i == BEST_STACKS )
-//	    {
+	  }
+
+	  if ( i == BEST_STACKS )
+	    {
 //	      free( move );
-//	      return;
-//	    }
+	      move = null;
+	      return;
+	    }
 //
-//	  if ( bestMoves.ratings[i] == value )
-//	    {
-//	      StackPush( bestMoves.stacks[i], move );
+	  if ( bestMoves.ratings[i] == value )
+	    {
+	      StackPush( move );
 //	      free( move );
-//	    }
-//	  else
-//	    {
-//	      int j;
-//
-//	      j = BEST_STACKS-1;
+	      move = null;
+	    }
+	  else
+	    {
+	      int j;
+
+	      j = BEST_STACKS-1;
 //
 //	      /* Get rid of the lowest level (if it falls off the end) */
-//	      if (bestMoves.stacks[j] != NULL)
-//	        StackDelete( bestMoves.stacks[j] );
-//
-//	      /* Move all the lower levels down */
-//	      for (; j > i; --j)
-//	        {
-//	          bestMoves.stacks [j] = bestMoves.stacks [j-1];
-//	          bestMoves.ratings[j] = bestMoves.ratings[j-1];
-//	        }
-//
+	      if (bestMoves.stacks[j] != NULL)
+	        StackDelete( bestMoves.stacks[j] );
+
+	      /* Move all the lower levels down */
+	      for (; j > i; --j)
+	        {
+	          bestMoves.stacks [j] = bestMoves.stacks [j-1];
+	          bestMoves.ratings[j] = bestMoves.ratings[j-1];
+	        }
+
 //	      /* Create the new stack */
 //	      bestMoves.stacks[i] = StackNew();
-//	      StackPush( bestMoves.stacks[i], move );
-//	      bestMoves.ratings[i] = value;
-//	    }
-//
+	      StackNew();
+	      StackPush( move );
+	      bestMoves.ratings[i] = value;
+	    }
 //	  return;
-//	}
-//
+	}
+
 //	/* This function circumvents the problem of negative ratings
 //	 * by adding to all ratings enough to make the smallest rating == 0 */
 //	Local void
