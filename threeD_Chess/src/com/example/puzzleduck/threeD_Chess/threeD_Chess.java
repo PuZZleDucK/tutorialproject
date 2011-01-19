@@ -4042,21 +4042,29 @@ private String winString = "";
 //	  Colour bwEnemy;
 //	  Coord xyzPos;
 //	  Piece *moving, *storing;
-//	  bwEnemy = ( bwSide == WHITE ) ? BLACK : WHITE;
-//
-//	  /* Rate taking king */
+	  int bwEnemy;
+	  Coord xyzPos;
+	  Piece moving;
+	  Piece storing;
+	  bwEnemy = ( bwSide == WHITE ) ? BLACK : WHITE;
+
+	  /* Rate taking king */
 //	  if (move->pVictim == Muster[ bwEnemy ][ MusterIdx( king, 0 )])
-//	    return INT_MAX;
-//
+	  if (move.pVictim == Muster[ bwEnemy ][ MusterIdx( king, 0 )])
+	    return INT_MAX;
+
 //	  /* Fake the move for simple lookahead */
 //	  moving  = Board[ move->xyzBefore.zLevel ]
-//	                 [ move->xyzBefore.yRank ]
-//	                 [ move->xyzBefore.xFile ];
+//      [ move->xyzBefore.yRank ]
+//      [ move->xyzBefore.xFile ];
+	  moving  = Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ];
 //	  storing = Board[ move->xyzAfter.zLevel ]
-//	                 [ move->xyzAfter.yRank ]
-//	                 [ move->xyzAfter.xFile ];
-//
-//	  if (!CHECK( moving != NULL ))
+//      [ move->xyzAfter.yRank ]
+//      [ move->xyzAfter.xFile ];
+	  storing = Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+
+//realy hope this CHECK thing isn't CHECKing anything impotant
+	  //	  if (!CHECK( moving != NULL ))
 //	    return INT_MIN;
 //
 //	  /* Rate saving king */
@@ -4065,90 +4073,120 @@ private String winString = "";
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
 //	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( king, 0 )],
-//	                                 move->xyzAfter.xFile,
-//	                                 move->xyzAfter.yRank,
-//	                                 move->xyzAfter.zLevel ))
-//	    return INT_MIN;
-//
-//	  /* Fake the move */
+//      move->xyzAfter.xFile,
+//      move->xyzAfter.yRank,
+//      move->xyzAfter.zLevel ))
+
+	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( king, 0 )],
+		      move.xyzAfter.xFile,
+		      move.xyzAfter.yRank,
+		      move.xyzAfter.zLevel ))
+		  return INT_MIN;
+
+	  /* Fake the move */
 //	  Board[ move->xyzBefore.zLevel ]
-//	       [ move->xyzBefore.yRank ]
-//	       [ move->xyzBefore.xFile ] = NULL;
-//	  Board[ move->xyzAfter.zLevel ]
-//	       [ move->xyzAfter.yRank ]
-//	       [ move->xyzAfter.xFile ] = moving;
+//      [ move->xyzBefore.yRank ]
+//      [ move->xyzBefore.xFile ] = NULL;
+// Board[ move->xyzAfter.zLevel ]
+//      [ move->xyzAfter.yRank ]
+//      [ move->xyzAfter.xFile ] = moving;
+	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = null;
+	  Board[ move.xyzAfter.zLevel ][ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = moving;
 //	  if ( storing != NULL )
 //	    storing->bVisible = FALSE;
-//
-//	  /* Rate check */
+	  if ( storing != null )
+	    storing.bVisible = FALSE;
+
+	  /* Rate check */
 //	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( king, 0 )])->xyzPos;
+	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( king, 0 )]).xyzPos;
 //	  if ( SquareThreatened( bwSide,
-//	            xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
-//	    rating += values[ king ];
-//
-//	  /* Rate danger: if there's a chance of being captured in the new pos. */
+//      xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
+	  if ( SquareThreatened( bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
+		  rating += values[ king ];
+
+	  /* Rate danger: if there's a chance of being captured in the new pos. */
 //	  xyzPos = move->xyzAfter;
+	  xyzPos = move.xyzAfter;
 //	  if ( SquareThreatened( bwEnemy,
-//	            xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
-//	    rating -= (values[ moving->nName ] /2);
-//
-//	  /* Undo the fake */
+//      xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
+//rating -= (values[ moving->nName ] /2);
+	  if ( SquareThreatened( bwEnemy, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
+		  rating -= (values[ moving.nName ] /2);
+
+	  /* Undo the fake */
 //	  Board[ move->xyzBefore.zLevel ]
-//	       [ move->xyzBefore.yRank ]
-//	       [ move->xyzBefore.xFile ] = moving;
-//	  Board[ move->xyzAfter.zLevel ]
-//	       [ move->xyzAfter.yRank ]
-//	       [ move->xyzAfter.xFile ] = storing;
-//	  if ( storing != NULL )
-//	    storing->bVisible = TRUE;
-//
-//	  /* Rate capture */
-//	  if (( move->pVictim != NULL ) &&
-//	      ( move->pVictim->bwSide == bwEnemy ))
-//	    {
-//	      int i;
-//
+//      [ move->xyzBefore.yRank ]
+//      [ move->xyzBefore.xFile ] = moving;
+// Board[ move->xyzAfter.zLevel ]
+//      [ move->xyzAfter.yRank ]
+//      [ move->xyzAfter.xFile ] = storing;
+// if ( storing != NULL )
+//   storing->bVisible = TRUE;
+	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = moving;
+ Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = storing;
+ if ( storing != null )
+   storing.bVisible = TRUE;
+
+	  /* Rate capture */
+// if (( move->pVictim != NULL ) &&
+// ( move->pVictim->bwSide == bwEnemy ))
+ if (( move.pVictim != NULL ) && ( move.pVictim.bwSide == bwEnemy ))
+	    {
+	      int i;
+
 //	      rating += values[ move->pVictim->nName ];
-//
-//	      /* Rate evasion: if there's a chance of any friendly piece
-//	       * being captured in the old pos but not in the new (this isn't
-//	       * an authorative check and needs to be enhanced). */
-//	      for ( i = 0; i < PIECES; ++i )
-//	        {
+	      rating += values[ move.pVictim.nName ];
+
+	      /* Rate evasion: if there's a chance of any friendly piece
+	       * being captured in the old pos but not in the new (this isn't
+	       * an authorative check and needs to be enhanced). */
+	      for ( i = 0; i < PIECES; ++i )
+	        {
 //	          if ( Muster[ bwSide ][ i ]->bVisible &&
-//	               SquareThreatened( bwEnemy,
-//	                                 Muster[ bwSide ][ i ]->xyzPos.xFile,
-//	                                 Muster[ bwSide ][ i ]->xyzPos.yRank,
-//	                                 Muster[ bwSide ][ i ]->xyzPos.zLevel ) ==
-//	              move->pVictim )
+//            SquareThreatened( bwEnemy,
+//                              Muster[ bwSide ][ i ]->xyzPos.xFile,
+//                              Muster[ bwSide ][ i ]->xyzPos.yRank,
+//                              Muster[ bwSide ][ i ]->xyzPos.zLevel ) ==
+//           move->pVictim )
 //	            rating += (values[ Muster[ bwSide ][ i ]->nName ] /2);
-//	        }
-//	    }
-//
+	          if ( Muster[ bwSide ][ i ].bVisible && SquareThreatened( bwEnemy,
+	        		  	Muster[ bwSide ][ i ].xyzPos.xFile,
+                        Muster[ bwSide ][ i ].xyzPos.yRank,
+                        Muster[ bwSide ][ i ].xyzPos.zLevel ) ==  move.pVictim )
+	            rating += (values[ Muster[ bwSide ][ i ].nName ] /2);
+	        }
+	    }
+
 //	  /* Rate special moves */
 //	  /* En passant and castling not yet possible for computer */
-//	  if (( move->pVictim != NULL ) &&
-//	      ( move->pVictim->bwSide == bwSide))
-//	    rating += 10; /* Castling */
-//	  if (( move->xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) &&
-//	      ( moving->nName == pawn ))
-//	    rating += values[queen]; /* Promotion */
-//	  /* Note the horrible magic numbers below */
-//	  if ( (ABS( move->xyzAfter.yRank - move->xyzBefore.yRank ) == 2) &&
-//	      ( moving->nName == pawn ))
-//	    rating += 1; /* Two-forward by pawn: the computer doesn't
-//	                  * usually like opening its attack routes otherwise */
-//
-//	  /* Rate position; distance forward (should be proximity to
-//	   * enemy king except for pawns */
-//	  if ( bwSide == WHITE )
-//	    rating += move->xyzAfter.yRank - move->xyzBefore.yRank;
-//	  else
-//	    rating += 7 - move->xyzAfter.yRank + move->xyzBefore.yRank;
-//
+// if (( move->pVictim != NULL ) &&
+// ( move->pVictim->bwSide == bwSide))
+ if (( move.pVictim != null ) && ( move.pVictim.bwSide == bwSide))
+	    rating += 10; /* Castling */
+// if (( move->xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) &&
+// ( moving->nName == pawn ))
+ if (( move.xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) && ( moving.nName == pawn ))
+	    rating += values[queen]; /* Promotion */
+	  /* Note the horrible magic numbers below */
+// if ( (ABS( move->xyzAfter.yRank - move->xyzBefore.yRank ) == 2) &&
+// ( moving->nName == pawn ))
+ if ( (ABS( move.xyzAfter.yRank - move.xyzBefore.yRank ) == 2) && ( moving.nName == pawn ))
+	    rating += 1; /* Two-forward by pawn: the computer doesn't
+	                  * usually like opening its attack routes otherwise */
+
+	  /* Rate position; distance forward (should be proximity to
+	   * enemy king except for pawns */
+	  if ( bwSide == WHITE )
+//		    rating += move->xyzAfter.yRank - move->xyzBefore.yRank;
+		    rating += move.xyzAfter.yRank - move.xyzBefore.yRank;
+	  else
+//		    rating += 7 - move->xyzAfter.yRank + move->xyzBefore.yRank;
+		    rating += 7 - move.xyzAfter.yRank + move.xyzBefore.yRank;
+
 	  return rating;
 	}
-//
+
 //	Global Boolean
 //	GenMove(const Colour bwSide, Move **ret)
 //	{
