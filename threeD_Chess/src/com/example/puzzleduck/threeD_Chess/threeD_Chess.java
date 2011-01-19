@@ -3890,21 +3890,24 @@ private String winString = "";
 //	 * by adding to all ratings enough to make the smallest rating == 0 */
 //	Local void
 //	FixMoves( void )
-//	{
-//	  int i, add;
-//
-//	  for ( i = (BEST_STACKS -1); (bestMoves.stacks[i] == NULL) && (i >= 0); --i )
-//	    nop();
-//
-//	  if ((i < 0) || (bestMoves.ratings[i] >= 0))
-//	    return;
-//
-//	  add = -(bestMoves.ratings[i]);
-//
-//	  for (; i >= 0; --i)
-//	    bestMoves.ratings[i] += add;
-//	     
-//	}
+	public void FixMoves( )
+	{
+	  int i, add;
+
+	  for ( i = (BEST_STACKS -1); (bestMoves.stacks[i] == NULL) && (i >= 0); --i )
+	  {
+		 //	    nop();
+	  }
+
+	  if ((i < 0) || (bestMoves.ratings[i] >= 0))
+	    return;
+
+	  add = -(bestMoves.ratings[i]);
+
+	  for (; i >= 0; --i)
+	    bestMoves.ratings[i] += add;
+	     
+	}
 //
 //	Local Move *
 //	PopMove( void )
