@@ -628,7 +628,8 @@ private String winString = "";
 		      }
 	    }
 //	  /* That's the pieces done.  Now for the move stack */
-	  MoveStack = StackNew();
+//		  MoveStack = StackNew();
+		  StackNew();
 
 //	   * these are really dynamic global identifiers, in that they
 //	   * are read-only interfaces to various modules; kind of like
@@ -1740,7 +1741,8 @@ private String winString = "";
 //	      thisMove.pVictim = Board[zNew][yNew][xNew];
 //	    }
 
-	  StackPush(MoveStack, thisMove);
+//	  StackPush(MoveStack, thisMove);
+	  StackPush(thisMove);
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
