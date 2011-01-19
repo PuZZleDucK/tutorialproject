@@ -2023,6 +2023,7 @@ private String winString = "";
 //memcpy(newEl->mvt, newMove, sizeof(Move));
 		newEl.mvt = newMove;
 		//newEl->below = s->top;
+		newEl.below = (Stack_el)stack.firstElement();
 //		newEl.below = stack.firstElement();
 //s->top = newEl;
 //s->nSize++;
@@ -2746,7 +2747,8 @@ private String winString = "";
 	        return Muster[bwSide][pieceIdx];
 	    }
 
-	  return NULL;
+//	  return NULL;
+	  return null;
 	}
 
 //	/* Go dist in given direction.  Direction is positive, negative, 0,
@@ -2764,8 +2766,9 @@ private String winString = "";
 //	 */
 //			Global Piece *
 //			TraverseDir(const Piece *piece, Dir xDir, Dir yDir, Dir zDir, unsigned dist)
-	
+
 	public static final int UINT_MAX = 99;
+	public static final int INT_MAX = 99;
 	
 	private Piece TraverseDir(Piece piece, int xDir, int yDir, int zDir, int dist)
 	{
@@ -3908,116 +3911,134 @@ private String winString = "";
 	    bestMoves.ratings[i] += add;
 	     
 	}
-//
+
 //	Local Move *
 //	PopMove( void )
-//	{
-//	  Move *ret;
-//	  int stacks, randStack, randMove, randBase, randNum;
-//
+	public Move PopMove()
+	{
+//		  Move *ret;
+		  Move ret;
+	  int stacks, randStack, randMove, randBase, randNum;
+
 //	  if ( bestMoves.stacks[0] == NULL )
 //	    return NULL;
-//
-//	  /*
-//	   * This algorithm works by generating a number randBase on which to base a
-//	   * call to random(): think of it as a die with randBase sides.  randBase
-//	   * it dependant on the rating of the moves at the current level and
-//	   * on the level itself.  It may be that the number of moves at the current
-//	   * level will also be a factor in later version.  (A "level" is all moves
-//	   * with equal rating.  Only the top BEST_STACKS levels are remembered).
-//	   * Then the generated random number is reverse engineered into a level.
-//	   * Finally a purely random choice of move within that level is made.
-//	   */
-//	  if ( bestMoves.ratings[0] == INT_MAX )
-//	    {
-//	      /* If this move wins the game then do it unconditionally */
-//	      randMove = 0;
-//	      randStack = 0;
-//	    }
-//	  else
-//	    {
-//	      for ( stacks = 0, randBase = 0;
-//	           ( bestMoves.stacks[stacks] != NULL ) &&
-//	           ( stacks < BEST_STACKS ) ;
-//	           ++stacks )
-//	        randBase += ((BEST_STACKS-stacks) * bestMoves.ratings[stacks]);
-//
+	  if ( bestMoves.stacks[0] == NULL ) //needs to be null?
+	    return null;
+
+	  /*
+	   * This algorithm works by generating a number randBase on which to base a
+	   * call to random(): think of it as a die with randBase sides.  randBase
+	   * it dependant on the rating of the moves at the current level and
+	   * on the level itself.  It may be that the number of moves at the current
+	   * level will also be a factor in later version.  (A "level" is all moves
+	   * with equal rating.  Only the top BEST_STACKS levels are remembered).
+	   * Then the generated random number is reverse engineered into a level.
+	   * Finally a purely random choice of move within that level is made.
+	   */
+	  if ( bestMoves.ratings[0] == INT_MAX )
+	    {
+	      /* If this move wins the game then do it unconditionally */
+	      randMove = 0;
+	      randStack = 0;
+	    }
+	  else
+	    {
+	      for ( stacks = 0, randBase = 0;
+	           ( bestMoves.stacks[stacks] != NULL ) &&
+	           ( stacks < BEST_STACKS ) ;
+	           ++stacks )
+	        randBase += ((BEST_STACKS-stacks) * bestMoves.ratings[stacks]);
+
 //	      randNum = random()%randBase;
-//
-//	      for ( randStack = stacks-1;
-//	           (randStack > 0) && (randNum > 0); --randStack )
-//	        {
-//	          randNum -= (( BEST_STACKS - randStack ) *
-//	                      bestMoves.ratings[randStack] );
-//	        }
-//
+	      randNum = rng.nextInt()%randBase;
+
+	      for ( randStack = stacks-1;
+	           (randStack > 0) && (randNum > 0); --randStack )
+	        {
+	          randNum -= (( BEST_STACKS - randStack ) *
+	                      bestMoves.ratings[randStack] );
+	        }
+
 //	      randMove = random()%bestMoves.stacks[randStack]->nSize;
+	      randMove = rng.nextInt()%bestMoves.stacks[randStack].size();
+//DEBUG... may impliment later...
 //	      D( printf( "Choosing move %i from a stack of size %i\n",
 //	                randMove+1, bestMoves.stacks[randStack]->nSize ) );
-//	    }
-//
-//	  ret = StackPeek( bestMoves.stacks[randStack], randMove );
+	    }
+
+	  ret = StackPeek( randMove );
 //	  CHECK((ret->xyzBefore.zLevel != 3) && (ret->xyzAfter.zLevel != 3));
-//
+//can't ffind definition for check???
+	  
 //	  /* This defeats the opaqueness of stack.c but it's easy */
 //	  /* It just clears the one move we've just made from the move stack */
 //
 //	  /* If the chosen move was the top of the stack.. */
-//	  if (randMove == 0)
-//	    {
+	  if (randMove == 0)
+	    {
 //	      /* Don't free the move: it's "ret" and still in use! */
-//	      StackPop( bestMoves.stacks[randStack] );
-//
+	      StackPop( );
+
 //	      /* If there is only the one move then we remove the stack */
 //	      if ( bestMoves.stacks[randStack]->nSize == 0 )
-//	        {
-//	          StackDelete( bestMoves.stacks[randStack] );
-//
-//	          while ( ((randStack+1) < BEST_STACKS) &&
-//	                  (bestMoves.stacks[randStack+1] != NULL) )
-//	            {
-//	              bestMoves.stacks [randStack] = bestMoves.stacks [randStack+1];
-//	              bestMoves.ratings[randStack] = bestMoves.ratings[randStack+1];
-//	              ++randStack;
-//	            }
-//
+	      if ( bestMoves.stacks[randStack].size() == 0 )
+	        {
+	          StackDelete( bestMoves.stacks[randStack] );
+
+	          while ( ((randStack+1) < BEST_STACKS) &&
+	                  (bestMoves.stacks[randStack+1] != NULL) )
+	            {
+	              bestMoves.stacks [randStack] = bestMoves.stacks [randStack+1];
+	              bestMoves.ratings[randStack] = bestMoves.ratings[randStack+1];
+	              ++randStack;
+	            }
+
 //	          bestMoves.stacks[randStack] = NULL;
-//	          bestMoves.ratings[randStack] = INT_MIN;
-//	        }
-//	    }
-//	  /* We used a second or later move */
-//	  else
-//	    {
-//	      int i;
+	          bestMoves.stacks[randStack] = null;
+	          bestMoves.ratings[randStack] = INT_MIN;
+	        }
+	    }
+	  /* We used a second or later move */
+	  else
+	    {
+	      int i;
 //	      struct stack_el *el, *temp;
-//
+	      Stack_el el = new Stack_el();
+	      Stack_el temp = new Stack_el();
+
 //	      el = bestMoves.stacks[randStack]->top;
-//
+	      el = (Stack_el)bestMoves.stacks[randStack].firstElement();
+
 //	      for (i = 1; (i < randMove) && (el->below != NULL); ++i)
-//	        {
+	      for (i = 1; (i < randMove) && (el != NULL); ++i)
+	        {
 //	          el = el->below;
-//	        }
+	          el = el.below;
+	        }
 //
 //	      if (!CHECK((el->below != NULL) && (el->below->mvt == ret)))
 //	        {
 //	          /* Hopefully this can never happen */
+	      // :) you think you hope it can never happen... I'm terrified it's important.
 //	        }
-//	      else
-//	        {
-//	          temp = el->below;
-//	          el->below = temp->below;
-//	          bestMoves.stacks[randStack]->nSize--;
+
+//          temp = el->below;
+//          el->below = temp->below;
+//          bestMoves.stacks[randStack]->nSize--;
+          temp = el.below; 			// !!! Is this legal... I think I should use a remove from index sorta
+          el.below = temp.below;	// !!! thing, but i need to re-refference .below anyhow, see how it goes for now
+//          bestMoves.stacks[randStack]->nSize--;
 //	          free( temp );
-//	        }
-//	    }
-//	  
-//	  return ret;
-//	}
-//
+	    }
+	  
+	  return ret;
+	}
+
 //	Local int
 //	RateMove( Move *move, Colour bwSide )
-//	{
-//	  int rating = 0;
+	public int RateMove( Move move, int bwSide )
+	{
+	  int rating = 0;
 //	  Colour bwEnemy;
 //	  Coord xyzPos;
 //	  Piece *moving, *storing;
@@ -4125,8 +4146,8 @@ private String winString = "";
 //	  else
 //	    rating += 7 - move->xyzAfter.yRank + move->xyzBefore.yRank;
 //
-//	  return rating;
-//	}
+	  return rating;
+	}
 //
 //	Global Boolean
 //	GenMove(const Colour bwSide, Move **ret)
