@@ -13,7 +13,7 @@ public class Move {
 	//  /*  Status of bHasMoved before move.  Relevant to Kings, Rooks, and Pawns.
 	//   *  TRUE, FALSE, PROMOTE, CASTLE or EnPASSANT. */
 	//  int nHadMoved;
-	private boolean nHadMoved;
+	public boolean nHadMoved;
 	//} Move;	
 	
 	public Move()

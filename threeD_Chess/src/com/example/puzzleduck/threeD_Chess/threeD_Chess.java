@@ -393,6 +393,7 @@ private String winString = "";
 //	Global stack *FindAllMoves(Piece *);
 //
 //	Global stack *MoveStack;
+	Stack MoveStack;
 //	/*
 //	 * End of the move stack
 //	 ****************************************************************************/
@@ -1742,7 +1743,7 @@ private String winString = "";
 //	    }
 
 //	  StackPush(MoveStack, thisMove);
-	  StackPush(thisMove);
+	  StackPush(MoveStack, thisMove);
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
@@ -1988,9 +1989,10 @@ private String winString = "";
 //s->nSize = 0;
 //return s;
 //}
-	public void StackNew()
+	public Stack StackNew()
 	{
-		stack = new Stack();
+//		stack = new Stack();
+		return new Stack();
 	}
 
 
@@ -2011,7 +2013,7 @@ private String winString = "";
 	
 //Global void
 	//StackPush(stack *s, const Move *newMove)
-	private void StackPush(Move newMove)
+	private void StackPush(Stack targetStack, Move newMove)
 	{
 		//struct stack_el *newEl;
 		Stack_el newEl = new Stack_el();
@@ -2025,11 +2027,11 @@ private String winString = "";
 //memcpy(newEl->mvt, newMove, sizeof(Move));
 		newEl.mvt = newMove;
 		//newEl->below = s->top;
-		newEl.below = (Stack_el)stack.firstElement();
+		newEl.below = (Stack_el)targetStack.firstElement();
 //		newEl.below = stack.firstElement();
 //s->top = newEl;
 //s->nSize++;
-		stack.add(newEl);
+		targetStack.add(newEl);
 		//return;
 	}
 
@@ -3861,7 +3863,7 @@ private String winString = "";
 //
 	  if ( bestMoves.ratings[i] == value )
 	    {
-	      StackPush( move );
+	      StackPush( MoveStack, move );
 //	      free( move );
 	      move = null;
 	    }
@@ -3885,7 +3887,7 @@ private String winString = "";
 //	      /* Create the new stack */
 //	      bestMoves.stacks[i] = StackNew();
 	      StackNew();
-	      StackPush( move );
+	      StackPush( MoveStack, move );
 	      bestMoves.ratings[i] = value;
 	    }
 //	  return;
@@ -4257,60 +4259,79 @@ private String winString = "";
 	//	/* This tries again for a move in case the last one failed for some reason */
 //	Global Boolean
 //	GenAltMove(const Colour bwSide, Move **ret)
-//	{
-//	  *ret = PopMove();
-//	  return TRUE;
-//	}
-//
+	Move GenAltMove(int bwSide, Move ret)
+	{
+//		  *ret = PopMove();
+//		  return TRUE;
+		  ret = PopMove();
+		  return ret;
+	}
+
 //	/* Creates a stack of legal moves that this piece can take in this go */
 //	stack *
-//	FindAllMoves(Piece *piece)
-//	{
-//	  stack *moves;
-//	  Move move;
+	Stack FindAllMoves(Piece piece)
+	{
+//		  stack *moves;
+		  Stack moves;
+	  Move move = new Move();
 //	  Colour bwEnemy;
-//	  int x, y, z;
-//
-//	#define CURX (piece->xyzPos.xFile)
-//	#define CURY (piece->xyzPos.yRank)
-//	#define CURZ (piece->xyzPos.zLevel)
-//
-//	  moves = StackNew();
+	  int bwEnemy;
+	  int x, y, z;
+
+//		#define CURX (piece->xyzPos.xFile)
+//		#define CURY (piece->xyzPos.yRank)
+//		#define CURZ (piece->xyzPos.zLevel)
+		int CURX = (piece.xyzPos.xFile);
+		int CURY = (piece.xyzPos.yRank);
+		int CURZ = (piece.xyzPos.zLevel);
+
+	  moves = StackNew();
 //	  if (moves == NULL)
-//	    return NULL;
-//
+	  if (moves == null)
+	  {
+	    return null;
+	  }
+
 //	  bwEnemy = ((piece->bwSide == WHITE) ? BLACK : WHITE);
 //	  move.xyzBefore = piece->xyzPos;
-//
+	  bwEnemy = ((piece.bwSide == WHITE) ? BLACK : WHITE);
+	  move.xyzBefore = piece.xyzPos;
+
 //	  if (piece->nName == knight)
-//	    {
-//	      for (y = MAX(0, CURY -2); y < MIN(RANKS, CURY +3); y++)
-//	        {
-//	          if (y == CURY)
-//	            continue;
-//	          for (x = MAX(0, CURX -2); x < MIN(FILES, CURX +3); x++)
-//	            {
-//	              if (x == CURX)
-//	                continue;
-//
-//	              if (ABS(CURX-x) == ABS(CURY-y))
-//	                continue;
-//
+	  if (piece.nName == knight)
+	    {
+	      for (y = MAX(0, CURY -2); y < MIN(RANKS, CURY +3); y++)
+	        {
+	          if (y == CURY)
+	            continue;
+	          for (x = MAX(0, CURX -2); x < MIN(FILES, CURX +3); x++)
+	            {
+	              if (x == CURX)
+	                continue;
+
+	              if (ABS(CURX-x) == ABS(CURY-y))
+	                continue;
+
 //	              if ((Board[CURZ][y][x] == NULL) ||
-//	                  (Board[CURZ][y][x]->bwSide == bwEnemy))
-//	                {
-//	                  move.xyzAfter.xFile = x;
-//	                  move.xyzAfter.yRank = y;
-//	                  move.xyzAfter.zLevel = CURZ;
-//	                  move.pVictim = Board[CURZ][y][x];
+//                  (Board[CURZ][y][x]->bwSide == bwEnemy))
+	              if ((Board[CURZ][y][x] == NULL) || (Board[CURZ][y][x].bwSide == bwEnemy))
+	                {
+	                  move.xyzAfter.xFile = x;
+	                  move.xyzAfter.yRank = y;
+	                  move.xyzAfter.zLevel = CURZ;
+	                  move.pVictim = Board[CURZ][y][x];
 //	                  move.nHadMoved = piece->bHasMoved;
-//
-//	                  if (!FakeMoveAndIsKingChecked( piece, x, y, CURZ ))
-//	                    StackPush(moves, &move);
-//	                } /* End valid move */
-//	            } /* End x loop */
-//	        } /* End y loop */
-//	    } /* End knight */
+	                  move.nHadMoved = piece.bHasMoved;
+	                  
+	                  if (!FakeMoveAndIsKingChecked( piece, x, y, CURZ ))
+	                  {
+//		                    StackPush(moves, &move);
+		                    StackPush(moves, move);
+	                  }
+	                } /* End valid move */
+	            } /* End x loop */
+	        } /* End y loop */
+	    } /* End knight */
 //	  else if (piece->nName == cannon)
 //	    {
 //	      for (z = 0; z < LEVELS; z++)
@@ -4466,12 +4487,12 @@ private String winString = "";
 //	     } /* End z loop */
 //	    }
 //
-//	  return moves;
-//
+	  return moves;
+
 //	#undef CURX
 //	#undef CURY
 //	#undef CURZ
-//	}
+	}
 	
 	
 	
