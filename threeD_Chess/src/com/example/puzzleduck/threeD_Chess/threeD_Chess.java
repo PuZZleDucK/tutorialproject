@@ -4191,55 +4191,70 @@ private String winString = "";
 
 //	Global Boolean
 //	GenMove(const Colour bwSide, Move **ret)
-//	{
-//	  Local int pieceIdx = 0;
-//	  stack *moves;
-//	  Move *thisMove;
-//
-//	  /* First clear out any old moves */
-//	  if (pieceIdx == 0)
-//	    {
-//	      int i;
-//	      
-//	      for ( i = 0; (bestMoves.stacks[i] != NULL) && (i < BEST_STACKS); ++i)
-//	        {
-//	          StackDelete(bestMoves.stacks[i]);
+	public boolean GenMove( int bwSide, Move ret)
+	{
+//		  Local int pieceIdx = 0;
+//		  stack *moves;
+//		  Move *thisMove;
+		  int pieceIdx = 0;
+		  //stack moves;
+		  Move thisMove;
+
+	  /* First clear out any old moves */
+	  if (pieceIdx == 0)
+	    {
+	      int i;
+	      
+	      for ( i = 0; (bestMoves.stacks[i] != NULL) && (i < BEST_STACKS); ++i)
+	        {
+	          StackDelete(bestMoves.stacks[i]);
 //	          bestMoves.stacks[i] = NULL;
-//	          bestMoves.ratings[i] = INT_MIN;
-//	        }
-//	    }
-//
+	          bestMoves.stacks[i] = null;
+	          bestMoves.ratings[i] = INT_MIN;
+	        }
+	    }
+
 //	  if ( Muster[bwSide][pieceIdx]->bVisible )
-//	    {
+	  if ( Muster[bwSide][pieceIdx].bVisible )
+	    {
 //	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );
+	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );//Comming up next
 //	      if (moves != NULL)
-//	        {
+	      if (moves != null)
+	        {
 //	#         ifdef NOTDEF
 //	          StackDump( moves );
 //	#         endif /* DEBUG */
-//
+
 //	          while ( (thisMove = StackPop( moves )) != NULL )
-//	            {
+	          while ( (thisMove = StackPop( )) != null )
+	            {
 //	              PushMove( thisMove, RateMove( thisMove, bwSide ) );
-//	            }
-//
+	              PushMove( thisMove, RateMove( thisMove, bwSide ) );
+	            }
+
 //	          StackDelete( moves );
-//	        }
-//	    }
-//
-//	  if (++pieceIdx == PIECES)
-//	    {
-//	      FixMoves();
+	          StackDelete(moves);
+	        }
+	    }
+
+	  if (++pieceIdx == PIECES)
+	    {
+	      FixMoves();
 //	      *ret = PopMove();
-//	      pieceIdx = 0;
-//	      return TRUE;
-//	    }
-//
-//	  *ret = NULL;
-//	  return FALSE;
-//	}
-//
-//	/* This tries again for a move in case the last one failed for some reason */
+	      ret = PopMove();
+	      pieceIdx = 0;
+	      return TRUE;
+	    }
+
+//		  *ret = NULL;
+		  ret = null;
+		  return FALSE;
+	}
+
+
+	//This is where i need to update interface to shade/highlight possible moves to improve UI
+	//	/* This tries again for a move in case the last one failed for some reason */
 //	Global Boolean
 //	GenAltMove(const Colour bwSide, Move **ret)
 //	{
