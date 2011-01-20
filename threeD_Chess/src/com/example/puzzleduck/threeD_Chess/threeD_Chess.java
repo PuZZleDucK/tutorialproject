@@ -6,8 +6,11 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.widget.Toast;
 
 public class threeD_Chess extends Activity {
 	
@@ -93,135 +96,85 @@ public class threeD_Chess extends Activity {
 //	 * A miscellany of useful tidbits
 
 //	/* Returns from pieceMayMove */
-private static int CASTLE = 2;
-private static int EnPASSANT = 3;
-private static int PROMOTE = 4;
-
-private static int king = 0;
-private static int queen = 1;
-private static int bishop = 2;
-private static int knight = 3;
-private static int rook = 4;
-private static int prince = 5;
-private static int princess = 6;
-private static int abbey = 7;
-private static int cannon = 8;
-private static int galley = 9;
-private static int pawn = 10;
-private static int none = 11;
-
-private static int TITLES = 11;
-//	Global int titleCount[TITLES];
-private static int PIECES = 48;
-
-//	typedef enum
-//	{
-//	  NOCOL = -1, WHITE, BLACK
-//	} Colour;
-private static int NOCOL = -1;
-private static int WHITE = 0;
-private static int BLACK = 1;
-
-
-//
-//	typedef int File;
-private static int FILES = 8;
-//	typedef int Rank;
-private static int RANKS = 8;
-//	typedef int Level;
-private static int LEVELS = 3;
-
-//	/* Directions */
-//	typedef int Dir;
-private static int LEFT  = -1;
-private static int RIGHT  = 1;
-private static int FORW   = 1;  /* if colour is black => -1 */
-private static int BACK  = -1;  /* if colour is black => +1 */
-private static int UP    = 1;
-private static int DOWN  = -1;
-private static int NODIR  = 0;
-
-
-private String winString = "";
-
-
-
-
-
-
-
+	private static int CASTLE = 2;
+	private static int EnPASSANT = 3;
+	private static int PROMOTE = 4;
+	
+	private static int king = 0;
+	private static int queen = 1;
+	private static int bishop = 2;
+	private static int knight = 3;
+	private static int rook = 4;
+	private static int prince = 5;
+	private static int princess = 6;
+	private static int abbey = 7;
+	private static int cannon = 8;
+	private static int galley = 9;
+	private static int pawn = 10;
+	private static int none = 11;
+	
+	private static int TITLES = 11;
+	private static int PIECES = 48;
+	private static int COLOURS = 2;
+	
+	private static int NOCOL = -1;
+	private static int WHITE = 0;
+	private static int BLACK = 1;
+	
+	private static int FILES = 8;
+	private static int RANKS = 8;
+	private static int LEVELS = 3;
+	
+	//	/* Directions */
+	private static int LEFT  = -1;
+	private static int RIGHT  = 1;
+	private static int FORW   = 1;  /* if colour is black => -1 */
+	private static int BACK  = -1;  /* if colour is black => +1 */
+	private static int UP    = 1;
+	private static int DOWN  = -1;
+	private static int NODIR  = 0;
+	
+	private String winString = "";
 	private Random rng = new Random();
 
-
-//	#define RANDDIR() ((random()%3)-1)
 	private int RANDDIR()
 	{
-		return rng.nextInt(2);
-			// not sure if this is 1-2 or 0-2
-		
+		return rng.nextInt(2);  // this is 0-1
 	}
 
-//
-//	#define HORZ(x, y) ( ((x)==0) ^ ((y)==0) )
 	private boolean HORZ(int x, int y)
 	{
 		return ((x)==0) ^ ((y)==0);
 	}
 	
-//	#define DIAG(x, y) ((x)!=0 && (ABS(x)==ABS(y)))
 	private boolean DIAG(int x, int y)
 	{
 		return (x)!=0 && (ABS(x)==ABS(y));
 	}
 
-	//	#define HORZ2D(x, y, z) (HORZ(x, y) && (z)==0)
 	private boolean HORZ2D(int x, int y, int z)
 	{
 		return HORZ(x, y) && (z)==0;
 	}
 	
-//	#define DIAG2D(x, y, z) (DIAG(x, y) && (z)==0)
 	private boolean DIAG2D(int x, int y, int z)
 	{
 		return DIAG(x, y) && (z)==0;
 	}
 	
-	//	/* Don't have to check for z==0 in 2nd line below bcs at least one of
-//	 * x,y is 0 so the check is implicit */
-//	#define HORZ3D(x, y, z) ((HORZ(x, y) && \
-//	                          ((ABS(z)==ABS(x)) || \
-//	                           (ABS(z)==ABS(y)) || ((z)==0))) || \
-//	                         ((x)==0 && (y)==0 && (z)!=0))
 	private boolean HORZ3D(int x, int y, int z)
 	{
 		return ((HORZ(x, y) && ((ABS(z)==ABS(x)) || (ABS(z)==ABS(y)) || ((z)==0))) || ((x)==0 && (y)==0 && (z)!=0));
 	}
 	
-	
-	//	#define DIAG3D(x, y, z) (DIAG(x, y) && \
-//	                          ((z)==0 || ABS(z)==ABS(x)))
 	private boolean DIAG3D(int x, int y, int z)
 	{
 		return DIAG(x, y) && ((z)==0 || ABS(z)==ABS(x));
 	}
-	
-//	/*****************************************************************************
-//	 * Piece definitions for all pieces
-//	 */
 
-	
-	
-	// of course... typedefs should become objects... start making new files :)... Piece class created !!!
-	
-	
-	
-	//
-//	Global Piece *SQUARE_INVALID, *SQUARE_EMPTY;
-
+//	/* This function interprets the result of TraverseDir(piece...) */
 	private boolean IsMoveLegal(Piece attacker, Piece defender)
 	{
-//		/* This function interprets the result of TraverseDir(piece...) */
-//		IsMoveLegal(const Piece *piece, const Piece *dest)
 		if (defender == SQUARE_EMPTY)
 			return TRUE;
 		  if (defender == SQUARE_INVALID)
@@ -229,80 +182,28 @@ private String winString = "";
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
 		    }
-//		  else if ( piece->bwSide == dest->bwSide )
-//		    {
-//		      n3DcErr = E3DcBLOCK;
-//		      return FALSE;
-//		    }
+		  else if ( attacker.bwSide == defender.bwSide )
+		    {
+		      n3DcErr = E3DcBLOCK;
+		      return FALSE;
+		    }
 		return true;
 	}
 
-//	//	Global Boolean PieceMayMove(Piece *, const File, const Rank, const Level);
-//	private boolean PieceMayMove(Piece piece, int File, int Rank, int Level)
-//	{
-//		//TODO:
-//		return true;
-//	}
-
-	
-	
-	//	Global Boolean PieceMove(Piece *, const File, const Rank, const Level);
-//	private boolean PieceMove(Piece piece, int File, int Rank, int Level)
-//	{
-//		//TODO:
-//		return true;
-//	}
-	
 //	//	Global Boolean PieceUndo(void);
 //	private boolean PieceUndo()
 //	{
 //		//TODO:
 //		return true;
 //	}
-//
-//	
-//	//	Global Piece *SquareThreatened(Colour, const File, const Rank, const Level);
-//	private Piece SquareThreatened(int color, int File, int Rank, int Level)
-//	{
-//		//TODO:
-//		return new Piece(1, 1, 1, 1, 0);
-//	}
-//	
-//	//	Global Boolean IsKingChecked(Colour);
-//	private boolean IsKingChecked(int color)
-//	{
-//		//TODO:
-//		return true;
-//	}
-//	
-//	
-//	//	Global Boolean FakeMoveAndIsKingChecked( Piece *,
-//	//	                                        const File, const Rank, const Level);
-//	private boolean FakeMoveAndIsKingChecked(Piece piece, int File, int Rank, int Level)
-//	{
-//		//TODO:
-//		return true;
-//	}
-//	
+
 	
-	
-//wtf is Dir?!?! ... leaving this for later
+//wtf is Dir?!?! ... leaving this for later ... dir might be xyz directions/distances
 	//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
 
-	//replacing with constructor for piece
-	//	Global Piece *PieceNew(const Title, const File, const Rank, const Level,
-//	                       const Colour);
-	//testing... making prototype for class
-//	Piece blackKing = new Piece(KING, //title/type
-//								1, //file
-//								1, //rank
-//								1, //level
-//								BLACK); //side?
-	
+
 
 	
-	
-
 	
 	//* The move-stack (for undos, checking for en passant, etc)
 //	 */
@@ -315,48 +216,20 @@ private String winString = "";
 //	  struct stack_el *top;
 //	} stack;
 //
-//	Global stack *StackNew(void);
-//	Global void StackDelete(stack *);
-//	Global void StackPush(stack *, const Move *);
-//	Global Move *StackPop(stack *);
-//	Global Move *StackPeek(stack *, int); /* Returns move n places down stack.  Do not free! */
-//	#ifdef DEBUG
-//	Global void StackDump(stack *);
-//	#endif /* DEBUG */
-//
 //	Global stack *FindAllMoves(Piece *);
-//
-//	Global stack *MoveStack;
+
 	Stack MoveStack;
-//	/*
-//	 * End of the move stack
-//	 ****************************************************************************/
-//
-//	/****************************************************************************/
-//	Global Piece *Board[LEVELS][RANKS][FILES];
-	private Piece[][][] Board;
+
+
+	private Piece[][][] Board = new Piece[LEVELS][RANKS][FILES];
 	
+	private Piece[][] Muster = new Piece[COLOURS][PIECES];
 	
-	//	Global Piece *Muster[COLOURS][PIECES]; /* Database of all pieces */
-	private Piece[][] Muster;
-	
-	//	Global Colour bwToMove;
 	private int bwToMove;
 	
 	
 //not sure how much of this i'll need
-	//	/* And finally the function prototypes for the game itself */
-//	Global Boolean Init3Dc(void);
-	
-	
-//	Global int MusterIdx(const Title, const int);
-	private int MusterIdx(int title, int thisCount)
-	{
-		//TODO:
-		return 0;
-	}
 
-	
 	//	Global char *Piece2String( Piece * );
 //	Global Colour Computer(void);
 //	Global void PauseGame(void);
@@ -369,12 +242,10 @@ private String winString = "";
 //	/* ComputerPlay stuff */
 //	Global Boolean    GenMove(const Colour, Move **);
 //	Global Boolean GenAltMove(const Colour, Move **);
-	
-	
 
 //not sure if i need these either... open GL may take care of this... now i know it won't	
 //	
-//	    muster,                                    /* Display area    */
+//    muster,                                    /* Display area    */
 //	    remark,                                    /* Message area    */
 //	    undo,                                      /* Undo button     */
 //	    board[LEVELS];                             /* Playing areas   */
@@ -383,10 +254,10 @@ private String winString = "";
 //	  Pixmap face[COLOURS][TITLES],  mask[TITLES]; /* Pixmaps */
 //	  XFontStruct *font;                           /* The display font */
 //	} GfxInfo;
-//
-//	Global GfxInfo *firstGFX, *secondGFX;
 
-//	#define XPM_SIZE 32
+//	Global GfxInfo *firstGFX, *secondGFX;
+	public Object firstGFX, secondGFX; //just a fudge to get these defined
+
 	private int XPM_SIZE = 32;
 
 //	/* Functions */
@@ -396,8 +267,6 @@ private String winString = "";
 //	Global int InitMainWindow( GfxInfo * );
 //	Global int InitBoardWindows( GfxInfo * );
 //	Global void Draw3DcBoard(void);
-	
-	
 	
 //	Global void UpdateMuster(Colour, Title, Boolean);
 //	private void UpdateMuster(int color, int title, boolean notSureYet)
@@ -441,27 +310,10 @@ private String winString = "";
 //	  (((gfx->height[(boardNum)]%RANKS) / 2) + \
 //	   ((gfx->height[(boardNum)]/RANKS) * (y)))
 
-	
-//	 * init.c
-//	 * Initialisations for 3Dc engine and pieces.
-//	 * Interface initialisation is external.
-
-
-	//	#include "machine.h"
-//	#include "3Dc.h"
-//
-//	int n3DcErr;
 	private int n3DcErr;
 	
-//	Piece *SQUARE_EMPTY, *SQUARE_INVALID;
 	private Piece SQUARE_EMPTY, SQUARE_INVALID;
-	
 
-//	stack *MoveStack; /* The history of moves */
-
-
-	//removed duplicate definition. again
-	//private int TITLES = 11;
 	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
 //		  /* king     */ 1,
 //		  /* queen    */ 1,
@@ -476,26 +328,16 @@ private String winString = "";
 //		  /* pawn     */ 24
 		
 //	 * This function sets up the board
-//	Init3Dc(void)
 	private void Init3Dc()
 	{
-//	  File x;
 		int thisFile;
-//	  Rank y;
 		int thisRank;
-//	  Level z;
 		int thisLevel;
-//	  Colour bw;
 		int thisColor;
-//	  int count[COLOURS][TITLES] = {{0,0,0,0,0,0,0,0,0,0,0},
-//	                                {0,0,0,0,0,0,0,0,0,0,0}};
 		int[][] count = {{0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0}};
-		
-	//	  Title name;
 		int thisTitle;
 
 //	  /* This structure is mainly for "obviousness"; it is entirely trivial */
-//		  Title StartBoard[LEVELS][RANKS][FILES] =
 		int StartBoard[][][] =
 	  { /* The boards */
 	    { /* Bottom board */
@@ -530,30 +372,20 @@ private String winString = "";
 	    }
 	  }; /* StartBoard */
 
-
-//		  for (z = 0; z < LEVELS; ++z)
 		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
 	    {
 			thisColor = WHITE;
-//		      for (y = 0; y < RANKS; ++y)
 		      for (thisRank = 0; thisRank < RANKS; ++thisRank)
 		      {
 //	          /* From the 4th rank on is black's half of the board */
 	          if (thisRank == 4)
 	            thisColor = BLACK;
 
-//	          for (x = 0; x < FILES; ++x)
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
-//	              name = StartBoard[z][y][x];
 	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-//		              if ((name != none)
 		            if(thisTitle != none)
 		            {
-//		                  Muster[bw][MusterIdx(name, count[bw][name])] = 
-//	                    Board[z][y][x] =
-//	                      PieceNew(name, x, y, z, bw);
-//	                  (count[bw][name])++;
 		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = 
 		                Board[thisLevel][thisRank][thisFile] =
 	                      new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
@@ -562,117 +394,99 @@ private String winString = "";
 	            }
 		      }
 	    }
-//	  /* That's the pieces done.  Now for the move stack */
-//		  MoveStack = StackNew();
-		  StackNew();
+		StackNew();
+		n3DcErr = 0;
 
-//	   * these are really dynamic global identifiers, in that they
-//	   * are read-only interfaces to various modules; kind of like
-//	   * getopt()'s optind and optarg.
-//	   */
-	  n3DcErr = 0;
-
-//	  SQUARE_INVALID = (Piece *)malloc(sizeof(Piece));
-//	  SQUARE_EMPTY = (Piece *)malloc(sizeof(Piece));
 	  SQUARE_INVALID = new Piece(0,0,0,0,0);
 	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
-
 	}
 
-	
-//#include "machine.h"
-//
-//#include "3Dc.h"
-//
-	//#define MAX_RETRIES 100 /* Number of times to guess a tricky move */
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
 
-	//defining FALSE and TRUE as tey are used heaps
+	//defining FALSE and TRUE as they are used heaps
 	boolean FALSE = false;
 	boolean TRUE = true;
 	Object NULL = null;
 	
-	//Colour bwToMove = WHITE;
-	private int Colour = WHITE;
-	//Local Colour computer = NOCOL;
 	private int computer = NOCOL;
-	//Local Boolean gamePaused = FALSE;
 	private boolean gamePaused = FALSE;
-
-
-//ok... moving everything into 3dchess, it don't realy belong in the renderer	
-//done
 	
 //Local Boolean SetupAutoplay(char *);
 //Local void DoMain3DcLoop(void);
-//
 
-	
-	
-	
-	//
 ///* Set up the computer intelligence and all that */
 //Local Boolean
-//SetupAutoplay(char *colourName)
-//{
-//  if (!strcmp(colourName, "black"))
-//    computer = BLACK;
-//  else if (!strcmp(colourName, "white"))
-//    computer = WHITE;
-//  else
-//    {
-//      return FALSE;
-//    }
-//  return TRUE;
-//}
+	//SetupAutoplay(char *colourName)
+	public boolean SetupAutoplay(String colourName)
+{
+	//  if (!strcmp(colourName, "black"))
+	  if (colourName.equals("black") )
+    computer = BLACK;
+	//  else if (!strcmp(colourName, "white"))
+	  else if (colourName.equals("white"))
+    computer = WHITE;
+  else
+    {
+      return FALSE;
+    }
+  return TRUE;
+}
 
-	//DoMain3DcLoop(void)
 	private void DoMain3DcLoop()
 	{
-//  Move *automove;
+  Move automove = new Move();
 //  XEvent event;
-	//  Local Boolean retry = FALSE;
 	  boolean retry = FALSE;
-//
+
 	//  while (firstGFX->mainWindow)
 	  while (true)//?? game loop
 	  {
 //      /* First thing to do: check for end of game! */
 //	      if (IsGameFinished() && !gamePaused)
-//	      if (IsGameFinished() && !gamePaused)
-		      if (IsGameFinished() ){}
-//        FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
-//      
-//      if ( (bwToMove == computer) && !gamePaused)
-//        {
-//          if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
-//              ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
-//            {
-//              if ( automove == NULL )
-//                {
-//                  /*
-//                   * Give up, it's too hard for me..
-//                   */
+		      if (IsGameFinished() && !gamePaused){}
+        FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
+
+      if ( (bwToMove == computer) && !gamePaused)
+        {
+//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
+//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
+        if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
+        ((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
+            {
+              if ( automove == NULL )
+                {
+                  /*
+                   * Give up, it's too hard for me..
+                   */
 //                  PauseGame();
-//                  /* Can we delay after this? */
+                  /* Can we delay after this? */
 //                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
 //                  XFlush( XtDisplay( firstGFX->mainWindow ));
-//                  FinishGame((computer == BLACK) ? WHITE : BLACK);
-//                }
+                  FinishGame((computer == BLACK) ? WHITE : BLACK);
+                }
 ///*** This assertion fails with stack size of 1---or at least it used to */
-//              else if ( (Board[ automove->xyzBefore.zLevel ]
+//            else if ( (Board[ automove->xyzBefore.zLevel ]
+//            [ automove->xyzBefore.yRank ]
+//            [ automove->xyzBefore.xFile ] == NULL ) ||
+//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
 //                              [ automove->xyzBefore.yRank ]
-//                              [ automove->xyzBefore.xFile ] == NULL ) ||
-//                       (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
-//                                                [ automove->xyzBefore.yRank ]
-//                                                [ automove->xyzBefore.xFile ],
-//                                          automove->xyzAfter.xFile,
-//                                          automove->xyzAfter.yRank,
-//                                          automove->xyzAfter.zLevel ) )) )
-//                {
-//                  /* The move was illegal for some reason
-//                   * (in the future I plan to eliminate all
-//                   * possibility of getting in here) */
+//                              [ automove->xyzBefore.xFile ],
+//                        automove->xyzAfter.xFile,
+//                        automove->xyzAfter.yRank,
+//                        automove->xyzAfter.zLevel ) )) )
+            else if ( (Board[ automove.xyzBefore.zLevel ]
+            [ automove.xyzBefore.yRank ]
+            [ automove.xyzBefore.xFile ] == NULL ) ||
+            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
+                              [ automove.xyzBefore.yRank ]
+                              [ automove.xyzBefore.xFile ],
+                        automove.xyzAfter.xFile,
+                        automove.xyzAfter.yRank,
+                        automove.xyzAfter.zLevel ) ) )
+                {
+                  /* The move was illegal for some reason
+                   * (in the future I plan to eliminate all
+                   * possibility of getting in here) */
 //                  D( printf( "Can't move from (%i,%i,%i) to (%i,%i,%i)\n",
 //                            automove->xyzBefore.xFile,
 //                            automove->xyzBefore.yRank,
@@ -681,18 +495,18 @@ private String winString = "";
 //                            automove->xyzAfter.yRank,
 //                            automove->xyzAfter.zLevel ) );
 //
-//                  retry = TRUE;
-//                }
-//              else /* Move is legit: do it */
-//                {
-//                  retry = FALSE;
+                  retry = TRUE;
+                }
+              else /* Move is legit: do it */
+                {
+                  retry = FALSE;
 //                  PrintMove( automove );
-//
-//                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
-//                } /* End 'found computer move' */
-//            } /* Still finding computer's move? */
-//        } /* End computer's move */
-//
+
+                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
+                } /* End 'found computer move' */
+            } /* Still finding computer's move? */
+        } /* End computer's move */
+
 //      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
 //        {
 //          XtAppNextEvent(XtWidgetToApplicationContext(firstGFX->mainWindow),
@@ -709,71 +523,80 @@ private String winString = "";
 //        }
 //
 	  } /* End game loop */
-//
-//  return;
 	}
 
 	
 
-///*************************************************************/
 ///* Utility functions */
 //Global int
 //MusterIdx(const Title name, const int nth)
-//{
-//  int i, count = 0;
-//
-//  for (i = 0; i != name && i < TITLES; ++i)
-//    count += titleCount[i];
-//
-//  if (i == TITLES)
-//    return 47; /* 47 is a hack; it is a legal array index that is only
-//                * valid for pawns */
-//
-//  if (nth < titleCount[name])
-//    {
-//      return count + nth;
-//    }
-//  /* else */
-//  return 47;
-//}
-//
-//Global char *Piece2String( Piece *piece )
-//{
+	private int MusterIdx(int title, int thisCount)
+	{
+	  int i, count = 0;
+		
+//	  for (i = 0; i != name && i < TITLES; ++i)
+		  for (i = 0; i != title && i < TITLES; ++i)
+		    count += titleCount[i];
+		
+		  if (i == TITLES)
+		    return 47; /* 47 is a hack; it is a legal array index that is only
+		                * valid for pawns */
+		
+//		  if (nth < titleCount[name])
+			  if (thisCount < titleCount[title])
+		    {
+			      return count + thisCount;
+//			      return count + nth;
+		    }
+		  /* else */
+		  return 47;
+	}
+
+
+	//Global char *Piece2String( Piece *piece )
+public String Piece2String( Piece piece )
+{
 //  static char *names[] =
-//    {
-//      "King",   "Queen",    "Bishop", "Knight", "Rook",
-//      "Prince", "Princess", "Abbey",  "Cannon", "Galley",
-//      "Pawn", ""
-//    };
-//
-//  return names[piece->nName];
-//}
-//
+  String names[] =
+    {
+      "King",   "Queen",    "Bishop", "Knight", "Rook",
+      "Prince", "Princess", "Abbey",  "Cannon", "Galley",
+      "Pawn", ""
+    };
+
+//return names[piece->nName];
+return names[piece.nName];
+}
+
 //Global Colour
 //Computer(void)
-//{
-//  return computer;
-//}
-//
+public int Computer()
+{
+  return computer;
+}
+
 //Global void
 //PauseGame(void)
-//{
-//  gamePaused = TRUE;
+public void PauseGame()
+{
+  gamePaused = TRUE;
 //  return;
-//}
-//
+}
+
 //Global void
 //ResumeGame(void)
-//{
-//  gamePaused = FALSE;
+public void ResumeGame()
+{
+  gamePaused = FALSE;
 //  return;
-//}
-//
+}
+
 //Global Boolean
 //IsGamePaused(void)
-//{
-//  return gamePaused;
-//}
+public boolean IsGamePaused()
+{
+  return gamePaused;
+}
 
 
 	//IsGameFinished(void)
@@ -784,31 +607,15 @@ private String winString = "";
 		    blackFirstPrinceVisible, whiteFirstPrinceVisible,
 		    blackSecondPrinceVisible, whiteSecondPrinceVisible;
 		
-		//  blackKingVisible = Muster[BLACK][MusterIdx(king, 0)]->bVisible;
 		   blackKingVisible = Muster[BLACK][MusterIdx(king, 0)].bVisible;
-
-		   //  whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)]->bVisible;
 		   whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)].bVisible;
-		   
-		   //  blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)]->bVisible;
+
 		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
-		   
-		//  whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)]->bVisible;
 		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
 		   
-		//  blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)]->bVisible;
 		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
-
-		//  whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)]->bVisible;
 		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
 
-		//  if ((!whiteKingVisible ||
-//	       (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
-//	      (!blackKingVisible ||
-//	       (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
-//	    {
-//	      return TRUE;
-//	    }
 		   if ((!whiteKingVisible || 
 				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
 				   (!blackKingVisible ||
@@ -819,52 +626,67 @@ private String winString = "";
 		   return FALSE;
 	}
 
-
-//Global void
-//FinishGame(const Colour bwWinner)
 	private void FinishGame(int bwWinner)
-{
-  gamePaused = TRUE;
-//  sprintf(winString, "%s player wins!",
-//          (bwWinner == BLACK) ? "Black" : "White");
-  winString = (bwWinner == BLACK) ? "Black wins!" : "White wins!";
+	{
+	  gamePaused = TRUE;
+	//  sprintf(winString, "%s player wins!",
+	//          (bwWinner == BLACK) ? "Black" : "White");
+	  winString = (bwWinner == BLACK) ? "Black wins!" : "White wins!";
 
-//  XtSetSensitive(firstGFX->undo, FALSE);
-//  Err3Dc(firstGFX, =;winString, TRUE);
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder.setMessage(winString)
+             .setCancelable(false)
+             .setNeutralButton("O.K.", new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                      dialog.cancel();
+                 }
+             });
+      AlertDialog alert = builder.create();
 
-//  if (secondGFX != NULL)
-//    {
-//      XtSetSensitive(secondGFX->undo, FALSE);
-//      Err3Dc(secondGFX, winString, TRUE);
-//    }
-}
+  	//  XtSetSensitive(firstGFX->undo, FALSE);
+	//  Err3Dc(firstGFX, =;winString, TRUE);
+	
+	//  if (secondGFX != NULL)
+	//    {
+	//      XtSetSensitive(secondGFX->undo, FALSE);
+	//      Err3Dc(secondGFX, winString, TRUE);
+	//    }
+	}
 
 
-	//not sure if i'll impliment this one yet
+	//not sure if i'll implement this one yet... now i'm sure i will :) i think i holds some ui functionality
 	//Global void
-//PrintMove( const Move *move )
-//{
-//  char *moveString = NULL;
-//
+	//PrintMove( const Move *move )
+	public void PrintMove( Move move )
+{
+	//  char *moveString = NULL;
+	  String moveString = null;
+	  String printMoveString;
+
 //  if (move != NULL)
 //    moveString = (char *)malloc(26);
-//
+
 //  /* moveString is TRUE only if move != NULL too */
 //  if (moveString)
 //    {
-//      Piece *piece, *enemy;
-//      Coord pos;
-//
-//      piece = Board[ move->xyzAfter.zLevel]
-//                   [ move->xyzAfter.yRank ]
-//                   [ move->xyzAfter.xFile ];
-//
+//    Piece *piece, *enemy;
+//    Coord pos;
+    Piece piece, enemy;
+    Coord pos;
+
+//  piece = Board[ move->xyzAfter.zLevel]
+//  [ move->xyzAfter.yRank ]
+//  [ move->xyzAfter.xFile ];
+  piece = Board[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+
 //      CHECK( piece != NULL );
-//
-//      enemy = Muster[(piece->bwSide == WHITE) ? BLACK : WHITE]
-//                    [ MusterIdx(king, 0) ];
-//      pos = enemy->xyzPos;
-//
+
+//enemy = Muster[(piece->bwSide == WHITE) ? BLACK : WHITE]
+//[ MusterIdx(king, 0) ];
+  enemy = Muster[(piece.bwSide == WHITE) ? BLACK : WHITE] [ MusterIdx(king, 0) ];
+//pos = enemy->xyzPos;
+  pos = enemy.xyzPos;
+
 //      sprintf( moveString, "%s %c%c%c to %c%c%c%s",
 //              Piece2String( piece ),
 //              move->xyzBefore.zLevel + 'X',
@@ -874,7 +696,36 @@ private String winString = "";
 //              move->xyzAfter.xFile + 'a',
 //              move->xyzAfter.yRank + '1',
 //              IsKingChecked( piece->bwSide ) ? " check!" : "");
-//
+  String checkString;
+  if(IsKingChecked( piece.bwSide ))
+	  {
+	  checkString = " check!"; 
+	  }else
+	  {
+		  checkString =  "";
+	  }
+  printMoveString = "{" + Piece2String( piece ) + "}"
+  				  + " - "
+  				  + "[" + move.xyzBefore.zLevel 
+  				  + "," + move.xyzBefore.xFile
+  				  + "," + move.xyzBefore.yRank 
+  				  + "] to [" + move.xyzAfter.zLevel
+  				  + "," + move.xyzAfter.xFile
+  				  + "," + move.xyzAfter.yRank
+  				  + "]" + checkString;
+	  
+  //eventually want to toss this into a H.U.D. style display area
+  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+  builder.setMessage(printMoveString)
+         .setCancelable(false)
+         .setNeutralButton("dismiss", new DialogInterface.OnClickListener() {
+             public void onClick(DialogInterface dialog, int id) {
+                  dialog.cancel();
+             }
+         });
+  AlertDialog alert = builder.create();
+
+  //no audio alerts, maybe vibe.
 //      /* Display the move: beep if
 //       *  1) the computer or
 //       *  2) the other player in a network game
@@ -887,7 +738,14 @@ private String winString = "";
 //              ( (secondGFX != NULL) && (bwToMove == BLACK) ) ||
 //              ( IsKingChecked( piece->bwSide ))) ?
 //             TRUE : FALSE );
-//      if ( secondGFX != NULL )
+
+Err3Dc( firstGFX, moveString,
+(/* (Computer() == bwToMove) || */
+ ( (secondGFX != NULL) && (bwToMove == BLACK) ) ||
+ ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
+
+  
+  //      if ( secondGFX != NULL )
 //        {
 //          Err3Dc( secondGFX, moveString, (bwToMove == WHITE) ?
 //                 TRUE : FALSE );
@@ -907,7 +765,7 @@ private String winString = "";
 //      else if ( (secondGFX != NULL) && (bwToMove == WHITE) )
 //        Err3Dc(secondGFX, "Opponent has moved", TRUE);
 //    }
-//}
+}
 	
 	
 	
@@ -2404,51 +2262,64 @@ private String winString = "";
 //
 //	Global int
 //	Err3Dc( const GfxInfo *gfx, const char *pszLeader, const Boolean beep )
-//	{
-//	  char *err;
-//
-//	  /*
-//	   * All strings are designed to be printed thus:
-//	   *      printf("That piece %s.\n");
-//	   */
-//	  error_t ERRORS[] = {
-//	    {E3DcSIMPLE, "may not move thus"},
-//	    {E3DcLEVEL, "may not move vertically"},
-//	    {E3DcCHECK, "would place your king in check"},
-//	    {E3DcDIST, "may not move that far"},
-//	    {E3DcINVIS, "is not currently on the board"},
-//	    {E3DcBLOCK, "is blocked from moving there"},
-//	    {E3DcMOVED, "has already moved"}
-//	  };
-//
-//	  if (beep)
-//	    XBell(XtDisplay(gfx->mainWindow), 0);
-//
+
+	private Vibrator vibe;
+	
+	public int Err3Dc( Object gfx, String pszLeader, Boolean beep )
+	{
+//		  char *err;
+		  String err = "";
+
+	  /*
+	   * All strings are designed to be printed thus:
+	   *      printf("That piece %s.\n");
+	   */
+//		  error_t ERRORS[] = {
+		  error_t ERRORS[] = {
+				  new error_t(E3DcSIMPLE, "may not move thus"),
+				  new error_t(E3DcLEVEL, "may not move vertically"),
+				  new error_t(E3DcCHECK, "would place your king in check"),
+				  new error_t(E3DcDIST, "may not move that far"),
+				  new error_t(E3DcINVIS, "is not currently on the board"),
+				  new error_t(E3DcBLOCK, "is blocked from moving there"),
+				  new error_t(E3DcMOVED, "has already moved")
+	  };
+
+	  if (beep)
+	  {
+		  vibe.vibrate(300);
+	  }
+		  //	    XBell(XtDisplay(gfx->mainWindow), 0);
+
 //	  if (pszLeader == NULL)
-//	    {
+	  if (pszLeader == null)
+	    {
 //	      XtVaSetValues(gfx->remark,
 //	                    XtNlabel, "",
 //	                    NULL);
-//	      return 0;
-//	    }
-//
+	      return 0;
+	    }
+
 //	  err = (char *)malloc(strlen(pszLeader) + 40);
 //	  if (!err)
 //	    return 1;
-//
+
 //	  sprintf(err, pszLeader, ERRORS[n3DcErr].pszErrStr);
-//
+	  Context context = getApplicationContext();
+	  CharSequence text = "ERR: " + err + "\nPSZ: " + pszLeader + "\nTXT: " + ERRORS[n3DcErr].pszErrStr;
+	  int duration = Toast.LENGTH_LONG;
+	  Toast toast = Toast.makeText(context, text, duration);
+	  toast.show();
+
 //	  XtVaSetValues(gfx->remark,
 //	                XtNlabel, err,
 //	                NULL);
-//
+
 //	  free(err);
-//	  return 0;
-//	}
-//
+	  return 0;
+	}
+
 //	/* Prompt for piece type to which to promote the pawn */
-//	Global void
-//	PiecePromote(Piece *piece)
 	public void PiecePromote(Piece piece)
 	{
 //	  Widget dialog, list;
@@ -4194,12 +4065,12 @@ private String winString = "";
 	//	/* This tries again for a move in case the last one failed for some reason */
 //	Global Boolean
 //	GenAltMove(const Colour bwSide, Move **ret)
-	Move GenAltMove(int bwSide, Move ret)
+	boolean GenAltMove(int bwSide, Move ret)
 	{
 //		  *ret = PopMove();
 //		  return TRUE;
 		  ret = PopMove();
-		  return ret;
+		  return TRUE;
 	}
 
 //	/* Creates a stack of legal moves that this piece can take in this go */
@@ -4655,11 +4526,7 @@ private String winString = "";
 	private int E3DcMOVED	= 6;
 
 
-	//	typedef struct
-//	{
-//	  Error nErrNum;
-//	  char *pszErrStr;
-//	} error_t;
+
 //
 //	/*
 //	 * All strings are designed to be printed thus:
