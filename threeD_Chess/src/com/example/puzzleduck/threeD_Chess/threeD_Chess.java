@@ -4,6 +4,9 @@ import java.util.Random;
 import java.util.Stack;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 public class threeD_Chess extends Activity {
@@ -15,15 +18,27 @@ public class threeD_Chess extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+//Want to print this out on program open:
       //main(int argc, char **argv)
       //{
-      //
       //  printf("3Dc version %s, Copyright (C) 1995,1996 Paul Hicks\n", VERSION);
       //  printf("3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL file for details\n");
       //  printf("This is free software: you are welcome to redistribute it\n");
       //  printf("    under certain conditions (see the GPL file).\n");
-      //
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
+						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
+						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
+						 + "\nThis version is ported to Android by PuZZleDucK\n")
+               .setCancelable(false)
+               .setNeutralButton("O.K.", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                   }
+               });
+        AlertDialog alert = builder.create();
+        
       Init3Dc();
 
       
@@ -4700,18 +4715,8 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //	    E-Mail: paulh@euristix.ie
-//	*/
+
 //	#ifndef __3DcErr_h
 //	#define __3DcErr_h
 //	extern int n3DcErr;
@@ -4746,10 +4751,4 @@ private String winString = "";
 //
 //	#endif /* __3DcErr_h */
 
-	
-
-    
-    
-    
-    
 }
