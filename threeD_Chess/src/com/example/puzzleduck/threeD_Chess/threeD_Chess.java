@@ -4197,6 +4197,7 @@ private String winString = "";
 	{
 //		  Local int pieceIdx = 0;
 //		  stack *moves;
+		  Stack moves;
 //		  Move *thisMove;
 		  int pieceIdx = 0;
 		  //stack moves;
@@ -4333,165 +4334,192 @@ private String winString = "";
 	        } /* End y loop */
 	    } /* End knight */
 //	  else if (piece->nName == cannon)
-//	    {
-//	      for (z = 0; z < LEVELS; z++)
-//	        {
-//	          if (z == CURZ)
-//	            continue;
-//
-//	          for (y = MAX( 0, CURY -3 ); y < MIN( RANKS, CURY +4 ); y++)
-//	            {
-//	              if (y == CURY)
-//	                continue;
-//
-//	              for (x = MAX( 0, CURX -3 ); x < MIN( FILES, CURX +4 ); x++)
-//	                {
-//	                  if (x == CURX)
-//	                    continue;
-//
-//	                  if ((ABS(CURX-x) == ABS(CURY-y)) ||
-//	                      (ABS(CURX-x) == ABS(CURZ-z)) ||
-//	                      (ABS(CURY-y) == ABS(CURZ-z)))
-//	                    continue;
-//
+	  else if (piece.nName == cannon)
+	    {
+	      for (z = 0; z < LEVELS; z++)
+	        {
+	          if (z == CURZ)
+	            continue;
+
+	          for (y = MAX( 0, CURY -3 ); y < MIN( RANKS, CURY +4 ); y++)
+	            {
+	              if (y == CURY)
+	                continue;
+
+	              for (x = MAX( 0, CURX -3 ); x < MIN( FILES, CURX +4 ); x++)
+	                {
+	                  if (x == CURX)
+	                    continue;
+
+	                  if ((ABS(CURX-x) == ABS(CURY-y)) ||
+	                      (ABS(CURX-x) == ABS(CURZ-z)) ||
+	                      (ABS(CURY-y) == ABS(CURZ-z)))
+	                    continue;
+
 //	                  if ((Board[z][y][x] == NULL) ||
-//	                      (Board[z][y][x]->bwSide == bwEnemy))
-//	                    {
-//	                      move.xyzAfter.xFile = x;
-//	                      move.xyzAfter.yRank = y;
-//	                      move.xyzAfter.zLevel = z;
-//	                      move.pVictim = Board[z][y][x];
+//                      (Board[z][y][x]->bwSide == bwEnemy))
+	                  if ((Board[z][y][x] == NULL) || (Board[z][y][x].bwSide == bwEnemy))
+	                    {
+	                      move.xyzAfter.xFile = x;
+	                      move.xyzAfter.yRank = y;
+	                      move.xyzAfter.zLevel = z;
+	                      move.pVictim = Board[z][y][x];
 //	                      move.nHadMoved = piece->bHasMoved;
-//
-//	                      if (!FakeMoveAndIsKingChecked( piece, x, y, z ))
-//	                        StackPush(moves, &move);
-//	                    } /* End valid move */
-//	                } /* End x loop */
-//	            } /* End y loop */
-//	        } /* End z loop */
-//	    } /* End cannon */
+	                      move.nHadMoved = piece.bHasMoved;
+
+	                      if (!FakeMoveAndIsKingChecked( piece, x, y, z ))
+	                      {
+//		                        StackPush(moves, &move);
+		                        StackPush(moves, move);
+	                      }
+	                    } /* End valid move */
+	                } /* End x loop */
+	            } /* End y loop */
+	        } /* End z loop */
+	    } /* End cannon */
 //	  else if (piece->nName == pawn) /* Don't bother searching for en passant */
-//	    {
+	  else if (piece.nName == pawn) /* Don't bother searching for en passant */
+	    {
 //	      y = ((piece->bwSide == WHITE) ? 1 : -1);
-//
-//	      for (x = MAX(0, CURX-1); x < MIN(FILES, CURX+2); ++x)
-//	        {
-//	          /* Due to the complexity of the conditional this time,
-//	           * I've opted for aborting when illegal instead of
-//	           * proceeding when legal. */
-//	          if ((x == CURX) && (Board[CURZ][CURY+y][CURX] != NULL))
-//	            continue;
-//
+	      y = ((piece.bwSide == WHITE) ? 1 : -1);
+
+	      for (x = MAX(0, CURX-1); x < MIN(FILES, CURX+2); ++x)
+	        {
+	          /* Due to the complexity of the conditional this time,
+	           * I've opted for aborting when illegal instead of
+	           * proceeding when legal. */
+	          if ((x == CURX) && (Board[CURZ][CURY+y][CURX] != NULL))
+	            continue;
+
 //	          if ( (x != CURX) &&
-//	              ((Board[CURZ][CURY + y][x] == NULL) ||
-//	               ((Board[CURZ][CURY + y][x])->bwSide != bwEnemy)) )
-//	            continue;
-//
-//	          move.xyzAfter.xFile = x;
-//	          move.xyzAfter.yRank = CURY + y;
-//	          move.xyzAfter.zLevel = CURZ;
-//	          move.pVictim = Board[CURZ][CURY + y][x];
+//              ((Board[CURZ][CURY + y][x] == NULL) ||
+//               ((Board[CURZ][CURY + y][x])->bwSide != bwEnemy)) )
+	          if ( (x != CURX) && 
+	        		  ((Board[CURZ][CURY + y][x] == NULL) || ((Board[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
+	          {
+	            continue;
+	          }
+	          move.xyzAfter.xFile = x;
+	          move.xyzAfter.yRank = CURY + y;
+	          move.xyzAfter.zLevel = CURZ;
+	          move.pVictim = Board[CURZ][CURY + y][x];
 //	          move.nHadMoved = piece->bHasMoved;
-//
-//	          if (!FakeMoveAndIsKingChecked(piece, x, CURY+y, CURZ))
-//	            StackPush(moves, &move);
-//
+	          move.nHadMoved = piece.bHasMoved;
+
+	          if (!FakeMoveAndIsKingChecked(piece, x, CURY+y, CURZ))
+	          {
+//		            StackPush(moves, &move);
+		            StackPush(moves, move);
+	          }
 //	          /* This next conditional is for the two-forward move:
 //	           * it only happens when the previous attempt was the one-forward
 //	           * move and makes assumptions based on that fact. */
 //	          if ( (x==CURX) && (piece->bHasMoved == FALSE) &&
-//	              (Board[CURZ][CURY + y+y][CURX] == NULL) )
-//	            {
-//	              move.xyzAfter.yRank += y;
-//	              if (!FakeMoveAndIsKingChecked(piece, CURX, CURY+y+y, CURZ))
-//	                StackPush(moves, &move);
-//	            }
-//	        } /* End x loop */
-//	    } /* End pawn */
-//	  else
-//	    {
-//	      int d, dist;
+//              (Board[CURZ][CURY + y+y][CURX] == NULL) )
+	          if ( (x==CURX) && (piece.bHasMoved == FALSE) && (Board[CURZ][CURY + y+y][CURX] == NULL) )
+	            {
+	              move.xyzAfter.yRank += y;
+	              if (!FakeMoveAndIsKingChecked(piece, CURX, CURY+y+y, CURZ))
+//		                StackPush(moves, &move);
+		                StackPush(moves, move);
+	            }
+	        } /* End x loop */
+	    } /* End pawn */
+	  else
+	    {
+	      int d, dist;
 //	      Piece *pEncountered;
-//
-//	      /*
-//	       * The king and prince can only move one square;
-//	       * all others can move MAX(FILES,RANKS)-1.
-//	       * For a regular board, this is 7.  (Not 8: If you moved 8
-//	       * in any direction you would be off the edge of the board)
-//	       */
+	      Piece pEncountered;
+
+	      /*
+	       * The king and prince can only move one square;
+	       * all others can move MAX(FILES,RANKS)-1.
+	       * For a regular board, this is 7.  (Not 8: If you moved 8
+	       * in any direction you would be off the edge of the board)
+	       */
 //	      if ((piece->nName == king) ||
-//	          (piece->nName == prince))
-//	        dist = 1;
-//	      else
-//	        dist = MAX(FILES, RANKS) -1;
-//
-//	      for (z = -1; z <= 1; ++z)
-//	      {
-//	       /*
-//	        * Cater for pieces that can't change level.
-//	        */
-//	       if (((piece->nName == prince) ||
+//          (piece->nName == prince))
+	      if ((piece.nName == king) || (piece.nName == prince))
+	        dist = 1;
+	      else
+	        dist = MAX(FILES, RANKS) -1;
+
+	      for (z = -1; z <= 1; ++z)
+	      {
+	       /*
+	        * Cater for pieces that can't change level.
+	        */
+//		       if (((piece->nName == prince) ||
 //	            (piece->nName == princess) ||
 //	            (piece->nName == abbey) ||
 //	            (piece->nName == galley)) &&
 //	           (z != 0))
-//	         continue;
-//
-//	       for (y = -1; y <= 1; ++y)
-//	       {
-//	         for (x = -1; x <= 1; ++x)
-//	         {
-//	           if ((x==0) && (y==0) && (z==0))
-//	             continue;
-//
-//	           /*
-//	            * Cater for the pieces that can only move
-//	            * horizontally/vertically.
-//	            */
+		       if (((piece.nName == prince) || (piece.nName == princess) || (piece.nName == abbey)
+		    		   || (piece.nName == galley)) && (z != 0))
+	         continue;
+
+	       for (y = -1; y <= 1; ++y)
+	       {
+	         for (x = -1; x <= 1; ++x)
+	         {
+	           if ((x==0) && (y==0) && (z==0))
+	             continue;
+
+	           /*
+	            * Cater for the pieces that can only move
+	            * horizontally/vertically.
+	            */
 //	           if (((piece->nName == rook) ||
-//	                (piece->nName == galley)) &&
-//	               !HORZ(x, y))
-//	             continue;
+//               (piece->nName == galley)) &&
+//              !HORZ(x, y))
+	           if (((piece.nName == rook) || (piece.nName == galley)) && !HORZ(x, y))
+	             continue;
 //	           /*
 //	            * Cater for the pieces that can only move
 //	            * diagonally.
 //	            */
 //	           else if (((piece->nName == bishop) ||
-//	                     (piece->nName == abbey)) &&
-//	                    !DIAG(x, y))
-//	             continue;
-//
-//	           for (d = 1; d <= dist; ++d)
-//	           {
-//	             pEncountered = TraverseDir(piece, x, y, z, d);
-//	             if (IsMoveLegal(piece, pEncountered))
-//	               {
+//               (piece->nName == abbey)) &&
+//              !DIAG(x, y))
+	           else if (((piece.nName == bishop) || (piece.nName == abbey)) && !DIAG(x, y))
+	             continue;
+
+	           for (d = 1; d <= dist; ++d)
+	           {
+	             pEncountered = TraverseDir(piece, x, y, z, d);
+	             if (IsMoveLegal(piece, pEncountered))
+	               {
 //	                 move.xyzAfter = pEncountered->xyzPos;
-//	                 move.pVictim = pEncountered;
+	                 move.xyzAfter = pEncountered.xyzPos;
+	                 move.pVictim = pEncountered;
 //	                 move.nHadMoved = piece->bHasMoved;
-//
-//	                 /* Check for putting own king in check */
+	                 move.nHadMoved = piece.bHasMoved;
+
+	                 /* Check for putting own king in check */
 //	                 if (!FakeMoveAndIsKingChecked(piece,
-//	                                               pEncountered->xyzPos.xFile,
-//	                                               pEncountered->xyzPos.yRank,
-//	                                               pEncountered->xyzPos.zLevel))
+//                   pEncountered->xyzPos.xFile,
+//                   pEncountered->xyzPos.yRank,
+//                   pEncountered->xyzPos.zLevel))
 //	                   StackPush(moves, &move);
-//	               }
-//
-//	             if (pEncountered != SQUARE_EMPTY)
-//	               break; /* No point on continuing in this direction if
-//	                       * we've hit a piece or the edge of the board.. */
-//	           } /* End d loop */
-//	         } /* End x loop */
-//	       } /* End y loop */
-//	     } /* End z loop */
-//	    }
-//
+	                 if (!FakeMoveAndIsKingChecked(piece,
+	                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
+	                   StackPush(moves, move);
+	               }
+
+	             if (pEncountered != SQUARE_EMPTY)
+	               break; /* No point on continuing in this direction if
+	                       * we've hit a piece or the edge of the board.. */
+	           } /* End d loop */
+	         } /* End x loop */
+	       } /* End y loop */
+	     } /* End z loop */
+	    }
+
 	  return moves;
 
-//	#undef CURX
-//	#undef CURY
-//	#undef CURZ
+//		#undef CURX
+//		#undef CURY
+//		#undef CURZ
 	}
 	
 	
@@ -4512,18 +4540,7 @@ private String winString = "";
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
+
 //	#ifndef _3DC_MACHINE_H
 //	#define _3DC_MACHINE_H
 //
