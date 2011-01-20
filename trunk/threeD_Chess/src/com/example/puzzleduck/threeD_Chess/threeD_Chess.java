@@ -2363,7 +2363,7 @@ Err3Dc( firstGFX, moveString,
 //
 	  return;
 	}
-//
+
 //	/* Update the muster count for the given type/colour in the muster window */
 //	Global void
 //	UpdateMuster(Colour bwSide, Title nType, Bool redisplay)
@@ -2383,7 +2383,6 @@ Err3Dc( firstGFX, moveString,
 	      count = 0;
 	      for (i = 0; i < titleCount[nType]; ++i)
 	        {
-//	          if (Muster[bwSide][MusterIdx(nType, i)]->bVisible)
 	          if (Muster[bwSide][MusterIdx(nType, i)].bVisible)
 	            ++count;
 	        }
@@ -2514,52 +2513,36 @@ Err3Dc( firstGFX, moveString,
 //	}	
 	
 	
-//	
-//	/*
 //	 * engine.c
-//	 *
 //	 * The rules engine for 3Dc.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
 //	    Copyright (C) 1995  Paul Hicks
-//
 //	    This program is free software; you can redistribute it and/or modify
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
-//	*/
-//
-//	#include "machine.h"
-//	#include "3Dc.h"
-//
+
+	public static final int UINT_MAX = 99;
+	public static final int INT_MAX = 99;
+	
 //	/*
 //	 * Returns a pointer to any one piece of the specified colour threatening
 //	 * the mentioned square.  Will return NULL if the square is not
 //	 * threatened.
 //	 */
-//	Global Piece *
-//	SquareThreatened(Colour bwSide,
-//    const File xFile, const Rank yRank, const Level zLevel)
+
 	public Piece SquareThreatened(int bwSide, int xFile, int yRank, int zLevel)
 	{
 	  int pieceIdx;
 
 	  for (pieceIdx = 0; pieceIdx < PIECES; ++pieceIdx)
 	    {
-//	      if (Muster[bwSide][pieceIdx]->bVisible &&
-//          PieceMayMove( Muster[bwSide][pieceIdx],
-//                        xFile, yRank, zLevel ))
 	      if (Muster[bwSide][pieceIdx].bVisible && PieceMayMove( Muster[bwSide][pieceIdx], xFile, yRank, zLevel ))
 	        return Muster[bwSide][pieceIdx];
 	    }
 
-//	  return NULL;
 	  return null;
 	}
-
 //	/* Go dist in given direction.  Direction is positive, negative, 0,
 //	 * with obvious meanings (think of the axes).
 //	 * Return SQUARE_EMPTY, SQUARE_INVALID, or a pointer to the piece
@@ -2573,26 +2556,14 @@ Err3Dc( firstGFX, moveString,
 //	 * members of the xyzPos struct are equal to UINT_MAX then there was
 //	 * error which utterly precludes moving (e.g. dist == 0).
 //	 */
-//			Global Piece *
-//			TraverseDir(const Piece *piece, Dir xDir, Dir yDir, Dir zDir, unsigned dist)
-
-	public static final int UINT_MAX = 99;
-	public static final int INT_MAX = 99;
 	
 	private Piece TraverseDir(Piece piece, int xDir, int yDir, int zDir, int dist)
 	{
 	  int x, y, z, d = 0;
 
 //	  /* Most move at least one in a real direction */
-//	  if ((dist == 0) ||
-//      ((xDir == 0) &&
-//       (yDir == 0) &&
-//       (zDir == 0)))
 	  if ((dist == 0) || ((xDir == 0) && (yDir == 0) && (zDir == 0)))
 	    {
-//	      SQUARE_INVALID->xyzPos.xFile =
-//	        SQUARE_INVALID->xyzPos.yRank =
-//	          SQUARE_INVALID->xyzPos.zLevel = UINT_MAX;
 	      SQUARE_INVALID.xyzPos.xFile = UINT_MAX;
 	      SQUARE_INVALID.xyzPos.yRank = UINT_MAX;
 	      SQUARE_INVALID.xyzPos.zLevel = UINT_MAX;
@@ -2600,8 +2571,6 @@ Err3Dc( firstGFX, moveString,
 	      return SQUARE_INVALID;
 	    }
 
-//	  if ((piece->nName != knight) &&
-//      (piece->nName != cannon))
 	  if ((piece.nName != knight) && (piece.nName != cannon))
 	    {
 //	      /* Make all directions be 1, -1 or 0 */
@@ -2610,27 +2579,17 @@ Err3Dc( firstGFX, moveString,
 	      if (zDir != 0) zDir /= ABS(zDir);
 	    }
 	  else
-	    dist = 1;
-
-//	  x = piece->xyzPos.xFile;
-//	  y = piece->xyzPos.yRank;
-//	  z = piece->xyzPos.zLevel;
-	  x = piece.xyzPos.xFile;
-	  y = piece.xyzPos.yRank;
-	  z = piece.xyzPos.zLevel;
-
+		  dist = 1;
+		  x = piece.xyzPos.xFile;
+		  y = piece.xyzPos.yRank;
+		  z = piece.xyzPos.zLevel;
 	  do{
 	      x += xDir;
 	      y += yDir;
 	      z += zDir;
 
-//	      if (!((x >= 0)    && (y >= 0)    && (z >= 0) &&
-//          (x < FILES) && (y < RANKS) && (z < LEVELS)))
 	      if (!((x >= 0) && (y >= 0) && (z >= 0) && (x < FILES) && (y < RANKS) && (z < LEVELS)))
 	        {
-//	          SQUARE_INVALID->xyzPos.xFile = x;
-//	          SQUARE_INVALID->xyzPos.yRank = y;
-//	          SQUARE_INVALID->xyzPos.zLevel = z;
 	          SQUARE_INVALID.xyzPos.xFile = x;
 	          SQUARE_INVALID.xyzPos.yRank = y;
 	          SQUARE_INVALID.xyzPos.zLevel = z;
@@ -2639,12 +2598,8 @@ Err3Dc( firstGFX, moveString,
 
 	      if (Board[z][y][x] != null)
 	        {
-//	          if (Board[z][y][x]->bwSide == piece->bwSide)
 	          if (Board[z][y][x].bwSide == piece.bwSide)
 	            {
-//	              SQUARE_INVALID->xyzPos.xFile = x;
-//	              SQUARE_INVALID->xyzPos.yRank = y;
-//	              SQUARE_INVALID->xyzPos.zLevel = z;
 	              SQUARE_INVALID.xyzPos.xFile = x;
 	              SQUARE_INVALID.xyzPos.yRank = y;
 	              SQUARE_INVALID.xyzPos.zLevel = z;
@@ -2662,14 +2617,9 @@ Err3Dc( firstGFX, moveString,
 //	   *  We have not encountered another piece.
 //	   *  We have moved dist spaces.
 //	   */
-//	  if ((x >= 0)     && (y >= 0)    && (z >= 0) &&
-//      (z < LEVELS) && (y < RANKS) && (x < FILES))
 	  if ((x >= 0) && (y >= 0) && (z >= 0) && (z < LEVELS) && (y < RANKS) && (x < FILES))
 	    {
 //	      /* Valid (empty) square */
-//	      SQUARE_EMPTY->xyzPos.xFile = x;
-//	      SQUARE_EMPTY->xyzPos.yRank = y;
-//	      SQUARE_EMPTY->xyzPos.zLevel = z;
 	      SQUARE_EMPTY.xyzPos.xFile = x;
 	      SQUARE_EMPTY.xyzPos.yRank = y;
 	      SQUARE_EMPTY.xyzPos.zLevel = z;
@@ -2677,13 +2627,8 @@ Err3Dc( firstGFX, moveString,
 	      return SQUARE_EMPTY;
 	    }
 
-//	  /*
 //	   * We fell off the board. Go back one place to the last valid
 //	   * location.
-//	   */
-//	  SQUARE_INVALID->xyzPos.xFile = x - xDir;
-//	  SQUARE_INVALID->xyzPos.yRank = y - yDir;
-//	  SQUARE_INVALID->xyzPos.zLevel = z - zDir;
 	  SQUARE_INVALID.xyzPos.xFile = x - xDir;
 	  SQUARE_INVALID.xyzPos.yRank = y - yDir;
 	  SQUARE_INVALID.xyzPos.zLevel = z - zDir;
@@ -2691,64 +2636,44 @@ Err3Dc( firstGFX, moveString,
 	  return SQUARE_INVALID;
 	}
 
-//	/*
 //	 * Return TRUE if the king is checked in the current board layout.
-//	 */
-//	Inline Global Boolean
-//	IsKingChecked( Colour bwSide )
 	public Boolean IsKingChecked( int bwSide )
 	{
-	  Coord xyz;
+	  Coord xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ].xyzPos;
 
-//	  xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ]->xyzPos;
-	  xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ].xyzPos;
-
-//	  return ( SquareThreatened( (bwSide == WHITE) ? BLACK : WHITE,
-//      xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
 	  return ( SquareThreatened( (bwSide == WHITE) ? BLACK : WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
 	}
 
 //	/* Check move re. putting own king in check */
-//	Inline Global Boolean
-//	FakeMoveAndIsKingChecked( Piece *piece,
-//	                         const File x, const Rank y, const Level z)
 	public Boolean FakeMoveAndIsKingChecked( Piece piece, int x, int y, int z)
 	{
-//		  Piece *temp;
 		  Piece temp;
 	  Boolean retVal;
 	  Coord xyz;
 
-//	  xyz = piece->xyzPos;
 	  xyz = piece.xyzPos;
 	  temp = Board[z][y][x];
 	  if ( temp != NULL )
-//		    temp->bVisible = FALSE;
 	  {
 		    temp.bVisible = FALSE;
 	  }
 	  Board[z][y][x] = piece;
 	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
 
-//	  if (piece->nName == king)
 	  if (piece.nName == king)
 	    {
 //	      /* We're moving the king, so it's xyzPos may not be accurate.
 //	       * check manually. */
-//	      retVal = (SquareThreatened( (piece->bwSide == WHITE) ? BLACK : WHITE,
-//          x, y, z ) != NULL) ;
 	      retVal = (SquareThreatened( (piece.bwSide == WHITE) ? BLACK : WHITE, x, y, z ) != NULL) ;
 	    }
 	  else
 	  {
-//		    retVal = IsKingChecked(piece->bwSide);
 		    retVal = IsKingChecked(piece.bwSide);
 	  }
 	  
 	  Board[z][y][x] = temp;
 	  if ( temp != NULL )
 	  {
-//		    temp->bVisible = TRUE;
 		    temp.bVisible = TRUE;
 	  }
 	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
@@ -2848,8 +2773,6 @@ Err3Dc( firstGFX, moveString,
 //	  if (request->core.height == 0)
 //	    new->core.height = 100;
 //	}
-//
-//
 //
 //
 //	static void Destroy( w)
@@ -3591,56 +3514,24 @@ Err3Dc( firstGFX, moveString,
 //	  return;
 //	}
 
-//	
-//	/*
 //	 * ai.c
-//	 *
 //	 * An implementation of computer intelligence (you wot?) for 3Dc.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
 //	    Copyright (C) 1995,1996  Paul Hicks
-//
 //	    This program is free software; you can redistribute it and/or modify
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
-//	*/
-//	#ifdef DEBUG
-//	#include <stdio.h>
-//	#endif /* DEBUG */
 
-//	#include "machine.h"
-//	#include "3Dc.h"
-
-//moved stuff here to stack list class
-
-//
-//	Local int values[ TITLES ] = 
-//	{
-//	  26, 42, 22, 10, 25, /* Royalty */
-//	  45, 21, 12, 24, 15, /* Nobility */
-//	  6 /* Pawn */
-//	};
 	public int values[] = { 26, 42, 22, 10, 25, /* Royalty */
 							45, 21, 12, 24, 15, /* Nobility */
 							6 /* Pawn */
 	};
-
-	
-//	bestMoves = {
-//			{ NULL, NULL, NULL, NULL, NULL },
-//			{ INT_MIN, INT_MIN, INT_MIN, INT_MIN, INT_MIN }
-//			};
 	
 	stackList bestMoves = new stackList();
 	public int BEST_STACKS = 5;
 	public int INT_MIN = -99;
 	
-//	Local void
-//	PushMove(Move *move, int value)
 	public void PushMove(Move move, int value)
 	{
 	  int i;
@@ -3648,10 +3539,6 @@ Err3Dc( firstGFX, moveString,
 	  if ( value == INT_MIN )
 	    return;
 
-//	  for ( i = 0; (bestMoves.stacks [i] != NULL) &&
-//	               (bestMoves.ratings[i] > value) &&
-//	               (i < BEST_STACKS);
-//	       ++i )
 	  for ( i = 0; 
 	  		(bestMoves.stacks [i] != NULL) && (bestMoves.ratings[i] > value) && (i < BEST_STACKS);
 	  		++i )
@@ -3661,15 +3548,13 @@ Err3Dc( firstGFX, moveString,
 
 	  if ( i == BEST_STACKS )
 	    {
-//	      free( move );
 	      move = null;
 	      return;
 	    }
-//
+
 	  if ( bestMoves.ratings[i] == value )
 	    {
 	      StackPush( MoveStack, move );
-//	      free( move );
 	      move = null;
 	    }
 	  else
@@ -3677,7 +3562,6 @@ Err3Dc( firstGFX, moveString,
 	      int j;
 
 	      j = BEST_STACKS-1;
-//
 //	      /* Get rid of the lowest level (if it falls off the end) */
 	      if (bestMoves.stacks[j] != NULL)
 	        StackDelete( bestMoves.stacks[j] );
@@ -3691,17 +3575,14 @@ Err3Dc( firstGFX, moveString,
 
 //	      /* Create the new stack */
 //	      bestMoves.stacks[i] = StackNew();
-	      StackNew();
+	      bestMoves.stacks[i] = StackNew();
 	      StackPush( MoveStack, move );
 	      bestMoves.ratings[i] = value;
 	    }
-//	  return;
 	}
 
 //	/* This function circumvents the problem of negative ratings
 //	 * by adding to all ratings enough to make the smallest rating == 0 */
-//	Local void
-//	FixMoves( void )
 	public void FixMoves( )
 	{
 	  int i, add;
@@ -3710,30 +3591,21 @@ Err3Dc( firstGFX, moveString,
 	  {
 		 //	    nop();
 	  }
-
 	  if ((i < 0) || (bestMoves.ratings[i] >= 0))
 	    return;
 
 	  add = -(bestMoves.ratings[i]);
-
 	  for (; i >= 0; --i)
 	    bestMoves.ratings[i] += add;
-	     
 	}
 
-//	Local Move *
-//	PopMove( void )
 	public Move PopMove()
 	{
-//		  Move *ret;
 		  Move ret;
 	  int stacks, randStack, randMove, randBase, randNum;
 
-//	  if ( bestMoves.stacks[0] == NULL )
-//	    return NULL;
-	  if ( bestMoves.stacks[0] == NULL ) //needs to be null?
+	  if ( bestMoves.stacks[0] == null )
 	    return null;
-
 	  /*
 	   * This algorithm works by generating a number randBase on which to base a
 	   * call to random(): think of it as a die with randBase sides.  randBase
@@ -3758,7 +3630,6 @@ Err3Dc( firstGFX, moveString,
 	           ++stacks )
 	        randBase += ((BEST_STACKS-stacks) * bestMoves.ratings[stacks]);
 
-//	      randNum = random()%randBase;
 	      randNum = rng.nextInt()%randBase;
 
 	      for ( randStack = stacks-1;
@@ -3768,7 +3639,6 @@ Err3Dc( firstGFX, moveString,
 	                      bestMoves.ratings[randStack] );
 	        }
 
-//	      randMove = random()%bestMoves.stacks[randStack]->nSize;
 	      randMove = rng.nextInt()%bestMoves.stacks[randStack].size();
 //DEBUG... may impliment later...
 //	      D( printf( "Choosing move %i from a stack of size %i\n",
@@ -3781,15 +3651,12 @@ Err3Dc( firstGFX, moveString,
 	  
 //	  /* This defeats the opaqueness of stack.c but it's easy */
 //	  /* It just clears the one move we've just made from the move stack */
-//
 //	  /* If the chosen move was the top of the stack.. */
 	  if (randMove == 0)
 	    {
 //	      /* Don't free the move: it's "ret" and still in use! */
 	      StackPop( );
-
 //	      /* If there is only the one move then we remove the stack */
-//	      if ( bestMoves.stacks[randStack]->nSize == 0 )
 	      if ( bestMoves.stacks[randStack].size() == 0 )
 	        {
 	          StackDelete( bestMoves.stacks[randStack] );
@@ -3802,7 +3669,6 @@ Err3Dc( firstGFX, moveString,
 	              ++randStack;
 	            }
 
-//	          bestMoves.stacks[randStack] = NULL;
 	          bestMoves.stacks[randStack] = null;
 	          bestMoves.ratings[randStack] = INT_MIN;
 	        }
@@ -3811,29 +3677,23 @@ Err3Dc( firstGFX, moveString,
 	  else
 	    {
 	      int i;
-//	      struct stack_el *el, *temp;
 	      Stack_el el = new Stack_el();
 	      Stack_el temp = new Stack_el();
 
-//	      el = bestMoves.stacks[randStack]->top;
 	      el = (Stack_el)bestMoves.stacks[randStack].firstElement();
 
 //	      for (i = 1; (i < randMove) && (el->below != NULL); ++i)
-	      for (i = 1; (i < randMove) && (el != NULL); ++i)
+	      for (i = 1; (i < randMove) && (el.below != NULL); ++i)
 	        {
-//	          el = el->below;
 	          el = el.below;
 	        }
-//
+
 //	      if (!CHECK((el->below != NULL) && (el->below->mvt == ret)))
 //	        {
 //	          /* Hopefully this can never happen */
 	      // :) you think you hope it can never happen... I'm terrified it's important.
 //	        }
 
-//          temp = el->below;
-//          el->below = temp->below;
-//          bestMoves.stacks[randStack]->nSize--;
           temp = el.below; 			// !!! Is this legal... I think I should use a remove from index sorta
           el.below = temp.below;	// !!! thing, but i need to re-refference .below anyhow, see how it goes for now
 //          bestMoves.stacks[randStack]->nSize--;
@@ -3843,14 +3703,9 @@ Err3Dc( firstGFX, moveString,
 	  return ret;
 	}
 
-//	Local int
-//	RateMove( Move *move, Colour bwSide )
 	public int RateMove( Move move, int bwSide )
 	{
 	  int rating = 0;
-//	  Colour bwEnemy;
-//	  Coord xyzPos;
-//	  Piece *moving, *storing;
 	  int bwEnemy;
 	  Coord xyzPos;
 	  Piece moving;
@@ -3858,34 +3713,22 @@ Err3Dc( firstGFX, moveString,
 	  bwEnemy = ( bwSide == WHITE ) ? BLACK : WHITE;
 
 	  /* Rate taking king */
-//	  if (move->pVictim == Muster[ bwEnemy ][ MusterIdx( king, 0 )])
 	  if (move.pVictim == Muster[ bwEnemy ][ MusterIdx( king, 0 )])
 	    return INT_MAX;
 
 //	  /* Fake the move for simple lookahead */
-//	  moving  = Board[ move->xyzBefore.zLevel ]
-//      [ move->xyzBefore.yRank ]
-//      [ move->xyzBefore.xFile ];
 	  moving  = Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ];
-//	  storing = Board[ move->xyzAfter.zLevel ]
-//      [ move->xyzAfter.yRank ]
-//      [ move->xyzAfter.xFile ];
 	  storing = Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
 
 //realy hope this CHECK thing isn't CHECKing anything impotant
 	  //	  if (!CHECK( moving != NULL ))
 //	    return INT_MIN;
-//
+
 //	  /* Rate saving king */
 //	  /* It might be more efficient to put the IsKingChecked() call
 //	   * inside the move faked below but that would mean nasty code
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
-//	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( king, 0 )],
-//      move->xyzAfter.xFile,
-//      move->xyzAfter.yRank,
-//      move->xyzAfter.zLevel ))
-
 	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( king, 0 )],
 		      move.xyzAfter.xFile,
 		      move.xyzAfter.yRank,
@@ -3893,58 +3736,31 @@ Err3Dc( firstGFX, moveString,
 		  return INT_MIN;
 
 	  /* Fake the move */
-//	  Board[ move->xyzBefore.zLevel ]
-//      [ move->xyzBefore.yRank ]
-//      [ move->xyzBefore.xFile ] = NULL;
-// Board[ move->xyzAfter.zLevel ]
-//      [ move->xyzAfter.yRank ]
-//      [ move->xyzAfter.xFile ] = moving;
 	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = null;
 	  Board[ move.xyzAfter.zLevel ][ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = moving;
-//	  if ( storing != NULL )
-//	    storing->bVisible = FALSE;
 	  if ( storing != null )
 	    storing.bVisible = FALSE;
 
 	  /* Rate check */
-//	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( king, 0 )])->xyzPos;
 	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( king, 0 )]).xyzPos;
-//	  if ( SquareThreatened( bwSide,
-//      xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
 	  if ( SquareThreatened( bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating += values[ king ];
 
 	  /* Rate danger: if there's a chance of being captured in the new pos. */
-//	  xyzPos = move->xyzAfter;
 	  xyzPos = move.xyzAfter;
-//	  if ( SquareThreatened( bwEnemy,
-//      xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != NULL )
-//rating -= (values[ moving->nName ] /2);
 	  if ( SquareThreatened( bwEnemy, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating -= (values[ moving.nName ] /2);
 
 	  /* Undo the fake */
-//	  Board[ move->xyzBefore.zLevel ]
-//      [ move->xyzBefore.yRank ]
-//      [ move->xyzBefore.xFile ] = moving;
-// Board[ move->xyzAfter.zLevel ]
-//      [ move->xyzAfter.yRank ]
-//      [ move->xyzAfter.xFile ] = storing;
-// if ( storing != NULL )
-//   storing->bVisible = TRUE;
 	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = moving;
  Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = storing;
  if ( storing != null )
    storing.bVisible = TRUE;
 
 	  /* Rate capture */
-// if (( move->pVictim != NULL ) &&
-// ( move->pVictim->bwSide == bwEnemy ))
  if (( move.pVictim != NULL ) && ( move.pVictim.bwSide == bwEnemy ))
 	    {
 	      int i;
-
-//	      rating += values[ move->pVictim->nName ];
 	      rating += values[ move.pVictim.nName ];
 
 	      /* Rate evasion: if there's a chance of any friendly piece
@@ -3952,13 +3768,6 @@ Err3Dc( firstGFX, moveString,
 	       * an authorative check and needs to be enhanced). */
 	      for ( i = 0; i < PIECES; ++i )
 	        {
-//	          if ( Muster[ bwSide ][ i ]->bVisible &&
-//            SquareThreatened( bwEnemy,
-//                              Muster[ bwSide ][ i ]->xyzPos.xFile,
-//                              Muster[ bwSide ][ i ]->xyzPos.yRank,
-//                              Muster[ bwSide ][ i ]->xyzPos.zLevel ) ==
-//           move->pVictim )
-//	            rating += (values[ Muster[ bwSide ][ i ]->nName ] /2);
 	          if ( Muster[ bwSide ][ i ].bVisible && SquareThreatened( bwEnemy,
 	        		  	Muster[ bwSide ][ i ].xyzPos.xFile,
                         Muster[ bwSide ][ i ].xyzPos.yRank,
@@ -3969,17 +3778,11 @@ Err3Dc( firstGFX, moveString,
 
 //	  /* Rate special moves */
 //	  /* En passant and castling not yet possible for computer */
-// if (( move->pVictim != NULL ) &&
-// ( move->pVictim->bwSide == bwSide))
  if (( move.pVictim != null ) && ( move.pVictim.bwSide == bwSide))
 	    rating += 10; /* Castling */
-// if (( move->xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) &&
-// ( moving->nName == pawn ))
  if (( move.xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) && ( moving.nName == pawn ))
 	    rating += values[queen]; /* Promotion */
 	  /* Note the horrible magic numbers below */
-// if ( (ABS( move->xyzAfter.yRank - move->xyzBefore.yRank ) == 2) &&
-// ( moving->nName == pawn ))
  if ( (ABS( move.xyzAfter.yRank - move.xyzBefore.yRank ) == 2) && ( moving.nName == pawn ))
 	    rating += 1; /* Two-forward by pawn: the computer doesn't
 	                  * usually like opening its attack routes otherwise */
@@ -3987,25 +3790,16 @@ Err3Dc( firstGFX, moveString,
 	  /* Rate position; distance forward (should be proximity to
 	   * enemy king except for pawns */
 	  if ( bwSide == WHITE )
-//		    rating += move->xyzAfter.yRank - move->xyzBefore.yRank;
 		    rating += move.xyzAfter.yRank - move.xyzBefore.yRank;
 	  else
-//		    rating += 7 - move->xyzAfter.yRank + move->xyzBefore.yRank;
 		    rating += 7 - move.xyzAfter.yRank + move.xyzBefore.yRank;
-
 	  return rating;
 	}
 
-//	Global Boolean
-//	GenMove(const Colour bwSide, Move **ret)
 	public boolean GenMove( int bwSide, Move ret)
 	{
-//		  Local int pieceIdx = 0;
-//		  stack *moves;
 		  Stack moves;
-//		  Move *thisMove;
 		  int pieceIdx = 0;
-		  //stack moves;
 		  Move thisMove;
 
 	  /* First clear out any old moves */
@@ -4016,32 +3810,24 @@ Err3Dc( firstGFX, moveString,
 	      for ( i = 0; (bestMoves.stacks[i] != NULL) && (i < BEST_STACKS); ++i)
 	        {
 	          StackDelete(bestMoves.stacks[i]);
-//	          bestMoves.stacks[i] = NULL;
 	          bestMoves.stacks[i] = null;
 	          bestMoves.ratings[i] = INT_MIN;
 	        }
 	    }
 
-//	  if ( Muster[bwSide][pieceIdx]->bVisible )
 	  if ( Muster[bwSide][pieceIdx].bVisible )
 	    {
-//	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );
-	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );//Comming up next
-//	      if (moves != NULL)
+	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );
 	      if (moves != null)
 	        {
 //	#         ifdef NOTDEF
 //	          StackDump( moves );
 //	#         endif /* DEBUG */
 
-//	          while ( (thisMove = StackPop( moves )) != NULL )
 	          while ( (thisMove = StackPop( )) != null )
 	            {
-//	              PushMove( thisMove, RateMove( thisMove, bwSide ) );
 	              PushMove( thisMove, RateMove( thisMove, bwSide ) );
 	            }
-
-//	          StackDelete( moves );
 	          StackDelete(moves);
 	        }
 	    }
@@ -4049,61 +3835,45 @@ Err3Dc( firstGFX, moveString,
 	  if (++pieceIdx == PIECES)
 	    {
 	      FixMoves();
-//	      *ret = PopMove();
 	      ret = PopMove();
 	      pieceIdx = 0;
 	      return TRUE;
 	    }
 
-//		  *ret = NULL;
 		  ret = null;
 		  return FALSE;
 	}
 
 
-	//This is where i need to update interface to shade/highlight possible moves to improve UI
 	//	/* This tries again for a move in case the last one failed for some reason */
-//	Global Boolean
-//	GenAltMove(const Colour bwSide, Move **ret)
 	boolean GenAltMove(int bwSide, Move ret)
 	{
-//		  *ret = PopMove();
-//		  return TRUE;
 		  ret = PopMove();
 		  return TRUE;
 	}
 
 //	/* Creates a stack of legal moves that this piece can take in this go */
-//	stack *
+	//This is where i need to update interface to shade/highlight possible moves to improve UI
 	Stack FindAllMoves(Piece piece)
 	{
-//		  stack *moves;
 		  Stack moves;
 	  Move move = new Move();
-//	  Colour bwEnemy;
 	  int bwEnemy;
 	  int x, y, z;
 
-//		#define CURX (piece->xyzPos.xFile)
-//		#define CURY (piece->xyzPos.yRank)
-//		#define CURZ (piece->xyzPos.zLevel)
 		int CURX = (piece.xyzPos.xFile);
 		int CURY = (piece.xyzPos.yRank);
 		int CURZ = (piece.xyzPos.zLevel);
 
 	  moves = StackNew();
-//	  if (moves == NULL)
 	  if (moves == null)
 	  {
 	    return null;
 	  }
 
-//	  bwEnemy = ((piece->bwSide == WHITE) ? BLACK : WHITE);
-//	  move.xyzBefore = piece->xyzPos;
 	  bwEnemy = ((piece.bwSide == WHITE) ? BLACK : WHITE);
 	  move.xyzBefore = piece.xyzPos;
 
-//	  if (piece->nName == knight)
 	  if (piece.nName == knight)
 	    {
 	      for (y = MAX(0, CURY -2); y < MIN(RANKS, CURY +3); y++)
@@ -4117,28 +3887,22 @@ Err3Dc( firstGFX, moveString,
 
 	              if (ABS(CURX-x) == ABS(CURY-y))
 	                continue;
-
-//	              if ((Board[CURZ][y][x] == NULL) ||
-//                  (Board[CURZ][y][x]->bwSide == bwEnemy))
 	              if ((Board[CURZ][y][x] == NULL) || (Board[CURZ][y][x].bwSide == bwEnemy))
 	                {
 	                  move.xyzAfter.xFile = x;
 	                  move.xyzAfter.yRank = y;
 	                  move.xyzAfter.zLevel = CURZ;
 	                  move.pVictim = Board[CURZ][y][x];
-//	                  move.nHadMoved = piece->bHasMoved;
 	                  move.nHadMoved = piece.bHasMoved;
 	                  
 	                  if (!FakeMoveAndIsKingChecked( piece, x, y, CURZ ))
 	                  {
-//		                    StackPush(moves, &move);
 		                    StackPush(moves, move);
 	                  }
 	                } /* End valid move */
 	            } /* End x loop */
 	        } /* End y loop */
 	    } /* End knight */
-//	  else if (piece->nName == cannon)
 	  else if (piece.nName == cannon)
 	    {
 	      for (z = 0; z < LEVELS; z++)
@@ -4161,20 +3925,16 @@ Err3Dc( firstGFX, moveString,
 	                      (ABS(CURY-y) == ABS(CURZ-z)))
 	                    continue;
 
-//	                  if ((Board[z][y][x] == NULL) ||
-//                      (Board[z][y][x]->bwSide == bwEnemy))
 	                  if ((Board[z][y][x] == NULL) || (Board[z][y][x].bwSide == bwEnemy))
 	                    {
 	                      move.xyzAfter.xFile = x;
 	                      move.xyzAfter.yRank = y;
 	                      move.xyzAfter.zLevel = z;
 	                      move.pVictim = Board[z][y][x];
-//	                      move.nHadMoved = piece->bHasMoved;
 	                      move.nHadMoved = piece.bHasMoved;
 
 	                      if (!FakeMoveAndIsKingChecked( piece, x, y, z ))
 	                      {
-//		                        StackPush(moves, &move);
 		                        StackPush(moves, move);
 	                      }
 	                    } /* End valid move */
@@ -4182,10 +3942,8 @@ Err3Dc( firstGFX, moveString,
 	            } /* End y loop */
 	        } /* End z loop */
 	    } /* End cannon */
-//	  else if (piece->nName == pawn) /* Don't bother searching for en passant */
 	  else if (piece.nName == pawn) /* Don't bother searching for en passant */
 	    {
-//	      y = ((piece->bwSide == WHITE) ? 1 : -1);
 	      y = ((piece.bwSide == WHITE) ? 1 : -1);
 
 	      for (x = MAX(0, CURX-1); x < MIN(FILES, CURX+2); ++x)
@@ -4196,9 +3954,6 @@ Err3Dc( firstGFX, moveString,
 	          if ((x == CURX) && (Board[CURZ][CURY+y][CURX] != NULL))
 	            continue;
 
-//	          if ( (x != CURX) &&
-//              ((Board[CURZ][CURY + y][x] == NULL) ||
-//               ((Board[CURZ][CURY + y][x])->bwSide != bwEnemy)) )
 	          if ( (x != CURX) && 
 	        		  ((Board[CURZ][CURY + y][x] == NULL) || ((Board[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
 	          {
@@ -4208,24 +3963,19 @@ Err3Dc( firstGFX, moveString,
 	          move.xyzAfter.yRank = CURY + y;
 	          move.xyzAfter.zLevel = CURZ;
 	          move.pVictim = Board[CURZ][CURY + y][x];
-//	          move.nHadMoved = piece->bHasMoved;
 	          move.nHadMoved = piece.bHasMoved;
 
 	          if (!FakeMoveAndIsKingChecked(piece, x, CURY+y, CURZ))
 	          {
-//		            StackPush(moves, &move);
 		            StackPush(moves, move);
 	          }
 //	          /* This next conditional is for the two-forward move:
 //	           * it only happens when the previous attempt was the one-forward
 //	           * move and makes assumptions based on that fact. */
-//	          if ( (x==CURX) && (piece->bHasMoved == FALSE) &&
-//              (Board[CURZ][CURY + y+y][CURX] == NULL) )
 	          if ( (x==CURX) && (piece.bHasMoved == FALSE) && (Board[CURZ][CURY + y+y][CURX] == NULL) )
 	            {
 	              move.xyzAfter.yRank += y;
 	              if (!FakeMoveAndIsKingChecked(piece, CURX, CURY+y+y, CURZ))
-//		                StackPush(moves, &move);
 		                StackPush(moves, move);
 	            }
 	        } /* End x loop */
@@ -4233,7 +3983,6 @@ Err3Dc( firstGFX, moveString,
 	  else
 	    {
 	      int d, dist;
-//	      Piece *pEncountered;
 	      Piece pEncountered;
 
 	      /*
@@ -4242,8 +3991,6 @@ Err3Dc( firstGFX, moveString,
 	       * For a regular board, this is 7.  (Not 8: If you moved 8
 	       * in any direction you would be off the edge of the board)
 	       */
-//	      if ((piece->nName == king) ||
-//          (piece->nName == prince))
 	      if ((piece.nName == king) || (piece.nName == prince))
 	        dist = 1;
 	      else
@@ -4254,11 +4001,6 @@ Err3Dc( firstGFX, moveString,
 	       /*
 	        * Cater for pieces that can't change level.
 	        */
-//		       if (((piece->nName == prince) ||
-//	            (piece->nName == princess) ||
-//	            (piece->nName == abbey) ||
-//	            (piece->nName == galley)) &&
-//	           (z != 0))
 		       if (((piece.nName == prince) || (piece.nName == princess) || (piece.nName == abbey)
 		    		   || (piece.nName == galley)) && (z != 0))
 	         continue;
@@ -4274,18 +4016,12 @@ Err3Dc( firstGFX, moveString,
 	            * Cater for the pieces that can only move
 	            * horizontally/vertically.
 	            */
-//	           if (((piece->nName == rook) ||
-//               (piece->nName == galley)) &&
-//              !HORZ(x, y))
 	           if (((piece.nName == rook) || (piece.nName == galley)) && !HORZ(x, y))
 	             continue;
 //	           /*
 //	            * Cater for the pieces that can only move
 //	            * diagonally.
 //	            */
-//	           else if (((piece->nName == bishop) ||
-//               (piece->nName == abbey)) &&
-//              !DIAG(x, y))
 	           else if (((piece.nName == bishop) || (piece.nName == abbey)) && !DIAG(x, y))
 	             continue;
 
@@ -4294,18 +4030,11 @@ Err3Dc( firstGFX, moveString,
 	             pEncountered = TraverseDir(piece, x, y, z, d);
 	             if (IsMoveLegal(piece, pEncountered))
 	               {
-//	                 move.xyzAfter = pEncountered->xyzPos;
 	                 move.xyzAfter = pEncountered.xyzPos;
 	                 move.pVictim = pEncountered;
-//	                 move.nHadMoved = piece->bHasMoved;
 	                 move.nHadMoved = piece.bHasMoved;
 
 	                 /* Check for putting own king in check */
-//	                 if (!FakeMoveAndIsKingChecked(piece,
-//                   pEncountered->xyzPos.xFile,
-//                   pEncountered->xyzPos.yRank,
-//                   pEncountered->xyzPos.zLevel))
-//	                   StackPush(moves, &move);
 	                 if (!FakeMoveAndIsKingChecked(piece,
 	                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
 	                   StackPush(moves, move);
@@ -4321,85 +4050,20 @@ Err3Dc( firstGFX, moveString,
 	    }
 
 	  return moves;
-
-//		#undef CURX
-//		#undef CURY
-//		#undef CURZ
 	}
 	
-	
-	
-	
-//	
-//	/*
 //	 * This file is supposed to get over any machine-dependent
 //	 * problems.  Some, like ulimit(2) are fixed in the kernel (usually);
 //	 * the rest are up to us users to work out
-//	*/
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
 //	    Copyright (C) 1995  Paul Hicks
-//
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-
-//	#ifndef _3DC_MACHINE_H
-//	#define _3DC_MACHINE_H
-//
-//	#ifdef HAVE_UNISTD_H
-//	#include <unistd.h>
-//	#endif
-//
-//	#ifdef HAVE_ULIMIT_H
-//	#include <ulimit.h>
-//	#endif
-//
-//	#ifdef __alpha__
-//	#include <alloca.h>
-//	#endif /* __alpha__ */
-//
-//	#ifdef SYSV
 //	#define random() rand()
 //	#define srandom(a) srand(a)
-//	#endif /* SYSV */
-//
-//	#ifdef sun
+
 //	#define XtSetLanguageProc(a,b,c) 
-//	#endif /* sun */
-//
-//	#ifdef __GNUC__
-//	#define INLINE __inline__
-//	#else
-//	#define INLINE
-//	#endif /* __GNUC__ */
-//
-//	#endif /* _3DC_MACHINE_H */
-	
-	
-	
+
 //	/* DrawingArea Private header file */
-//
 //	/* Copyright 1990, David Nedde
-//	 *
-//	 * Permission to use, copy, modify, and distribute this
-//	 * software and its documentation for any purpose and without fee
-//	 * is granted provided that the above copyright notice appears in all copies.
-//	 * It is provided "as is" without express or implied warranty.
-//	 */
-//
-//	#ifndef _XawDrawingAreaP_h
-//	#define _XawDrawingAreaP_h
-//
-//	#include "DrawingA.h"
-//	#ifdef X11_R3
-//	#include <X11/SimpleP.h>
-//	#else
-//	#include <X11/Xaw/SimpleP.h>
-//	#endif
-//
+
 //	/* The drawing area's contribution to the class record */
 //	typedef struct _DrawingAreaClassPart {
 //	  int ignore;
@@ -4433,26 +4097,18 @@ Err3Dc( firstGFX, moveString,
 //
 //	#endif /* _XawDrawingAreaP_h */
 	
-//	
 //	/* DrawingA.h - Public Header file */
-//
 //	/* Copyright 1990, David Nedde
-//	 *
 //	 * Permission to use, copy, modify, and distribute this
 //	 * software and its documentation for any purpose and without fee
 //	 * is granted provided that the above copyright notice appears in all copies.
 //	 * It is provided "as is" without express or implied warranty.
 //	 */
-//
 //	/* Define widget's class pointer and strings used to specify resources */
-//
-//	#ifndef _XawDrawingArea_h
-//	#define _XawDrawingArea_h
-//
+
 //	#define XADCS XawDrawingAreaCallbackStruct 
 //
 //	/* Resources ADDED to label widget:
-//
 //	 Name		     Class		RepType		Default Value
 //	 ----		     -----		-------		-------------
 //	 exposeCallback	     Callback		Pointer		NULL
@@ -4460,20 +4116,17 @@ Err3Dc( firstGFX, moveString,
 //	 motionCallback	     Callback		Pointer		NULL
 //	 resizeCallback	     Callback		Pointer		NULL
 //	*/
-//
-//
+
 //	extern WidgetClass drawingAreaWidgetClass;
 //
 //	typedef struct _DrawingAreaClassRec *DrawingAreaWidgetClass;
 //	typedef struct _DrawingAreaRec	    *DrawingAreaWidget;
-//
 //
 //	/* Resource strings */
 //	#define XtNexposeCallback	"exposeCallback"
 //	#define XtNinputCallback	"inputCallback"
 //	#define XtNmotionCallback	"motionCallback"
 //	#define XtNresizeCallback	"resizeCallback"
-//
 //
 //	typedef struct _XawDrawingAreaCallbackStruct {
 //	  int	  reason;
@@ -4482,40 +4135,21 @@ Err3Dc( firstGFX, moveString,
 //	} XawDrawingAreaCallbackStruct;
 //
 //	/* Reasons */
-//	#define XawCR_EXPOSE 1
-//	#define XawCR_INPUT  2
-//	#define XawCR_MOTION 3
-//	#define XawCR_RESIZE 4
-//
-//	#endif /* _XawDrawingArea_h */
-	
-	
-	
-	
-//	/*
+int XawCR_EXPOSE = 1;
+int XawCR_INPUT  = 2;
+int XawCR_MOTION = 3;
+int XawCR_RESIZE = 4;
+
 //	 * This file defines everything to do with error-handling
 //	 * that is unique to 3Dc.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
 //	    Copyright (C) 1995  Paul Hicks
-//
 //	    This program is free software; you can redistribute it and/or modify
 //	    it under the terms of the GNU General Public License as published by
 //	    the Free Software Foundation; either version 2 of the License, or
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
 
-//	#ifndef __3DcErr_h
-//	#define __3DcErr_h
 //	extern int n3DcErr;
-//
-//	typedef enum
-//	{
-//	  E3DcSIMPLE, E3DcLEVEL, E3DcCHECK, E3DcDIST, E3DcINVIS,
-//	  E3DcBLOCK, E3DcMOVED
-//	} Error;//	typedef enum
 
 	private int E3DcSIMPLE	= 0;
 	private int E3DcLEVEL	= 1;
@@ -4525,16 +4159,9 @@ Err3Dc( firstGFX, moveString,
 	private int E3DcBLOCK	= 5;
 	private int E3DcMOVED	= 6;
 
-
-
-//
-//	/*
 //	 * All strings are designed to be printed thus:
 //	 *      printf("That piece %s.\n");
-//	 */
 //	/* To be defined by interface */
 //	extern int Err3Dc(const GfxInfo *, const char *, const Boolean);
-//
-//	#endif /* __3DcErr_h */
 
 }
