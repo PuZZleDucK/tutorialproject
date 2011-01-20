@@ -18,14 +18,6 @@ public class threeD_Chess extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//Want to print this out on program open:
-      //main(int argc, char **argv)
-      //{
-      //  printf("3Dc version %s, Copyright (C) 1995,1996 Paul Hicks\n", VERSION);
-      //  printf("3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL file for details\n");
-      //  printf("This is free software: you are welcome to redistribute it\n");
-      //  printf("    under certain conditions (see the GPL file).\n");
-        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
 						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
@@ -39,72 +31,34 @@ public class threeD_Chess extends Activity {
                });
         AlertDialog alert = builder.create();
         
-      Init3Dc();
+        Init3Dc();
 
       
       //eventually replace this with android propperties/settings
-      //  if (Init3DcGFX(argc, argv) == FALSE)
-//          return 1;
-      //
-      //  for (argNum = 1; argNum < argc; ++argNum)
-//          {
+//Define Black and White as Human, AI or remote
+        
+        
 //            if (!strcmp(argv[argNum], "-play"))
-//              {
-//                if (++argNum >= argc)
-//                  {
-//                    fprintf(stderr,
 //                            "%s: -play requires a colour (black or white)\n",
-//                            argv[0]);
-//                    return 1;
-//                  }
-      //
-//                if (SetupAutoplay(argv[argNum]) == FALSE)
-//                  {
-//                    fprintf(stderr,
 //                            "%s: %s is not a colour (must be black or white)\n",
-//                            argv[0], argv[argNum]);
-//                    return 1;
-//                  }
 //              } /* End autoplay setup */
+
 //            else if (!strcmp(argv[argNum], "-altdisplay") ||
-//                     !strcmp(argv[argNum], "-ad"))
-//              {
-//                /* If no more params   or next param is a new option */
-//                if ((++argNum == argc) || argv[argNum][0] == '-')
-//                  {
-//                    fprintf(stderr,
 //                            "%s: option %s requires a display name parameter\n",
-//                            argv[0], argv[argNum -1]);
-//                    return 1;
-//                  }
-//                else
-//                  {
 //                    Open2ndDisplay(argv[argNum]);
-//                  }
 //              } /* End net setup */
-//            else /* The help option */
-//              {
-//                fprintf(stderr, "Usage:\n");
+//I'll need to allow remote connection of game eventually :)
+        
       //%s ; play 3Dc, two humans on one display\n\
       //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
       //%s -play colour ; play against the computer, which plays colour\n",
-//                       argv[0], argv[0], argv[0]);
-//                return 1;
-//              }
 //          } /* Finish parameters */
-      //
-      DoMain3DcLoop();
-      //
-      //  return 0;
-      //}
 
-        
-        
-        
+      DoMain3DcLoop();
+      //  return 0;
+
         _threeD_Chess_view = new threeD_Renderer(this);
         setContentView(_threeD_Chess_view);
-
-    
     }
     
     //NeHe Tutorial: adding pause and resume:
@@ -120,17 +74,11 @@ public class threeD_Chess extends Activity {
     	_threeD_Chess_view.onPause();
     }
     
-    
-    
-
-//	#define ABS(a) ((a) < 0 ? -(a) : (a))
 	public int ABS(int x)
 	{
 		return (x > 0) ? x : -x;
 	}
 
-//	#define MAX(a,b) ((a) < (b) ? (b) : (a))
-//	#define MIN(a,b) ((a) > (b) ? (b) : (a))
 	public int MAX(int x, int y)
 	{
 		return (x > y) ? x : y;
@@ -139,57 +87,28 @@ public class threeD_Chess extends Activity {
 	{
 		return (x > y) ? x : y;
 	}
-
-
-	
-	
-	
-	
-	
-	
-	
 	
 //	 * 3Dc.h
 //	 * Definitions file for 3Dc
-//
-//	#include "local.h"
-//	#include "machine.h"
-//
-//	/*****************************************************************************
 //	 * A miscellany of useful tidbits
-
-
-//think i already did this one...	
-//	#ifndef ABS
-//	#define ABS(a) ((a) < 0 ? -(a) : (a))
-//	#endif /* ABS */
 
 //	/* Returns from pieceMayMove */
 private static int CASTLE = 2;
 private static int EnPASSANT = 3;
 private static int PROMOTE = 4;
 
-//not sure what to make typedefs into... ints/array?
-//	typedef enum
-//	{                                          /* Misnomers (but handy) */
-//	  king, queen, bishop, knight, rook,       /* Royalty  */
-//	  prince, princess, abbey, cannon, galley, /* Nobility */
-//	  pawn, none
-//	} Title;
-private static int king,KING = 0;
-private static int queen,QUEEN = 1;
-private static int bishop,BISHOP = 2;
-private static int knight,KNIGHT = 3;
-private static int rook,ROOK = 4;
-private static int prince,PRINCE = 5;
-private static int princess,PRINCESS = 6;
-private static int abbey,ABBEY = 7;
-private static int cannon,CANNON = 8;
-private static int galley,GALLEY = 9;
-private static int pawn,PAWN = 10;
-private static int none,NONE = 11;
-
-
+private static int king = 0;
+private static int queen = 1;
+private static int bishop = 2;
+private static int knight = 3;
+private static int rook = 4;
+private static int prince = 5;
+private static int princess = 6;
+private static int abbey = 7;
+private static int cannon = 8;
+private static int galley = 9;
+private static int pawn = 10;
+private static int none = 11;
 
 private static int TITLES = 11;
 //	Global int titleCount[TITLES];
@@ -580,34 +499,34 @@ private String winString = "";
 		int StartBoard[][][] =
 	  { /* The boards */
 	    { /* Bottom board */
-	      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
-	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-	      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+	      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
+	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+	      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
 	    },
 	    { /* Middle board */
-	      {   ROOK, KNIGHT, BISHOP,   KING,  QUEEN, BISHOP, KNIGHT,   ROOK},
-	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-	      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-	      {   ROOK, KNIGHT, BISHOP,   KING,  QUEEN, BISHOP, KNIGHT,   ROOK}
+	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook},
+	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   none,   none,   none,   none,   none,   none,   none,   none},
+	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook}
 	    },
 	    { /* Top board */
-		      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
-		      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-		      {   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE,   NONE},
-		      {   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN,   PAWN},
-		      { GALLEY,  CANNON, ABBEY, PRINCE, PRINCESS, ABBEY, CANNON, GALLEY},
+		      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
+		      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+		      {   none,   none,   none,   none,   none,   none,   none,   none},
+		      {   none,   none,   none,   none,   none,   none,   none,   none},
+		      {   none,   none,   none,   none,   none,   none,   none,   none},
+		      {   none,   none,   none,   none,   none,   none,   none,   none},
+		      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
+		      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
 	    }
 	  }; /* StartBoard */
 
@@ -629,7 +548,7 @@ private String winString = "";
 //	              name = StartBoard[z][y][x];
 	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 //		              if ((name != none)
-		            if(thisTitle != NONE)
+		            if(thisTitle != none)
 		            {
 //		                  Muster[bw][MusterIdx(name, count[bw][name])] = 
 //	                    Board[z][y][x] =
@@ -866,22 +785,22 @@ private String winString = "";
 		    blackSecondPrinceVisible, whiteSecondPrinceVisible;
 		
 		//  blackKingVisible = Muster[BLACK][MusterIdx(king, 0)]->bVisible;
-		   blackKingVisible = Muster[BLACK][MusterIdx(KING, 0)].bVisible;
+		   blackKingVisible = Muster[BLACK][MusterIdx(king, 0)].bVisible;
 
 		   //  whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)]->bVisible;
-		   whiteKingVisible = Muster[WHITE][MusterIdx(KING, 0)].bVisible;
+		   whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)].bVisible;
 		   
 		   //  blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)]->bVisible;
-		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(PRINCE, 0)].bVisible;
+		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
 		   
 		//  whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)]->bVisible;
-		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(PRINCE, 0)].bVisible;
+		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
 		   
 		//  blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)]->bVisible;
-		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(PRINCE, 1)].bVisible;
+		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
 
 		//  whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)]->bVisible;
-		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(PRINCE, 1)].bVisible;
+		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
 
 		//  if ((!whiteKingVisible ||
 //	       (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
