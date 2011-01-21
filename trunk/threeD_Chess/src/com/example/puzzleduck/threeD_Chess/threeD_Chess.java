@@ -491,84 +491,84 @@ public class threeD_Chess extends Activity {
 //		  	//	      if (IsGameFinished() && !gamePaused)
 		      if (IsGameFinished() && !gamePaused)
 		      {
-//		    	  FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
+		    	  FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
 		      }
-//      if ( (bwToMove == computer) && !gamePaused)
-//        {
-//		//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
-//		//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
-//        if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
-//        ((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
-//            {
-//              if ( automove == NULL )
-//                {
-//                  /*
-//                   * Give up, it's too hard for me..
-//                   */
-//					//                  PauseGame();
-//					                  /* Can we delay after this? */
-//					//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
-//					//                  XFlush( XtDisplay( firstGFX->mainWindow ));
-//                  FinishGame((computer == BLACK) ? WHITE : BLACK);
-//                }
-//			///*** This assertion fails with stack size of 1---or at least it used to */
-//			//            else if ( (Board[ automove->xyzBefore.zLevel ]
-//			//            [ automove->xyzBefore.yRank ]
-//			//            [ automove->xyzBefore.xFile ] == NULL ) ||
-//			//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
-//			//                              [ automove->xyzBefore.yRank ]
-//			//                              [ automove->xyzBefore.xFile ],
-//			//                        automove->xyzAfter.xFile,
-//			//                        automove->xyzAfter.yRank,
-//			//                        automove->xyzAfter.zLevel ) )) )
-//            else if ( (Board[ automove.xyzBefore.zLevel ]
-//            [ automove.xyzBefore.yRank ]
-//            [ automove.xyzBefore.xFile ] == NULL ) ||
-//            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
-//                              [ automove.xyzBefore.yRank ]
-//                              [ automove.xyzBefore.xFile ],
-//                        automove.xyzAfter.xFile,
-//                        automove.xyzAfter.yRank,
-//                        automove.xyzAfter.zLevel ) ) )
-//                {
-//                  /* The move was illegal for some reason
-//                   * (in the future I plan to eliminate all
-//                   * possibility of getting in here) */
-//					//                  D( printf( "Can't move from (%i,%i,%i) to (%i,%i,%i)\n",
-//					//                            automove->xyzBefore.xFile,
-//					//                            automove->xyzBefore.yRank,
-//					//                            automove->xyzBefore.zLevel,
-//					//                            automove->xyzAfter.xFile,
-//					//                            automove->xyzAfter.yRank,
-//					//                            automove->xyzAfter.zLevel ) );
-//					//
-//                  retry = TRUE;
-//                }
-//              else /* Move is legit: do it */
-//                {
-//                  retry = FALSE;
-//                  PrintMove( automove );
-//
-//                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
-//                } /* End 'found computer move' */
-//            } /* Still finding computer's move? */
-//        } /* End computer's move */
-//
-//			//      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
-//			//        {
-//			//          XtAppNextEvent(XtWidgetToApplicationContext(firstGFX->mainWindow),
-//			//                         &event);
-//			//          XtDispatchEvent(&event);
-//			//        }
-//			//
-//			//      if ((secondGFX != NULL) &&
-//			//          (XtAppPending(XtWidgetToApplicationContext(secondGFX->mainWindow))))
-//			//        {
-//			//          XtAppNextEvent(XtWidgetToApplicationContext(secondGFX->mainWindow),
-//			//                         &event);
-//			//          XtDispatchEvent(&event);
-//			//        }
+      if ( (bwToMove == computer) && !gamePaused)
+        {    	  
+		//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
+		//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
+        if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
+        ((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
+            {
+              if ( automove == NULL )
+                {
+                  /*
+                   * Give up, it's too hard for me..
+                   */
+					//                  PauseGame();
+					                  /* Can we delay after this? */
+					//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
+					//                  XFlush( XtDisplay( firstGFX->mainWindow ));
+                  FinishGame((computer == BLACK) ? WHITE : BLACK);
+                }
+			///*** This assertion fails with stack size of 1---or at least it used to */
+			//            else if ( (Board[ automove->xyzBefore.zLevel ]
+			//            [ automove->xyzBefore.yRank ]
+			//            [ automove->xyzBefore.xFile ] == NULL ) ||
+			//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
+			//                              [ automove->xyzBefore.yRank ]
+			//                              [ automove->xyzBefore.xFile ],
+			//                        automove->xyzAfter.xFile,
+			//                        automove->xyzAfter.yRank,
+			//                        automove->xyzAfter.zLevel ) )) )
+            else if ( (Board[ automove.xyzBefore.zLevel ]
+            [ automove.xyzBefore.yRank ]
+            [ automove.xyzBefore.xFile ] == NULL ) ||
+            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
+                              [ automove.xyzBefore.yRank ]
+                              [ automove.xyzBefore.xFile ],
+                        automove.xyzAfter.xFile,
+                        automove.xyzAfter.yRank,
+                        automove.xyzAfter.zLevel ) ) )
+                {
+                  /* The move was illegal for some reason
+                   * (in the future I plan to eliminate all
+                   * possibility of getting in here) */
+					//                  D( printf( "Can't move from (%i,%i,%i) to (%i,%i,%i)\n",
+					//                            automove->xyzBefore.xFile,
+					//                            automove->xyzBefore.yRank,
+					//                            automove->xyzBefore.zLevel,
+					//                            automove->xyzAfter.xFile,
+					//                            automove->xyzAfter.yRank,
+					//                            automove->xyzAfter.zLevel ) );
+					//
+                  retry = TRUE;
+                }
+              else /* Move is legit: do it */
+                {
+                  retry = FALSE;
+                  PrintMove( automove );
+
+                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
+                } /* End 'found computer move' */
+            } /* Still finding computer's move? */
+        } /* End computer's move */
+
+			//      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
+			//        {
+			//          XtAppNextEvent(XtWidgetToApplicationContext(firstGFX->mainWindow),
+			//                         &event);
+			//          XtDispatchEvent(&event);
+			//        }
 			//
+			//      if ((secondGFX != NULL) &&
+			//          (XtAppPending(XtWidgetToApplicationContext(secondGFX->mainWindow))))
+			//        {
+			//          XtAppNextEvent(XtWidgetToApplicationContext(secondGFX->mainWindow),
+			//                         &event);
+			//          XtDispatchEvent(&event);
+			//        }
+			
 //	  } /* End game loop */
 	}
 
