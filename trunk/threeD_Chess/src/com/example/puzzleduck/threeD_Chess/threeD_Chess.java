@@ -45,27 +45,48 @@ public class threeD_Chess extends Activity {
 
         
         
-        
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
+//        
+//        
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
+//						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
+//						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
+//						 + "\nThis version is ported to Android by PuZZleDucK\n")
+//               .setCancelable(false)
+//               .setNeutralButton("O.K.", new DialogInterface.OnClickListener() {
+//                   public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                   }
+//               });
+//        AlertDialog alert = builder.create();
+//        
+
+        Context context = getApplicationContext();
+  	  CharSequence text = "3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
 						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
 						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
-						 + "\nThis version is ported to Android by PuZZleDucK\n")
-               .setCancelable(false)
-               .setNeutralButton("O.K.", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                   }
-               });
-        AlertDialog alert = builder.create();
+						 + "\nThis version is ported to Android by PuZZleDucK\n";
+  	  int duration = Toast.LENGTH_LONG;
+  	  Toast toast = Toast.makeText(context, text, duration);
+  	  toast.show();
+
+        
+        
+        
+        
         
         Init3Dc();
-//        DoMain3DcLoop();
         //  return 0;
 
         _threeD_Chess_view = new threeD_Renderer(this);
         setContentView(_threeD_Chess_view);
+
+        //Blocking openGLdisplay...
+//        while(true)
+//        {
+        	DoMain3DcLoop();
+//        }
+    
     }
     
     //NeHe Tutorial: adding pause and resume:
@@ -391,18 +412,18 @@ public class threeD_Chess extends Activity {
 		            if(thisTitle != none)
 		            {
 		            	//Create holding var for piece... can't pull this stunt in Java afaik.
-//		            	Piece temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
-		            	Piece temp = new Piece(1, 1, 1, 1, 1);
-//Somehow Piece constructor is crashing... check for nulls/values?
-		          	  Context context = getApplicationContext();
-		        	  CharSequence text = "Tit:" + thisTitle 
-	  					+ "\nLvl: " +  thisLevel
-	  					+ "\nRnk: " +  thisRank
-	  					+ "\nFil: " +  thisFile
-	  					+ "\nCol: " + thisColor + ".";
-		        	  int duration = Toast.LENGTH_LONG;
-		        	  Toast toast = Toast.makeText(context, text, duration);
-		        	  toast.show();
+		            	Piece temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+//		            	Piece temp = new Piece(1, 1, 1, 1, 1);
+//Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
+//		          	  Context context = getApplicationContext();
+//		        	  CharSequence text = "Tit:" + thisTitle 
+//	  					+ "\nLvl: " +  thisLevel
+//	  					+ "\nRnk: " +  thisRank
+//	  					+ "\nFil: " +  thisFile
+//	  					+ "\nCol: " + thisColor + ".";
+//		        	  int duration = Toast.LENGTH_LONG;
+//		        	  Toast toast = Toast.makeText(context, text, duration);
+//		        	  toast.show();
 
 		            	
 		            	
@@ -410,9 +431,9 @@ public class threeD_Chess extends Activity {
 		            	
 		            	
 		            	
-//		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
-//		                Board[thisLevel][thisRank][thisFile] = temp;
-//	                    temp = null;
+		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
+		                Board[thisLevel][thisRank][thisFile] = temp;
+	                    temp = null;
 	                    (count[thisColor][thisTitle])++;
 	                }
 	            }
@@ -436,7 +457,6 @@ public class threeD_Chess extends Activity {
 	private boolean gamePaused = FALSE;
 	
 //Local Boolean SetupAutoplay(char *);
-//Local void DoMain3DcLoop(void);
 
 ///* Set up the computer intelligence and all that */
 //Local Boolean
@@ -458,95 +478,98 @@ public class threeD_Chess extends Activity {
 
 	private void DoMain3DcLoop()
 	{
-  Move automove = new Move();
-//  XEvent event;
-	  boolean retry = FALSE;
+		Move automove = new Move();
+  		//  XEvent event;
+		boolean retry = FALSE;
 
-	//  while (firstGFX->mainWindow)
-	  while (true)//?? game loop
-	  {
-//      /* First thing to do: check for end of game! */
-//	      if (IsGameFinished() && !gamePaused)
-		      if (IsGameFinished() && !gamePaused){}
-        FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
-
-      if ( (bwToMove == computer) && !gamePaused)
-        {
-//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
-//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
-        if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
-        ((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
-            {
-              if ( automove == NULL )
-                {
-                  /*
-                   * Give up, it's too hard for me..
-                   */
-//                  PauseGame();
-                  /* Can we delay after this? */
-//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
-//                  XFlush( XtDisplay( firstGFX->mainWindow ));
-                  FinishGame((computer == BLACK) ? WHITE : BLACK);
-                }
-///*** This assertion fails with stack size of 1---or at least it used to */
-//            else if ( (Board[ automove->xyzBefore.zLevel ]
-//            [ automove->xyzBefore.yRank ]
-//            [ automove->xyzBefore.xFile ] == NULL ) ||
-//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
-//                              [ automove->xyzBefore.yRank ]
-//                              [ automove->xyzBefore.xFile ],
-//                        automove->xyzAfter.xFile,
-//                        automove->xyzAfter.yRank,
-//                        automove->xyzAfter.zLevel ) )) )
-            else if ( (Board[ automove.xyzBefore.zLevel ]
-            [ automove.xyzBefore.yRank ]
-            [ automove.xyzBefore.xFile ] == NULL ) ||
-            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
-                              [ automove.xyzBefore.yRank ]
-                              [ automove.xyzBefore.xFile ],
-                        automove.xyzAfter.xFile,
-                        automove.xyzAfter.yRank,
-                        automove.xyzAfter.zLevel ) ) )
-                {
-                  /* The move was illegal for some reason
-                   * (in the future I plan to eliminate all
-                   * possibility of getting in here) */
-//                  D( printf( "Can't move from (%i,%i,%i) to (%i,%i,%i)\n",
-//                            automove->xyzBefore.xFile,
-//                            automove->xyzBefore.yRank,
-//                            automove->xyzBefore.zLevel,
-//                            automove->xyzAfter.xFile,
-//                            automove->xyzAfter.yRank,
-//                            automove->xyzAfter.zLevel ) );
-//
-                  retry = TRUE;
-                }
-              else /* Move is legit: do it */
-                {
-                  retry = FALSE;
+	  
+	  //Can't loop... lets try a once through and see what we can startup...
+//	//  while (firstGFX->mainWindow)
+//	  while (true)//?? game loop
+//	  {
+//		  	//      /* First thing to do: check for end of game! */
+//		  	//	      if (IsGameFinished() && !gamePaused)
+		      if (IsGameFinished() && !gamePaused)
+		      {
+//		    	  FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
+		      }
+//      if ( (bwToMove == computer) && !gamePaused)
+//        {
+//		//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
+//		//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
+//        if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
+//        ((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
+//            {
+//              if ( automove == NULL )
+//                {
+//                  /*
+//                   * Give up, it's too hard for me..
+//                   */
+//					//                  PauseGame();
+//					                  /* Can we delay after this? */
+//					//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
+//					//                  XFlush( XtDisplay( firstGFX->mainWindow ));
+//                  FinishGame((computer == BLACK) ? WHITE : BLACK);
+//                }
+//			///*** This assertion fails with stack size of 1---or at least it used to */
+//			//            else if ( (Board[ automove->xyzBefore.zLevel ]
+//			//            [ automove->xyzBefore.yRank ]
+//			//            [ automove->xyzBefore.xFile ] == NULL ) ||
+//			//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
+//			//                              [ automove->xyzBefore.yRank ]
+//			//                              [ automove->xyzBefore.xFile ],
+//			//                        automove->xyzAfter.xFile,
+//			//                        automove->xyzAfter.yRank,
+//			//                        automove->xyzAfter.zLevel ) )) )
+//            else if ( (Board[ automove.xyzBefore.zLevel ]
+//            [ automove.xyzBefore.yRank ]
+//            [ automove.xyzBefore.xFile ] == NULL ) ||
+//            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
+//                              [ automove.xyzBefore.yRank ]
+//                              [ automove.xyzBefore.xFile ],
+//                        automove.xyzAfter.xFile,
+//                        automove.xyzAfter.yRank,
+//                        automove.xyzAfter.zLevel ) ) )
+//                {
+//                  /* The move was illegal for some reason
+//                   * (in the future I plan to eliminate all
+//                   * possibility of getting in here) */
+//					//                  D( printf( "Can't move from (%i,%i,%i) to (%i,%i,%i)\n",
+//					//                            automove->xyzBefore.xFile,
+//					//                            automove->xyzBefore.yRank,
+//					//                            automove->xyzBefore.zLevel,
+//					//                            automove->xyzAfter.xFile,
+//					//                            automove->xyzAfter.yRank,
+//					//                            automove->xyzAfter.zLevel ) );
+//					//
+//                  retry = TRUE;
+//                }
+//              else /* Move is legit: do it */
+//                {
+//                  retry = FALSE;
 //                  PrintMove( automove );
-
-                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
-                } /* End 'found computer move' */
-            } /* Still finding computer's move? */
-        } /* End computer's move */
-
-//      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
-//        {
-//          XtAppNextEvent(XtWidgetToApplicationContext(firstGFX->mainWindow),
-//                         &event);
-//          XtDispatchEvent(&event);
-//        }
 //
-//      if ((secondGFX != NULL) &&
-//          (XtAppPending(XtWidgetToApplicationContext(secondGFX->mainWindow))))
-//        {
-//          XtAppNextEvent(XtWidgetToApplicationContext(secondGFX->mainWindow),
-//                         &event);
-//          XtDispatchEvent(&event);
-//        }
+//                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
+//                } /* End 'found computer move' */
+//            } /* Still finding computer's move? */
+//        } /* End computer's move */
 //
-	  } /* End game loop */
+//			//      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
+//			//        {
+//			//          XtAppNextEvent(XtWidgetToApplicationContext(firstGFX->mainWindow),
+//			//                         &event);
+//			//          XtDispatchEvent(&event);
+//			//        }
+//			//
+//			//      if ((secondGFX != NULL) &&
+//			//          (XtAppPending(XtWidgetToApplicationContext(secondGFX->mainWindow))))
+//			//        {
+//			//          XtAppNextEvent(XtWidgetToApplicationContext(secondGFX->mainWindow),
+//			//                         &event);
+//			//          XtDispatchEvent(&event);
+//			//        }
+			//
+//	  } /* End game loop */
 	}
 
 	
@@ -623,30 +646,40 @@ public boolean IsGamePaused()
 }
 
 
-	//IsGameFinished(void)
 	private boolean IsGameFinished()
 	{
-
 		   boolean blackKingVisible, whiteKingVisible,
 		    blackFirstPrinceVisible, whiteFirstPrinceVisible,
 		    blackSecondPrinceVisible, whiteSecondPrinceVisible;
-		
+
+       	  Context context = getApplicationContext();
+     	  CharSequence text = "Black:" + BLACK 
+				+ "\nWhite: " +  WHITE
+				+ "\nKing: " +  king
+				+ "\n...";
+     	  int duration = Toast.LENGTH_LONG;
+     	  Toast toast = Toast.makeText(context, text, duration);
+     	  toast.show();
+		   
 		   blackKingVisible = Muster[BLACK][MusterIdx(king, 0)].bVisible;
 		   whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)].bVisible;
 
-		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
-		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
-		   
-		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
-		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
-
-		   if ((!whiteKingVisible || 
-				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
-				   (!blackKingVisible ||
-				   (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
-		   {
-			   return TRUE;
-		   }
+     	  
+//     	  
+//     	  
+//		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
+//		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
+//		   
+//		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
+//		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
+//
+//		   if ((!whiteKingVisible || 
+//				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
+//				   (!blackKingVisible ||
+//				   (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
+//		   {
+//			   return TRUE;
+//		   }
 		   return FALSE;
 	}
 
@@ -2329,11 +2362,12 @@ Err3Dc( firstGFX, moveString,
 //	    return 1;
 
 //	  sprintf(err, pszLeader, ERRORS[n3DcErr].pszErrStr);
-	  Context context = getApplicationContext();
-	  CharSequence text = "ERR: " + err + "\nPSZ: " + pszLeader + "\nTXT: " + ERRORS[n3DcErr].pszErrStr;
-	  int duration = Toast.LENGTH_LONG;
-	  Toast toast = Toast.makeText(context, text, duration);
-	  toast.show();
+//	  Context context = getApplicationContext();
+//	  CharSequence text = "ERR: " + err + "\nPSZ: " + pszLeader + "\nTXT: " + ERRORS[n3DcErr].pszErrStr;
+//	  int duration = Toast.LENGTH_LONG;
+//	  Toast toast = Toast.makeText(context, text, duration);
+//	  toast.show();
+	  //Haha, funny our debug lines converged here :O
 
 //	  XtVaSetValues(gfx->remark,
 //	                XtNlabel, err,
