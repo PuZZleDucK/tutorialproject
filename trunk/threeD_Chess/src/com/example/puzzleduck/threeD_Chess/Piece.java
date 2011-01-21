@@ -38,11 +38,14 @@ public class Piece {
 //		  piece->xyzPos.xFile = x;
 //		  piece->xyzPos.yRank = y;
 //		  piece->xyzPos.zLevel = z;
-		xyzPos.xFile = file;
-		xyzPos.yRank = rank;
-		xyzPos.zLevel = level;
+		xyzPos = new Coord();
+		
+		xyzPos.setxFile(file);
+		xyzPos.setyRank(rank);
+		xyzPos.setzLevel(level);
 //		  piece->nName = nType;
-		bwSide = type;
+		nName = type;
+		bwSide = side;
 //		  piece->bVisible = TRUE;
 		bVisible = true;
 //		  piece->bHasMoved = FALSE;

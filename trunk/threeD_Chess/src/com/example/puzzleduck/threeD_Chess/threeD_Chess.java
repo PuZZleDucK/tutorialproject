@@ -21,6 +21,32 @@ public class threeD_Chess extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        
+        //eventually replace this with android propperties/settings
+      //Define Black and White as Human, AI or remote
+              
+              
+//                  if (!strcmp(argv[argNum], "-play"))
+//                                  "%s: -play requires a colour (black or white)\n",
+//                                  "%s: %s is not a colour (must be black or white)\n",
+//                    } /* End autoplay setup */
+
+//                  else if (!strcmp(argv[argNum], "-altdisplay") ||
+//                                  "%s: option %s requires a display name parameter\n",
+//                          Open2ndDisplay(argv[argNum]);
+//                    } /* End net setup */
+      //I'll need to allow remote connection of game eventually :)
+              
+            //%s ; play 3Dc, two humans on one display\n\
+            //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
+            //%s -play colour ; play against the computer, which plays colour\n",
+//                } /* Finish parameters */
+
+
+        
+        
+        
+        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
 						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
@@ -35,30 +61,8 @@ public class threeD_Chess extends Activity {
         AlertDialog alert = builder.create();
         
         Init3Dc();
-
-      
-      //eventually replace this with android propperties/settings
-//Define Black and White as Human, AI or remote
-        
-        
-//            if (!strcmp(argv[argNum], "-play"))
-//                            "%s: -play requires a colour (black or white)\n",
-//                            "%s: %s is not a colour (must be black or white)\n",
-//              } /* End autoplay setup */
-
-//            else if (!strcmp(argv[argNum], "-altdisplay") ||
-//                            "%s: option %s requires a display name parameter\n",
-//                    Open2ndDisplay(argv[argNum]);
-//              } /* End net setup */
-//I'll need to allow remote connection of game eventually :)
-        
-      //%s ; play 3Dc, two humans on one display\n\
-      //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
-      //%s -play colour ; play against the computer, which plays colour\n",
-//          } /* Finish parameters */
-
-      DoMain3DcLoop();
-      //  return 0;
+//        DoMain3DcLoop();
+        //  return 0;
 
         _threeD_Chess_view = new threeD_Renderer(this);
         setContentView(_threeD_Chess_view);
@@ -315,19 +319,19 @@ public class threeD_Chess extends Activity {
 	private Piece SQUARE_EMPTY, SQUARE_INVALID;
 
 	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
-//		  /* king     */ 1,
-//		  /* queen    */ 1,
-//		  /* bishop   */ 2,
-//		  /* knight   */ 2,
-//		  /* rook     */ 2,
-//		  /* prince   */ 2,
-//		  /* princess */ 2,
-//		  /* abbey    */ 4,
-//		  /* cannon   */ 4,
-//		  /* galley   */ 4,
-//		  /* pawn     */ 24
+		//		  /* king     */ 1,
+		//		  /* queen    */ 1,
+		//		  /* bishop   */ 2,
+		//		  /* knight   */ 2,
+		//		  /* rook     */ 2,
+		//		  /* prince   */ 2,
+		//		  /* princess */ 2,
+		//		  /* abbey    */ 4,
+		//		  /* cannon   */ 4,
+		//		  /* galley   */ 4,
+		//		  /* pawn     */ 24
 		
-//	 * This function sets up the board
+	 /* This function sets up the board*/
 	private void Init3Dc()
 	{
 		int thisFile;
@@ -337,7 +341,7 @@ public class threeD_Chess extends Activity {
 		int[][] count = {{0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0}};
 		int thisTitle;
 
-//	  /* This structure is mainly for "obviousness"; it is entirely trivial */
+	  /* This structure is mainly for "obviousness"; it is entirely trivial */
 		int StartBoard[][][] =
 	  { /* The boards */
 	    { /* Bottom board */
@@ -377,7 +381,7 @@ public class threeD_Chess extends Activity {
 			thisColor = WHITE;
 		      for (thisRank = 0; thisRank < RANKS; ++thisRank)
 		      {
-//	          /* From the 4th rank on is black's half of the board */
+	          /* From the 4th rank on is black's half of the board */
 	          if (thisRank == 4)
 	            thisColor = BLACK;
 
@@ -386,19 +390,39 @@ public class threeD_Chess extends Activity {
 	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 		            if(thisTitle != none)
 		            {
-		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = 
-		                Board[thisLevel][thisRank][thisFile] =
-	                      new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+		            	//Create holding var for piece... can't pull this stunt in Java afaik.
+//		            	Piece temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+		            	Piece temp = new Piece(1, 1, 1, 1, 1);
+//Somehow Piece constructor is crashing... check for nulls/values?
+		          	  Context context = getApplicationContext();
+		        	  CharSequence text = "Tit:" + thisTitle 
+	  					+ "\nLvl: " +  thisLevel
+	  					+ "\nRnk: " +  thisRank
+	  					+ "\nFil: " +  thisFile
+	  					+ "\nCol: " + thisColor + ".";
+		        	  int duration = Toast.LENGTH_LONG;
+		        	  Toast toast = Toast.makeText(context, text, duration);
+		        	  toast.show();
+
+		            	
+		            	
+		            	
+		            	
+		            	
+		            	
+//		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
+//		                Board[thisLevel][thisRank][thisFile] = temp;
+//	                    temp = null;
 	                    (count[thisColor][thisTitle])++;
 	                }
 	            }
 		      }
 	    }
-		StackNew();
-		n3DcErr = 0;
-
-	  SQUARE_INVALID = new Piece(0,0,0,0,0);
-	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
+//		StackNew();
+//		n3DcErr = 0;
+//
+//	  SQUARE_INVALID = new Piece(0,0,0,0,0);
+//	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
 	}
 
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
