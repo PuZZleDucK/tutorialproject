@@ -66,14 +66,10 @@ public class threeD_Chess extends Activity {
 						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
 						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
 						 + "\nThis version is ported to Android by PuZZleDucK\n";
-  	  int duration = Toast.LENGTH_LONG;
-  	  Toast toast = Toast.makeText(context, text, duration);
+  	  
+  	  Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
   	  toast.show();
 
-        
-        
-        
-        
         
         Init3Dc();
         //  return 0;
@@ -81,10 +77,11 @@ public class threeD_Chess extends Activity {
         _threeD_Chess_view = new threeD_Renderer(this);
         setContentView(_threeD_Chess_view);
 
-        //Blocking openGLdisplay...
+        //Blocking openGLdisplay... moving to renderer? but would need to make it static...
+        //                          maybe...
 //        while(true)
 //        {
-        	DoMain3DcLoop();
+//        	DoMain3DcLoop();
 //        }
     
     }
@@ -116,9 +113,6 @@ public class threeD_Chess extends Activity {
 		return (x > y) ? x : y;
 	}
 	
-//	 * 3Dc.h
-//	 * Definitions file for 3Dc
-//	 * A miscellany of useful tidbits
 
 //	/* Returns from pieceMayMove */
 	private static int CASTLE = 2;
@@ -146,9 +140,9 @@ public class threeD_Chess extends Activity {
 	private static int WHITE = 0;
 	private static int BLACK = 1;
 	
-	private static int FILES = 8;
-	private static int RANKS = 8;
-	private static int LEVELS = 3;
+	public static int FILES = 8;
+	public static int RANKS = 8;
+	public  static int LEVELS = 3;
 	
 	//	/* Directions */
 	private static int LEFT  = -1;
@@ -215,26 +209,8 @@ public class threeD_Chess extends Activity {
 		return true;
 	}
 
-//	//	Global Boolean PieceUndo(void);
-//	private boolean PieceUndo()
-//	{
-//		//TODO:
-//		return true;
-//	}
 
-	
-//wtf is Dir?!?! ... leaving this for later ... dir might be xyz directions/distances
-	//	Global Piece *TraverseDir(const Piece *, Dir, Dir, Dir, unsigned);
-
-
-
-	
-	
 	//* The move-stack (for undos, checking for en passant, etc)
-//	 */
-
-	
-//
 //	typedef struct
 //	{
 //	  int nSize;
@@ -242,11 +218,10 @@ public class threeD_Chess extends Activity {
 //	} stack;
 //
 //	Global stack *FindAllMoves(Piece *);
-
 	Stack MoveStack;
 
 
-	private Piece[][][] Board = new Piece[LEVELS][RANKS][FILES];
+	public Piece[][][] Board = new Piece[LEVELS][RANKS][FILES];
 	
 	private Piece[][] Muster = new Piece[COLOURS][PIECES];
 	
@@ -439,11 +414,11 @@ public class threeD_Chess extends Activity {
 	            }
 		      }
 	    }
-//		StackNew();
-//		n3DcErr = 0;
-//
-//	  SQUARE_INVALID = new Piece(0,0,0,0,0);
-//	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
+		StackNew();
+		n3DcErr = 0;
+
+	  SQUARE_INVALID = new Piece(0,0,0,0,0);
+	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
 	}
 
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
@@ -476,7 +451,7 @@ public class threeD_Chess extends Activity {
   return TRUE;
 }
 
-	private void DoMain3DcLoop()
+	public void DoMain3DcLoop()
 	{
 		Move automove = new Move();
   		//  XEvent event;
@@ -665,21 +640,21 @@ public boolean IsGamePaused()
 		   whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)].bVisible;
 
      	  
-//     	  
-//     	  
-//		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
-//		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
-//		   
-//		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
-//		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
-//
-//		   if ((!whiteKingVisible || 
-//				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
-//				   (!blackKingVisible ||
-//				   (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
-//		   {
-//			   return TRUE;
-//		   }
+     	  
+     	  
+		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
+		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
+		   
+		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
+		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
+
+		   if ((!whiteKingVisible || 
+				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
+				   (!blackKingVisible ||
+				   (!blackFirstPrinceVisible && !blackSecondPrinceVisible)))
+		   {
+			   return TRUE;
+		   }
 		   return FALSE;
 	}
 
@@ -825,30 +800,6 @@ Err3Dc( firstGFX, moveString,
 }
 	
 	
-	
-//	 * piece.c
-//	 * Rules for all pieces.
-//	#include "3Dc.h"
-
-//	Local INLINE Boolean
-//	  KingMayMove     (Piece *, File, Rank, Level),
-//	  QueenMayMove    (Piece *, File, Rank, Level),
-//	  BishopMayMove   (Piece *, File, Rank, Level),
-//	  KnightMayMove   (Piece *, File, Rank, Level),
-//	  RookMayMove     (Piece *, File, Rank, Level),
-//	  PrinceMayMove   (Piece *, File, Rank, Level),
-//	  PrincessMayMove (Piece *, File, Rank, Level),
-//	  AbbeyMayMove    (Piece *, File, Rank, Level),
-//	  CannonMayMove   (Piece *, File, Rank, Level),
-//	  GalleyMayMove   (Piece *, File, Rank, Level),
-//	  PawnMayMove     (Piece *, File, Rank, Level);
-//
-//
-	//Create wrapper for this:
-//	Global Piece *
-//	PieceNew(const Title nType,
-//    const File x, const Rank y, const Level z,
-//    const Colour col)
 	public Piece PieceNew(int nType,
     int x, int y, int z,
     int col)
@@ -856,25 +807,8 @@ Err3Dc( firstGFX, moveString,
 		return new Piece(nType, x, y, z, col);
 	}
 
-//
-//	Global void
-//	PieceDelete(Piece *piece)
-//	{
-//	  if (Board[piece->xyzPos.zLevel][piece->xyzPos.yRank][piece->xyzPos.xFile] ==
-//	      piece)
-//	    Board[piece->xyzPos.zLevel][piece->xyzPos.yRank][piece->xyzPos.xFile] =
-//	      NULL;
-//
-//	  /* We don't need to remove the piece from the muster, as pieceDelete
-//	   * is only called when restarting, at which time init3Dc is also called,
-//	   * thereby overwriting Muster's reference to the piece.  The only reason
-//	   * for removing the piece from Board above is so that the board may be
-//	   * redrawn cleanly.
-//	   */
-//
-//	  free(piece);
-//	  piece = NULL;
-//	}
+
+
 	public void PieceDelete(Piece piece)
 	{
 		if(Board[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] == piece)
@@ -884,17 +818,11 @@ Err3Dc( firstGFX, moveString,
 		piece = null;
 	}
 	
-	
-	//
-//	Global Boolean
-//	PieceMayMove(Piece *piece,
-//    const File xNew, const Rank yNew, const Level zNew)
+
 	private boolean PieceMayMove(Piece piece, int xNew, int yNew, int zNew)
 	{
-//		  Boolean retval;
 		  boolean retval;
 
-//		  if (!piece || !piece.bVisible)
 		  if (!piece.bVisible)
 	    {
 	      n3DcErr = E3DcINVIS;
@@ -929,28 +857,17 @@ Err3Dc( firstGFX, moveString,
 //		 * is contradicted, so be careful.
 //		 */
 
-//		Local INLINE Boolean
-//		KingMayMove(Piece *piece,
-//      const File xNew, const Rank yNew, const Level zNew)
+
 		private boolean KingMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//			  File xDiff, xCur, xInc;
-//			  Rank yDiff;
-//			  Level zDiff;
 			  int xDiff, xCur, xInc;
 			  int yDiff;
 			  int zDiff;
-	//
-//			  xDiff = xNew - piece->xyzPos.xFile;
-//			  yDiff = yNew - piece->xyzPos.yRank;
-//			  zDiff = zNew - piece->xyzPos.zLevel;
+			  
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 			  zDiff = zNew - piece.xyzPos.zLevel;
-	//
-//			  xDiff = ABS(xDiff);
-//			  yDiff = ABS(yDiff);
-//			  zDiff = ABS(zDiff);
+
 			  xDiff = ABS(xDiff);
 			  yDiff = ABS(yDiff);
 			  zDiff = ABS(zDiff);
@@ -1025,34 +942,19 @@ Err3Dc( firstGFX, moveString,
 		  return TRUE;
 		}
 		
-	
-//		Local INLINE Boolean
-//			QueenMayMove(Piece *piece,
-//          const File xNew, const Rank yNew, const Level zNew)
-			
 		  private boolean QueenMayMove(Piece piece, int xNew, int yNew, int zNew)
 	{	
 //		{
-//			  File xDiff;
-//			  Rank yDiff;
-//			  Level zDiff;
 			  int xDiff;
 			  int yDiff;
 			  int zDiff;
-//			  Piece
-//			    *pDestSquare;
+
 			  Piece pDestSquare;
-	//
-//			  xDiff = xNew - piece->xyzPos.xFile;
-//			  yDiff = yNew - piece->xyzPos.yRank;
-//			  zDiff = zNew - piece->xyzPos.zLevel;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 			  zDiff = zNew - piece.xyzPos.zLevel;
-	//
-//			  if ((xDiff && yDiff && (ABS(xDiff) != ABS(yDiff))) ||
-//		      (xDiff && zDiff && (ABS(xDiff) != ABS(zDiff))) ||
-//		      (yDiff && zDiff && (ABS(yDiff) != ABS(zDiff))))
+
 			  if ((xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff))) ||
 				      (xDiff > 0 && zDiff > 0 && (ABS(xDiff) != ABS(zDiff))) ||
 				      (yDiff > 0 && zDiff > 0 && (ABS(yDiff) != ABS(zDiff))))
@@ -1069,23 +971,15 @@ Err3Dc( firstGFX, moveString,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	
-//			Local INLINE Boolean
-//			BishopMayMove(Piece *piece,
+
 		  private boolean BishopMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//			  File xDiff;
-//			  Rank yDiff;
-//			  Level zDiff;
-//			  Piece *pDestSquare;
+
 		  int xDiff;
 		  int yDiff;
 		  int zDiff;
 		  Piece pDestSquare;
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
-//		  zDiff = zNew - piece->xyzPos.zLevel;
+
 		  xDiff = xNew - piece.xyzPos.xFile;
 		  yDiff = yNew - piece.xyzPos.yRank;
 		  zDiff = zNew - piece.xyzPos.zLevel;
@@ -1103,63 +997,39 @@ Err3Dc( firstGFX, moveString,
 		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	
-//		Local INLINE Boolean
-//		KnightMayMove(Piece *piece,
-//		              const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean KnightMayMove(Piece piece, int xNew, int yNew, int zNew)
 			{	
-//		  File xDiff;
-//		  Rank yDiff;
+
 			  int xDiff;
 			  int yDiff;
-	
-//			  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Knights may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
-	
-//		  xDiff = ABS(xDiff);
-//		  yDiff = ABS(yDiff);
+
 			  xDiff = ABS(xDiff);
 			  yDiff = ABS(yDiff);
-	
-//		  if ((xDiff == 0) ||
-//		      (yDiff == 0) ||
-//		      ((xDiff + yDiff) != 3))
-//		    return FALSE;
+
 			  if ((xDiff == 0) || (yDiff == 0) || ((xDiff + yDiff) != 3))
 				  return FALSE;
 	
 		  return TRUE;
 		}
-	
-		  
-		  
-//		Local INLINE Boolean
-//		RookMayMove(Piece *piece,
-//		            const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean RookMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Level zDiff;
-//		  Piece *pDestSquare;
+
 			  int xDiff;
 			  int yDiff;
 			  int zDiff;
 			  Piece pDestSquare;
-	
-//			  xDiff = xNew - piece->xyzPos.xFile;
-//			  yDiff = yNew - piece->xyzPos.yRank;
-//			  zDiff = zNew - piece->xyzPos.zLevel;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 			  zDiff = zNew - piece.xyzPos.zLevel;
@@ -1178,26 +1048,19 @@ Err3Dc( firstGFX, moveString,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	//
-//		Local INLINE Boolean
-//		PrinceMayMove(Piece *piece,
-//		              const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean PrinceMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//			  File xDiff;
-//			  Rank yDiff;
+
 			  int xDiff;
 			  int yDiff;
-	
-//			  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princes may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 	
@@ -1212,32 +1075,23 @@ Err3Dc( firstGFX, moveString,
 	
 		  return TRUE;
 		}
-	
-//		Local INLINE Boolean
-//		PrincessMayMove(Piece *piece,
-//		                const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean PrincessMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Piece * pDestSquare;
+
 			  int xDiff;
 			  int yDiff;
 			  Piece pDestSquare;
-	
-//			  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princesses may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
-	
-//		  if (xDiff && yDiff && (ABS(xDiff) != ABS(yDiff)))
+
 			  if (xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff)))
 		    {
 		      n3DcErr = E3DcSIMPLE;
@@ -1252,28 +1106,20 @@ Err3Dc( firstGFX, moveString,
 		                            MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	
-//		Local INLINE Boolean
-//		AbbeyMayMove(Piece *piece,
-//		             const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean AbbeyMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Piece *pDestSquare;
+
 			  int xDiff;
 			  int yDiff;
 			  Piece pDestSquare;
-	
-//			  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Abbies may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 		
@@ -1290,22 +1136,14 @@ Err3Dc( firstGFX, moveString,
 		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	//
-//		Local INLINE Boolean
-//		CannonMayMove(Piece *piece,
-//		              const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean CannonMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Level zDiff;
+
 			  int xDiff;
 			  int yDiff;
 			  int zDiff;
-	
-//			  xDiff = xNew - piece->xyzPos.xFile;
-//			  yDiff = yNew - piece->xyzPos.yRank;
-//			  zDiff = zNew - piece->xyzPos.zLevel;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 			  zDiff = zNew - piece.xyzPos.zLevel;
@@ -1313,10 +1151,7 @@ Err3Dc( firstGFX, moveString,
 		  xDiff = ABS(xDiff);
 		  yDiff = ABS(yDiff);
 		  zDiff = ABS(zDiff);
-	
-//		  if (((xDiff + yDiff + zDiff) != 6) ||
-//	      ((xDiff != 3) && (yDiff != 3)) ||
-//	      ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
+
 		  if (((xDiff + yDiff + zDiff) != 6) || ((xDiff != 3) && (yDiff != 3)) || ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
 		    {
 		      n3DcErr = E3DcSIMPLE;
@@ -1325,28 +1160,20 @@ Err3Dc( firstGFX, moveString,
 	
 		  return TRUE;
 		}
-	
-//		Local INLINE Boolean
-//		GalleyMayMove(Piece *piece,
-//		              const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean GalleyMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff;
-//		  Piece *pDestSquare;
+
 			  int xDiff;
 			  int yDiff;
 			  Piece pDestSquare;
-	
-//			  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Gallies may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yDiff = yNew - piece.xyzPos.yRank;
 	
@@ -1363,26 +1190,19 @@ Err3Dc( firstGFX, moveString,
 		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
-	
-//		Local INLINE Boolean
-//		PawnMayMove(Piece *piece,
-//		            const File xNew, const Rank yNew, const Level zNew)
+
 		  private boolean PawnMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
-//		  File xDiff;
-//		  Rank yDiff, yInc;
+
 			  int xDiff;
 			  int yDiff, yInc;
-	
-//		  if (zNew != piece->xyzPos.zLevel)
+
 			  if (zNew != piece.xyzPos.zLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Pawns may not change level */
 		    }
-	
-//		  xDiff = xNew - piece->xyzPos.xFile;
-//		  yInc = yDiff = yNew - piece->xyzPos.yRank;
+
 			  xDiff = xNew - piece.xyzPos.xFile;
 			  yInc = yDiff = yNew - piece.xyzPos.yRank;
 	
@@ -1392,9 +1212,6 @@ Err3Dc( firstGFX, moveString,
 //		  /*
 //		   * Pawns must move at least 1 forward
 //		   */
-//		  if ((yDiff == 0) ||
-//		      ((yInc < 0) && (piece->bwSide == WHITE)) ||
-//		      ((yInc > 0) && (piece->bwSide == BLACK))) /* Moving backwards */
 		  if ((yDiff == 0) || ((yInc < 0) && (piece.bwSide == WHITE)) || ((yInc > 0) && (piece.bwSide == BLACK))) /* Moving backwards */
 		    {
 		      n3DcErr = E3DcSIMPLE;
@@ -1416,7 +1233,6 @@ Err3Dc( firstGFX, moveString,
 //		   */
 //		#if 0
 //		#endif /* 0 */
-//		    if (xDiff == 1 && yDiff == 1 && !Board[zNew][yNew][xNew])
 		    if (xDiff == 1 && yDiff == 1 && Board[zNew][yNew][xNew] != null)
 		      { /* En passant? */
 //		        if (Board[zNew][yNew - yInc][xNew] && /* 'Takable' piece */
@@ -1444,8 +1260,6 @@ Err3Dc( firstGFX, moveString,
 //		   *  They move more than 1 and they have already moved
 //		   *  They attempt to take any piece (catered for in next conditional)
 //		   */
-//		  if (yDiff > 2 || /* Move too far */
-//		      (piece->bHasMoved && yDiff == 2)) /* Move too far */
 			  if (yDiff > 2 || /* Move too far */
 					  (piece.bHasMoved && yDiff == 2)) /* Move too far */
 		    {
@@ -1458,9 +1272,6 @@ Err3Dc( firstGFX, moveString,
 //		   *  They do not move diagonally forward one space
 //		   *  The victim is an ally
 //		   */
-//		  if (Board[zNew][yNew][xNew]  && /* Taking something */
-//		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
-//		       Board[zNew][yNew][xNew]->bwSide == piece->bwSide))
 			  if (Board[zNew][yNew][xNew] != null  && /* Taking something */
 		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
 		       Board[zNew][yNew][xNew].bwSide == piece.bwSide))
@@ -1538,28 +1349,17 @@ Err3Dc( firstGFX, moveString,
 
 	
 	
-	//	/*
 //	 * Execute the move
-//	 */
-//	Global Boolean
-//	PieceMove(Piece *piece,
-//	          const File xNew, const Rank yNew, const Level zNew)
 		  private boolean PieceMove(Piece piece, int xNew, int yNew, int zNew)
 	{
 	  Move thisMove = new Move();
 //	  Boolean moveType; /* Not quite Boolean... */
 	  boolean moveType; /* Not quite Boolean... */
 
-//	  if (!(moveType = PieceMayMove(piece, xNew, yNew, zNew)))
 	  if (!(moveType = PieceMayMove(piece, xNew, yNew, zNew)))
 	    return FALSE;
-//
-//	  /*
+
 //	   * Keep record of move
-//	   */
-//	  thisMove.xyzBefore.xFile = piece->xyzPos.xFile;
-//	  thisMove.xyzBefore.yRank = piece->xyzPos.yRank;
-//	  thisMove.xyzBefore.zLevel = piece->xyzPos.zLevel;
 	  thisMove.xyzBefore.xFile = piece.xyzPos.xFile;
 	  thisMove.xyzBefore.yRank = piece.xyzPos.yRank;
 	  thisMove.xyzBefore.zLevel = piece.xyzPos.zLevel;
@@ -1787,43 +1587,8 @@ Err3Dc( firstGFX, moveString,
 //
 
 	
-//	/*
-//	 * stack.c
-//	 *
 //	 * The move stack for 3Dc.
-//	 */
-//	/*
-//
-//	    3Dc, a game of 3-Dimensional Chess
 //	    Copyright (C) 1995  Paul Hicks
-//
-//	    This program is free software; you can redistribute it and/or modify
-//	    it under the terms of the GNU General Public License as published by
-//	    the Free Software Foundation; either version 2 of the License, or
-//	    (at your option) any later version.
-//
-//	    This program is distributed in the hope that it will be useful,
-//	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	    GNU General Public License for more details.
-//
-//	    You should have received a copy of the GNU General Public License
-//	    along with this program; if not, write to the Free Software
-//	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//	    E-Mail: paulh@euristix.ie
-//	*/
-//	#include <malloc.h>
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//
-//	#include "machine.h"
-//	#include "3Dc.h"
-//	#include "3DcErr.h"
-
-		  
-		  
-		//Global stack *
 	public Stack stack;		  
 		  
 //stack has its own class... but may only need wrappers???

@@ -1,8 +1,6 @@
 package com.example.puzzleduck.threeD_Chess;
 
 
-import java.util.Random;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -14,7 +12,7 @@ import android.view.MotionEvent;
 
 public class threeD_Renderer extends GLSurfaceView implements Renderer {
 
-	private final int numStars = 50;
+	private final int numStars = threeD_Chess.LEVELS * threeD_Chess.RANKS * threeD_Chess.FILES;
 	private Stars stars;
 
 	private boolean twinkle = true;
@@ -44,11 +42,11 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+//		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 		//perspective
 		
 		stars = new Stars(numStars);
-		stars.loadGLTexture(gl, this.context);
+		stars.loadGLTexture(gl, this.context,1);
 	
 	}
 	
@@ -62,7 +60,7 @@ public class threeD_Renderer extends GLSurfaceView implements Renderer {
 		gl.glDisable(GL10.GL_DEPTH_TEST);
 
 		stars.draw(gl, twinkle);
-						
+//		threeD_Chess.DoMain3DcLoop();
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
