@@ -56,7 +56,7 @@ public class Stars
 			gl.glRotatef(tilt, 1.0f, 0.0f, 0.0f);
 			gl.glRotatef(thisStar.angle, 0.0f, 1.0f, 0.0f);
 			
-			gl.glTranslatef(thisStar.distance, 0.0f, 0.0f);
+			gl.glTranslatef(thisStar.distance*3, 0.0f, 0.0f);
 			gl.glRotatef(-thisStar.angle, 0.0f, 1.0f, 0.0f);
 			gl.glRotatef(-tilt, 1.0f, 0.0f, 0.0f);
 			
@@ -71,14 +71,14 @@ public class Stars
 			}
 			
 			gl.glRotatef(spin, 0.0f, 0.0f, 1.0f);
-			gl.glColor4f((float)thisStar.r/255, (float)thisStar.g/255, (float)thisStar.b/255, 1.0f);
+			gl.glColor4f((float)thisStar.r/255, (float)thisStar.g/255, (float)thisStar.b/255, 0.5f);
 			
 			thisStar.draw(gl);
 			
-			spin += 0.01f;
+			spin += 0.001f;
 			thisStar.angle += (float) i/number;
-			thisStar.distance -= 0.01f;
-			if( thisStar.distance < 0.0f)
+			thisStar.distance -= 0.005f;
+			if( thisStar.distance < -100.0f)
 			{
 				thisStar.distance = 5.0f;
 				thisStar.r = rng.nextInt(256);
@@ -92,8 +92,13 @@ public class Stars
 	}
 	
 	
-	public void loadGLTexture(GL10 gl, Context context) {
-		InputStream inStream = context.getResources().openRawResource(R.drawable.star);
+	public void loadGLTexture(GL10 gl, Context context, int type) {
+//HERE....    need to do graphic selection
+		
+		
+		
+		
+		InputStream inStream = context.getResources().openRawResource(R.drawable.k_abbey);
 		Bitmap bitmap = null;
 		
 		try
