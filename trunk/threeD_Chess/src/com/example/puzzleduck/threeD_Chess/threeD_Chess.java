@@ -328,9 +328,9 @@ public class threeD_Chess extends Activity {
 //	/* This function interprets the result of TraverseDir(piece...) */
 	private boolean IsMoveLegal(Piece attacker, Piece defender)
 	{
-		if (defender == SQUARE_EMPTY)
+		if (defender == Board.getSQUARE_EMPTY())
 			return TRUE;
-		  if (defender == SQUARE_INVALID)
+		  if (defender == Board.getSQUARE_INVALID())
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -344,52 +344,7 @@ public class threeD_Chess extends Activity {
 	}
 
 
-	//* The move-stack (for undos, checking for en passant, etc)
-//	typedef struct
-//	{
-//	  int nSize;
-//	  struct stack_el *top;
-//	} stack;
-//
-//	Global stack *FindAllMoves(Piece *);
-	Stack MoveStack;
-
-
-	public Piece[][][] Board = new Piece[LEVELS][RANKS][FILES];
-	
-	private Piece[][] Muster = new Piece[COLOURS][PIECES];
-	
-	private int bwToMove;
-	
-	
-//not sure how much of this i'll need
-
-	//	Global char *Piece2String( Piece * );
-//	Global Colour Computer(void);
-//	Global void PauseGame(void);
-//	Global void ResumeGame(void);
-//	Global Boolean IsGamePaused(void);
-//	Global Boolean IsGameFinished(void);
-//	Global void FinishGame(Colour);
-//	Global void PrintMove( const Move * );
-//
-//	/* ComputerPlay stuff */
-//	Global Boolean    GenMove(const Colour, Move **);
-//	Global Boolean GenAltMove(const Colour, Move **);
-
-//not sure if i need these either... open GL may take care of this... now i know it won't	
-//	
-//    muster,                                    /* Display area    */
-//	    remark,                                    /* Message area    */
-//	    undo,                                      /* Undo button     */
-//	    board[LEVELS];                             /* Playing areas   */
-//	  Dimension width[LEVELS], height[LEVELS];     /* Sizes of playing areas */
-//	  Pixel blackPixel, whitePixel, greyPixel;     /* Colours */
-//	  Pixmap face[COLOURS][TITLES],  mask[TITLES]; /* Pixmaps */
-//	  XFontStruct *font;                           /* The display font */
-//	} GfxInfo;
-
-//	Global GfxInfo *firstGFX, *secondGFX;
+	//	Global GfxInfo *firstGFX, *secondGFX;
 	public Object firstGFX, secondGFX; //just a fudge to get these defined
 
 	private int XPM_SIZE = 32;
@@ -446,22 +401,9 @@ public class threeD_Chess extends Activity {
 
 	private int n3DcErr;
 	
-	private Piece SQUARE_EMPTY, SQUARE_INVALID;
+	public Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
 
-	private int[] titleCount = {1,1,2,2,2,2,2,4,4,4,24};
-		//		  /* king     */ 1,
-		//		  /* queen    */ 1,
-		//		  /* bishop   */ 2,
-		//		  /* knight   */ 2,
-		//		  /* rook     */ 2,
-		//		  /* prince   */ 2,
-		//		  /* princess */ 2,
-		//		  /* abbey    */ 4,
-		//		  /* cannon   */ 4,
-		//		  /* galley   */ 4,
-		//		  /* pawn     */ 24
-		
-	 /* This function sets up the board*/
+	/* This function sets up the board*/
 	private void Init3Dc()
 	{
 		int thisFile;
@@ -540,8 +482,8 @@ public class threeD_Chess extends Activity {
 		            	
 		            	
 		            	
-		                Muster[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
-		                Board[thisLevel][thisRank][thisFile] = temp;
+		                Board.getMuster()[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
+		                Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
 	                    temp = null;
 	                    (count[thisColor][thisTitle])++;
 	                }
@@ -551,8 +493,8 @@ public class threeD_Chess extends Activity {
 		StackNew();
 		n3DcErr = 0;
 
-	  SQUARE_INVALID = new Piece(0,0,0,0,0);
-	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
+	  Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
+	  Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
 	  
 	  //Debug display of board after setup
 	  
@@ -572,11 +514,11 @@ public class threeD_Chess extends Activity {
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
 	          		//thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-		            if(Board[thisLevel][thisRank][thisFile].getTypeChar() != ' ')
+		            if(Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar() != ' ')
 		            {
-		            	text = text + ((Board[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
-		            	text = text + Board[thisLevel][thisRank][thisFile].getTypeChar();
-		            	text = text + ((Board[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+		            	text = text + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
 		            }else{
 		            	text = text + "- -";
 		            }
@@ -587,9 +529,6 @@ public class threeD_Chess extends Activity {
 	  int duration = Toast.LENGTH_LONG;
 	  Toast toast = Toast.makeText(context, text, duration);
 	  toast.show();
-	  
-	  
-	  
 	  
 	}
 
@@ -638,9 +577,9 @@ public class threeD_Chess extends Activity {
 //		  	//	      if (IsGameFinished() && !gamePaused)
 		      if (IsGameFinished() && !gamePaused)
 		      {
-		    	  FinishGame((bwToMove == Piece.BLACK) ? Piece.WHITE : Piece.BLACK);
+		    	  FinishGame((Board.getBwToMove() == Piece.BLACK) ? Piece.WHITE : Piece.BLACK);
 		      }
-      if ( (bwToMove == computer) && !gamePaused)
+      if ( (Board.getBwToMove() == computer) && !gamePaused)
         {    	  
 		//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
 		//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
@@ -668,10 +607,10 @@ public class threeD_Chess extends Activity {
 			//                        automove->xyzAfter.xFile,
 			//                        automove->xyzAfter.yRank,
 			//                        automove->xyzAfter.zLevel ) )) )
-            else if ( (Board[ automove.xyzBefore.zLevel ]
+            else if ( (Board.getBoard()[ automove.xyzBefore.zLevel ]
             [ automove.xyzBefore.yRank ]
             [ automove.xyzBefore.xFile ] == NULL ) ||
-            ( PieceMove( Board[ automove.xyzBefore.zLevel ]
+            ( PieceMove( Board.getBoard()[ automove.xyzBefore.zLevel ]
                               [ automove.xyzBefore.yRank ]
                               [ automove.xyzBefore.xFile ],
                         automove.xyzAfter.xFile,
@@ -696,7 +635,7 @@ public class threeD_Chess extends Activity {
                   retry = FALSE;
                   PrintMove( automove );
 
-                  bwToMove = ((computer == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
+                  Board.setBwToMove(((computer == Piece.WHITE) ? Piece.BLACK : Piece.WHITE));
                 } /* End 'found computer move' */
             } /* Still finding computer's move? */
         } /* End computer's move */
@@ -730,14 +669,14 @@ public class threeD_Chess extends Activity {
 		
 //	  for (i = 0; i != name && i < TITLES; ++i)
 		  for (i = 0; i != title && i < TITLES; ++i)
-		    count += titleCount[i];
+		    count += Board.getTitleCount()[i];
 		
 		  if (i == TITLES)
 		    return 47; /* 47 is a hack; it is a legal array index that is only
 		                * valid for pawns */
 		
 //		  if (nth < titleCount[name])
-			  if (thisCount < titleCount[title])
+			  if (thisCount < Board.getTitleCount()[title])
 		    {
 			      return count + thisCount;
 //			      return count + nth;
@@ -808,17 +747,17 @@ public boolean IsGamePaused()
      	  Toast toast = Toast.makeText(context, text, duration);
      	  toast.show();
 		   
-		   blackKingVisible = Muster[Piece.BLACK][MusterIdx(Piece.king, 0)].bVisible;
-		   whiteKingVisible = Muster[Piece.WHITE][MusterIdx(Piece.king, 0)].bVisible;
+		   blackKingVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.king, 0)].bVisible;
+		   whiteKingVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.king, 0)].bVisible;
 
      	  
      	  
      	  
-		   blackFirstPrinceVisible = Muster[Piece.BLACK][MusterIdx(Piece.prince, 0)].bVisible;
-		   whiteFirstPrinceVisible = Muster[Piece.WHITE][MusterIdx(Piece.prince, 0)].bVisible;
+		   blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.prince, 0)].bVisible;
+		   whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.prince, 0)].bVisible;
 		   
-		   blackSecondPrinceVisible = Muster[Piece.BLACK][MusterIdx(Piece.prince, 1)].bVisible;
-		   whiteSecondPrinceVisible = Muster[Piece.WHITE][MusterIdx(Piece.prince, 1)].bVisible;
+		   blackSecondPrinceVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.prince, 1)].bVisible;
+		   whiteSecondPrinceVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.prince, 1)].bVisible;
 
 		   if ((!whiteKingVisible || 
 				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
@@ -881,13 +820,13 @@ public boolean IsGamePaused()
 //  piece = Board[ move->xyzAfter.zLevel]
 //  [ move->xyzAfter.yRank ]
 //  [ move->xyzAfter.xFile ];
-  piece = Board[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+  piece = Board.getBoard()[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
 
 //      CHECK( piece != NULL );
 
 //enemy = Muster[(piece->bwSide == WHITE) ? BLACK : WHITE]
 //[ MusterIdx(king, 0) ];
-  enemy = Muster[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
+  enemy = Board.getMuster()[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
 //pos = enemy->xyzPos;
   pos = enemy.xyzPos;
 
@@ -945,7 +884,7 @@ public boolean IsGamePaused()
 
 Err3Dc( firstGFX, moveString,
 (/* (Computer() == bwToMove) || */
- ( (secondGFX != NULL) && (bwToMove == Piece.BLACK) ) ||
+ ( (secondGFX != NULL) && (Board.getBwToMove() == Piece.BLACK) ) ||
  ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
 
   
@@ -983,9 +922,9 @@ Err3Dc( firstGFX, moveString,
 
 	public void PieceDelete(Piece piece)
 	{
-		if(Board[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] == piece)
+		if(Board.getBoard()[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] == piece)
 		{
-			Board[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] = null;
+			Board.getBoard()[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] = null;
 		}
 		piece = null;
 	}
@@ -1010,9 +949,9 @@ Err3Dc( firstGFX, moveString,
 	      return FALSE;//can't move to same spot
 	    }
 
-	  if ((Board[zNew][yNew][xNew] != NULL) &&
-	      (Board[zNew][yNew][xNew].bVisible == TRUE) &&
-	      (Board[zNew][yNew][xNew].bwSide == piece.bwSide))
+	  if ((Board.getBoard()[zNew][yNew][xNew] != NULL) &&
+	      (Board.getBoard()[zNew][yNew][xNew].bVisible == TRUE) &&
+	      (Board.getBoard()[zNew][yNew][xNew].bwSide == piece.bwSide))
 	    {
 	      n3DcErr = E3DcBLOCK;
 	      return FALSE;  /* Can't take a piece on your team */
@@ -1083,7 +1022,7 @@ Err3Dc( firstGFX, moveString,
 		      else
 		        xRook = 0;//left edge
 	
-		      if (piece.bHasMoved || Board[1][yNew][xRook].bHasMoved)
+		      if (piece.bHasMoved || Board.getBoard()[1][yNew][xRook].bHasMoved)
 		        {
 		          n3DcErr = E3DcMOVED;
 		          return FALSE;
@@ -1100,7 +1039,7 @@ Err3Dc( firstGFX, moveString,
 		      for (xCur = piece.xyzPos.xFile + xInc; xCur != xRook; xCur += xInc)
 		      {  /* Is the castle blocked? */
 //		          if (Board[1][yNew][xCur])
-			        if (Board[1][yNew][xCur] != null)
+			        if (Board.getBoard()[1][yNew][xCur] != null)
 		            {
 		              n3DcErr = E3DcBLOCK;
 		              return FALSE;
@@ -1405,16 +1344,16 @@ Err3Dc( firstGFX, moveString,
 //		   */
 //		#if 0
 //		#endif /* 0 */
-		    if (xDiff == 1 && yDiff == 1 && Board[zNew][yNew][xNew] != null)
+		    if (xDiff == 1 && yDiff == 1 && Board.getBoard()[zNew][yNew][xNew] != null)
 		      { /* En passant? */
 //		        if (Board[zNew][yNew - yInc][xNew] && /* 'Takable' piece */
 //		            Board[zNew][yNew - yInc][xNew]->nName == pawn && /* Is pawn */
 //		            Board[zNew][yNew - yInc][xNew]->bwSide != piece->bwSide && /* Is enemy */
 //		            1) /* Dummy line to reduce no. of changes */
 
-		        if (Board[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
-	            (Board[zNew][yNew - yInc][xNew].nName == Piece.pawn) && /* Is pawn */
-	            (Board[zNew][yNew - yInc][xNew].bwSide != piece.bwSide) ) /* Dummy line to reduce no. of changes */
+		        if (Board.getBoard()[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
+	            (Board.getBoard()[zNew][yNew - yInc][xNew].nName == Piece.pawn) && /* Is pawn */
+	            (Board.getBoard()[zNew][yNew - yInc][xNew].bwSide != piece.bwSide) ) /* Dummy line to reduce no. of changes */
 		          {
 //		            return EnPASSANT;
 		            return true;
@@ -1444,9 +1383,9 @@ Err3Dc( firstGFX, moveString,
 //		   *  They do not move diagonally forward one space
 //		   *  The victim is an ally
 //		   */
-			  if (Board[zNew][yNew][xNew] != null  && /* Taking something */
+			  if (Board.getBoard()[zNew][yNew][xNew] != null  && /* Taking something */
 		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
-		       Board[zNew][yNew][xNew].bwSide == piece.bwSide))
+		       Board.getBoard()[zNew][yNew][xNew].bwSide == piece.bwSide))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1564,7 +1503,7 @@ Err3Dc( firstGFX, moveString,
 //	    }
 
 //	  StackPush(MoveStack, thisMove);
-	  StackPush(MoveStack, thisMove);
+	  StackPush(Board.getMoveStack(), thisMove);
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
@@ -2376,9 +2315,9 @@ Err3Dc( firstGFX, moveString,
 //	      XSetForeground(XtDisplay(gfx->muster), gfx->gc, gfx->blackPixel);
 //
 	      count = 0;
-	      for (i = 0; i < titleCount[nType]; ++i)
+	      for (i = 0; i < Board.getTitleCount()[nType]; ++i)
 	        {
-	          if (Muster[bwSide][MusterIdx(nType, i)].bVisible)
+	          if (Board.getMuster()[bwSide][MusterIdx(nType, i)].bVisible)
 	            ++count;
 	        }
 //
@@ -2532,8 +2471,8 @@ Err3Dc( firstGFX, moveString,
 
 	  for (pieceIdx = 0; pieceIdx < PIECES; ++pieceIdx)
 	    {
-	      if (Muster[bwSide][pieceIdx].bVisible && PieceMayMove( Muster[bwSide][pieceIdx], xFile, yRank, zLevel ))
-	        return Muster[bwSide][pieceIdx];
+	      if (Board.getMuster()[bwSide][pieceIdx].bVisible && PieceMayMove( Board.getMuster()[bwSide][pieceIdx], xFile, yRank, zLevel ))
+	        return Board.getMuster()[bwSide][pieceIdx];
 	    }
 
 	  return null;
@@ -2559,11 +2498,11 @@ Err3Dc( firstGFX, moveString,
 //	  /* Most move at least one in a real direction */
 	  if ((dist == 0) || ((xDir == 0) && (yDir == 0) && (zDir == 0)))
 	    {
-	      SQUARE_INVALID.xyzPos.xFile = UINT_MAX;
-	      SQUARE_INVALID.xyzPos.yRank = UINT_MAX;
-	      SQUARE_INVALID.xyzPos.zLevel = UINT_MAX;
+	      Board.getSQUARE_INVALID().xyzPos.xFile = UINT_MAX;
+	      Board.getSQUARE_INVALID().xyzPos.yRank = UINT_MAX;
+	      Board.getSQUARE_INVALID().xyzPos.zLevel = UINT_MAX;
 
-	      return SQUARE_INVALID;
+	      return Board.getSQUARE_INVALID();
 	    }
 
 	  if ((piece.nName != Piece.knight) && (piece.nName != Piece.cannon))
@@ -2585,24 +2524,24 @@ Err3Dc( firstGFX, moveString,
 
 	      if (!((x >= 0) && (y >= 0) && (z >= 0) && (x < FILES) && (y < RANKS) && (z < LEVELS)))
 	        {
-	          SQUARE_INVALID.xyzPos.xFile = x;
-	          SQUARE_INVALID.xyzPos.yRank = y;
-	          SQUARE_INVALID.xyzPos.zLevel = z;
-	          return SQUARE_INVALID;
+	          Board.getSQUARE_INVALID().xyzPos.xFile = x;
+	          Board.getSQUARE_INVALID().xyzPos.yRank = y;
+	          Board.getSQUARE_INVALID().xyzPos.zLevel = z;
+	          return Board.getSQUARE_INVALID();
 	        }
 
-	      if (Board[z][y][x] != null)
+	      if (Board.getBoard()[z][y][x] != null)
 	        {
-	          if (Board[z][y][x].bwSide == piece.bwSide)
+	          if (Board.getBoard()[z][y][x].bwSide == piece.bwSide)
 	            {
-	              SQUARE_INVALID.xyzPos.xFile = x;
-	              SQUARE_INVALID.xyzPos.yRank = y;
-	              SQUARE_INVALID.xyzPos.zLevel = z;
-	              return SQUARE_INVALID;
+	              Board.getSQUARE_INVALID().xyzPos.xFile = x;
+	              Board.getSQUARE_INVALID().xyzPos.yRank = y;
+	              Board.getSQUARE_INVALID().xyzPos.zLevel = z;
+	              return Board.getSQUARE_INVALID();
 	            }
 	          else
 	          {
-	            return Board[z][y][x];
+	            return Board.getBoard()[z][y][x];
 	          }
 	        }
 	    } while (++d < dist);
@@ -2615,26 +2554,26 @@ Err3Dc( firstGFX, moveString,
 	  if ((x >= 0) && (y >= 0) && (z >= 0) && (z < LEVELS) && (y < RANKS) && (x < FILES))
 	    {
 //	      /* Valid (empty) square */
-	      SQUARE_EMPTY.xyzPos.xFile = x;
-	      SQUARE_EMPTY.xyzPos.yRank = y;
-	      SQUARE_EMPTY.xyzPos.zLevel = z;
+	      Board.getSQUARE_EMPTY().xyzPos.xFile = x;
+	      Board.getSQUARE_EMPTY().xyzPos.yRank = y;
+	      Board.getSQUARE_EMPTY().xyzPos.zLevel = z;
 
-	      return SQUARE_EMPTY;
+	      return Board.getSQUARE_EMPTY();
 	    }
 
 //	   * We fell off the board. Go back one place to the last valid
 //	   * location.
-	  SQUARE_INVALID.xyzPos.xFile = x - xDir;
-	  SQUARE_INVALID.xyzPos.yRank = y - yDir;
-	  SQUARE_INVALID.xyzPos.zLevel = z - zDir;
+	  Board.getSQUARE_INVALID().xyzPos.xFile = x - xDir;
+	  Board.getSQUARE_INVALID().xyzPos.yRank = y - yDir;
+	  Board.getSQUARE_INVALID().xyzPos.zLevel = z - zDir;
 
-	  return SQUARE_INVALID;
+	  return Board.getSQUARE_INVALID();
 	}
 
 //	 * Return TRUE if the king is checked in the current board layout.
 	public Boolean IsKingChecked( int bwSide )
 	{
-	  Coord xyz = Muster[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
+	  Coord xyz = Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
 
 	  return ( SquareThreatened( (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
 	}
@@ -2647,13 +2586,13 @@ Err3Dc( firstGFX, moveString,
 	  Coord xyz;
 
 	  xyz = piece.xyzPos;
-	  temp = Board[z][y][x];
+	  temp = Board.getBoard()[z][y][x];
 	  if ( temp != NULL )
 	  {
 		    temp.bVisible = FALSE;
 	  }
-	  Board[z][y][x] = piece;
-	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
+	  Board.getBoard()[z][y][x] = piece;
+	  Board.getBoard()[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
 
 	  if (piece.nName == Piece.king)
 	    {
@@ -2666,12 +2605,12 @@ Err3Dc( firstGFX, moveString,
 		    retVal = IsKingChecked(piece.bwSide);
 	  }
 	  
-	  Board[z][y][x] = temp;
+	  Board.getBoard()[z][y][x] = temp;
 	  if ( temp != NULL )
 	  {
 		    temp.bVisible = TRUE;
 	  }
-	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
+	  Board.getBoard()[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
 
 	  return retVal;
 	}	
@@ -3549,7 +3488,7 @@ Err3Dc( firstGFX, moveString,
 
 	  if ( bestMoves.ratings[i] == value )
 	    {
-	      StackPush( MoveStack, move );
+	      StackPush( Board.getMoveStack(), move );
 	      move = null;
 	    }
 	  else
@@ -3571,7 +3510,7 @@ Err3Dc( firstGFX, moveString,
 //	      /* Create the new stack */
 //	      bestMoves.stacks[i] = StackNew();
 	      bestMoves.stacks[i] = StackNew();
-	      StackPush( MoveStack, move );
+	      StackPush( Board.getMoveStack(), move );
 	      bestMoves.ratings[i] = value;
 	    }
 	}
@@ -3708,12 +3647,12 @@ Err3Dc( firstGFX, moveString,
 	  bwEnemy = ( bwSide == Piece.WHITE ) ? Piece.BLACK : Piece.WHITE;
 
 	  /* Rate taking king */
-	  if (move.pVictim == Muster[ bwEnemy ][ MusterIdx( Piece.king, 0 )])
+	  if (move.pVictim == Board.getMuster()[ bwEnemy ][ MusterIdx( Piece.king, 0 )])
 	    return INT_MAX;
 
 //	  /* Fake the move for simple lookahead */
-	  moving  = Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ];
-	  storing = Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+	  moving  = Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ];
+	  storing = Board.getBoard()[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
 
 //realy hope this CHECK thing isn't CHECKing anything impotant
 	  //	  if (!CHECK( moving != NULL ))
@@ -3724,20 +3663,20 @@ Err3Dc( firstGFX, moveString,
 //	   * inside the move faked below but that would mean nasty code
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
-	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( Piece.king, 0 )],
+	  if ( FakeMoveAndIsKingChecked( Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 )],
 		      move.xyzAfter.xFile,
 		      move.xyzAfter.yRank,
 		      move.xyzAfter.zLevel ))
 		  return INT_MIN;
 
 	  /* Fake the move */
-	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = null;
-	  Board[ move.xyzAfter.zLevel ][ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = moving;
+	  Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = null;
+	  Board.getBoard()[ move.xyzAfter.zLevel ][ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = moving;
 	  if ( storing != null )
 	    storing.bVisible = FALSE;
 
 	  /* Rate check */
-	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( Piece.king, 0 )]).xyzPos;
+	  xyzPos = (Board.getMuster()[ bwEnemy ][ MusterIdx( Piece.king, 0 )]).xyzPos;
 	  if ( SquareThreatened( bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating += values[ Piece.king ];
 
@@ -3747,8 +3686,8 @@ Err3Dc( firstGFX, moveString,
 		  rating -= (values[ moving.nName ] /2);
 
 	  /* Undo the fake */
-	  Board[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = moving;
- Board[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = storing;
+	  Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = moving;
+ Board.getBoard()[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = storing;
  if ( storing != null )
    storing.bVisible = TRUE;
 
@@ -3763,11 +3702,11 @@ Err3Dc( firstGFX, moveString,
 	       * an authorative check and needs to be enhanced). */
 	      for ( i = 0; i < PIECES; ++i )
 	        {
-	          if ( Muster[ bwSide ][ i ].bVisible && SquareThreatened( bwEnemy,
-	        		  	Muster[ bwSide ][ i ].xyzPos.xFile,
-                        Muster[ bwSide ][ i ].xyzPos.yRank,
-                        Muster[ bwSide ][ i ].xyzPos.zLevel ) ==  move.pVictim )
-	            rating += (values[ Muster[ bwSide ][ i ].nName ] /2);
+	          if ( Board.getMuster()[ bwSide ][ i ].bVisible && SquareThreatened( bwEnemy,
+	        		  	Board.getMuster()[ bwSide ][ i ].xyzPos.xFile,
+                        Board.getMuster()[ bwSide ][ i ].xyzPos.yRank,
+                        Board.getMuster()[ bwSide ][ i ].xyzPos.zLevel ) ==  move.pVictim )
+	            rating += (values[ Board.getMuster()[ bwSide ][ i ].nName ] /2);
 	        }
 	    }
 
@@ -3810,9 +3749,9 @@ Err3Dc( firstGFX, moveString,
 	        }
 	    }
 
-	  if ( Muster[bwSide][pieceIdx].bVisible )
+	  if ( Board.getMuster()[bwSide][pieceIdx].bVisible )
 	    {
-	      moves = FindAllMoves( Muster[bwSide][pieceIdx] );
+	      moves = FindAllMoves( Board.getMuster()[bwSide][pieceIdx] );
 	      if (moves != null)
 	        {
 //	#         ifdef NOTDEF
@@ -3882,12 +3821,12 @@ Err3Dc( firstGFX, moveString,
 
 	              if (ABS(CURX-x) == ABS(CURY-y))
 	                continue;
-	              if ((Board[CURZ][y][x] == NULL) || (Board[CURZ][y][x].bwSide == bwEnemy))
+	              if ((Board.getBoard()[CURZ][y][x] == NULL) || (Board.getBoard()[CURZ][y][x].bwSide == bwEnemy))
 	                {
 	                  move.xyzAfter.xFile = x;
 	                  move.xyzAfter.yRank = y;
 	                  move.xyzAfter.zLevel = CURZ;
-	                  move.pVictim = Board[CURZ][y][x];
+	                  move.pVictim = Board.getBoard()[CURZ][y][x];
 	                  move.nHadMoved = piece.bHasMoved;
 	                  
 	                  if (!FakeMoveAndIsKingChecked( piece, x, y, CURZ ))
@@ -3920,12 +3859,12 @@ Err3Dc( firstGFX, moveString,
 	                      (ABS(CURY-y) == ABS(CURZ-z)))
 	                    continue;
 
-	                  if ((Board[z][y][x] == NULL) || (Board[z][y][x].bwSide == bwEnemy))
+	                  if ((Board.getBoard()[z][y][x] == NULL) || (Board.getBoard()[z][y][x].bwSide == bwEnemy))
 	                    {
 	                      move.xyzAfter.xFile = x;
 	                      move.xyzAfter.yRank = y;
 	                      move.xyzAfter.zLevel = z;
-	                      move.pVictim = Board[z][y][x];
+	                      move.pVictim = Board.getBoard()[z][y][x];
 	                      move.nHadMoved = piece.bHasMoved;
 
 	                      if (!FakeMoveAndIsKingChecked( piece, x, y, z ))
@@ -3946,18 +3885,18 @@ Err3Dc( firstGFX, moveString,
 	          /* Due to the complexity of the conditional this time,
 	           * I've opted for aborting when illegal instead of
 	           * proceeding when legal. */
-	          if ((x == CURX) && (Board[CURZ][CURY+y][CURX] != NULL))
+	          if ((x == CURX) && (Board.getBoard()[CURZ][CURY+y][CURX] != NULL))
 	            continue;
 
 	          if ( (x != CURX) && 
-	        		  ((Board[CURZ][CURY + y][x] == NULL) || ((Board[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
+	        		  ((Board.getBoard()[CURZ][CURY + y][x] == NULL) || ((Board.getBoard()[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
 	          {
 	            continue;
 	          }
 	          move.xyzAfter.xFile = x;
 	          move.xyzAfter.yRank = CURY + y;
 	          move.xyzAfter.zLevel = CURZ;
-	          move.pVictim = Board[CURZ][CURY + y][x];
+	          move.pVictim = Board.getBoard()[CURZ][CURY + y][x];
 	          move.nHadMoved = piece.bHasMoved;
 
 	          if (!FakeMoveAndIsKingChecked(piece, x, CURY+y, CURZ))
@@ -3967,7 +3906,7 @@ Err3Dc( firstGFX, moveString,
 //	          /* This next conditional is for the two-forward move:
 //	           * it only happens when the previous attempt was the one-forward
 //	           * move and makes assumptions based on that fact. */
-	          if ( (x==CURX) && (piece.bHasMoved == FALSE) && (Board[CURZ][CURY + y+y][CURX] == NULL) )
+	          if ( (x==CURX) && (piece.bHasMoved == FALSE) && (Board.getBoard()[CURZ][CURY + y+y][CURX] == NULL) )
 	            {
 	              move.xyzAfter.yRank += y;
 	              if (!FakeMoveAndIsKingChecked(piece, CURX, CURY+y+y, CURZ))
@@ -4035,7 +3974,7 @@ Err3Dc( firstGFX, moveString,
 	                   StackPush(moves, move);
 	               }
 
-	             if (pEncountered != SQUARE_EMPTY)
+	             if (pEncountered != Board.getSQUARE_EMPTY())
 	               break; /* No point on continuing in this direction if
 	                       * we've hit a piece or the edge of the board.. */
 	           } /* End d loop */
