@@ -456,14 +456,14 @@ public class threeD_Chess extends Activity {
 	          /* From the 4th rank on is black's half of the board */
 	          if (thisRank == 4)
 	            thisColor = Piece.BLACK;
-
+	          Piece temp = null;
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
 	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 		            if(thisTitle != Piece.none)
 		            {
 		            	//Create holding var for piece... can't pull this stunt in Java afaik.
-		            	Piece temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+		            	temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
 //		            	Piece temp = new Piece(1, 1, 1, 1, 1);
 //Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
 //		          	  Context context = getApplicationContext();
@@ -514,7 +514,8 @@ public class threeD_Chess extends Activity {
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
 	          		//thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-		            if(Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar() != ' ')
+	          		//Board.getBoard()[thisLevel][thisRank][thisFile] != null
+		            if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
 		            {
 		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
 		            	text = text + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
