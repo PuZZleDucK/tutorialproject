@@ -363,9 +363,9 @@ import android.widget.TextView;
 	            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.k_none);
 //
 //	            // Use the regular lander image as the model size for all sprites
-//	            mLanderWidth = mLanderImage.getIntrinsicWidth();
-//	            mLanderHeight = mLanderImage.getIntrinsicHeight();
-//
+	            int width = noneImage.getIntrinsicWidth();
+	            int height = noneImage.getIntrinsicHeight();
+
 //	            // Initialize paints for speedometer
 //	            mLinePaint = new Paint();
 //	            mLinePaint.setAntiAlias(true);
@@ -779,7 +779,38 @@ import android.widget.TextView;
 //
 //
 //	            // Draw the ship with its current rotation
-//	            canvas.save();
+	            canvas.save();
+
+                noneImage.setBounds(0, 0, noneImage.getIntrinsicWidth(), noneImage.getIntrinsicHeight());
+                noneImage.draw(canvas);
+                kingImage.setBounds(10, 10, kingImage.getIntrinsicWidth(), kingImage.getIntrinsicHeight());
+                kingImage.draw(canvas);
+                queenImage.setBounds(20, 20, queenImage.getIntrinsicWidth(), queenImage.getIntrinsicHeight());
+                queenImage.draw(canvas);
+                bishopImage.setBounds(30, 30, bishopImage.getIntrinsicWidth(), bishopImage.getIntrinsicHeight());
+                bishopImage.draw(canvas);
+                knightImage.setBounds(40, 40, knightImage.getIntrinsicWidth(), knightImage.getIntrinsicHeight());
+                knightImage.draw(canvas);
+                rookImage.setBounds(50, 50, rookImage.getIntrinsicWidth(), rookImage.getIntrinsicHeight());
+                rookImage.draw(canvas);
+                princeImage.setBounds(60, 60, princeImage.getIntrinsicWidth(), princeImage.getIntrinsicHeight());
+                princeImage.draw(canvas);
+                princessImage.setBounds(70, 70, princessImage.getIntrinsicWidth(), princessImage.getIntrinsicHeight());
+                princessImage.draw(canvas);
+                abbeyImage.setBounds(80, 80, abbeyImage.getIntrinsicWidth(), abbeyImage.getIntrinsicHeight());
+                abbeyImage.draw(canvas);
+                cannonImage.setBounds(90, 90, cannonImage.getIntrinsicWidth(), cannonImage.getIntrinsicHeight());
+                cannonImage.draw(canvas);
+                galleyImage.setBounds(100, 100, galleyImage.getIntrinsicWidth(), galleyImage.getIntrinsicHeight());
+                galleyImage.draw(canvas);
+                pawnImage.setBounds(110, 110, pawnImage.getIntrinsicWidth(), pawnImage.getIntrinsicHeight());
+                pawnImage.draw(canvas);
+                pawnImage.setBounds(120, 120, pawnImage.getIntrinsicWidth(), pawnImage.getIntrinsicHeight());
+                pawnImage.draw(canvas);
+	            
+
+	            
+	            
 //	            canvas.rotate((float) mHeading, (float) mX, mCanvasHeight
 //	                    - (float) mY);
 //	            if (mMode == STATE_LOSE) {
@@ -795,7 +826,7 @@ import android.widget.TextView;
 //	                        + mLanderHeight);
 //	                mLanderImage.draw(canvas);
 //	            }
-//	            canvas.restore();
+	            canvas.restore();
 	        }
 //
 //	        /**
