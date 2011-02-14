@@ -11,6 +11,9 @@ package com.example.puzzleduck.threeD_Chess;
 
 
 public class Piece {
+	
+
+	private static char[] pieceChar = {'k','q','b','k','r','p','s','a','c','g','i',' '};
 
 	public Coord xyzPos;
 	public int bwSide;
@@ -55,6 +58,15 @@ public class Piece {
 //		}
 		
 
+	}
+
+	public int getColor() {
+		return bwSide;
+		
+	}
+
+	public char getTypeChar() {
+		return pieceChar[nName];
 	}
 
 	

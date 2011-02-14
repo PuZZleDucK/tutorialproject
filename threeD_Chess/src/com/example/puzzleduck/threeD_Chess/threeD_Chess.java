@@ -570,6 +570,44 @@ public class threeD_Chess extends Activity {
 
 	  SQUARE_INVALID = new Piece(0,0,0,0,0);
 	  SQUARE_EMPTY = new Piece(0,0,0,0,0);
+	  
+	  //Debug display of board after setup
+	  
+  	  Context context = getApplicationContext();
+	  String text = "";
+	  text	= text + "\n Board: \n";
+
+	  
+
+		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
+	    {
+			  text	= text + "\n Level: " + thisLevel;
+			
+			for (thisRank = 0; thisRank < RANKS; ++thisRank)
+		      {
+				  text	= text + "\n----------------------------------------\n" + thisLevel;
+	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
+	            {
+	          		//thisTitle = StartBoard[thisLevel][thisRank][thisFile];
+		            if(Board[thisLevel][thisRank][thisFile].getTypeChar() != ' ')
+		            {
+		            	text = text + ((Board[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+		            	text = text + Board[thisLevel][thisRank][thisFile].getTypeChar();
+		            	text = text + ((Board[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+		            }else{
+		            	text = text + "- -";
+		            }
+	            }
+		      }
+	    }
+	  
+	  int duration = Toast.LENGTH_LONG;
+	  Toast toast = Toast.makeText(context, text, duration);
+	  toast.show();
+	  
+	  
+	  
+	  
 	}
 
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
