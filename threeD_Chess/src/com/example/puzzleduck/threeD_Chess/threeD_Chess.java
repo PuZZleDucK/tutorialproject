@@ -270,26 +270,9 @@ public class threeD_Chess extends Activity {
 	private static int EnPASSANT = 3;
 	private static int PROMOTE = 4;
 	
-	private static int king = 0;
-	private static int queen = 1;
-	private static int bishop = 2;
-	private static int knight = 3;
-	private static int rook = 4;
-	private static int prince = 5;
-	private static int princess = 6;
-	private static int abbey = 7;
-	private static int cannon = 8;
-	private static int galley = 9;
-	private static int pawn = 10;
-	private static int none = 11;
-	
 	private static int TITLES = 11;
 	private static int PIECES = 48;
 	private static int COLOURS = 2;
-	
-	private static int NOCOL = -1;
-	private static int WHITE = 0;
-	private static int BLACK = 1;
 	
 	public static int FILES = 8;
 	public static int RANKS = 8;
@@ -492,50 +475,50 @@ public class threeD_Chess extends Activity {
 		int StartBoard[][][] =
 	  { /* The boards */
 	    { /* Bottom board */
-	      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
-	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-	      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
+	      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+	      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
 	    },
 	    { /* Middle board */
-	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook},
-	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   none,   none,   none,   none,   none,   none,   none,   none},
-	      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-	      {   rook, knight, bishop,   king,  queen, bishop, knight,   rook}
+	      {   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook},
+	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+	      {   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook}
 	    },
 	    { /* Top board */
-		      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
-		      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-		      {   none,   none,   none,   none,   none,   none,   none,   none},
-		      {   none,   none,   none,   none,   none,   none,   none,   none},
-		      {   none,   none,   none,   none,   none,   none,   none,   none},
-		      {   none,   none,   none,   none,   none,   none,   none,   none},
-		      {   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn,   pawn},
-		      { galley,  cannon, abbey, prince, princess, abbey, cannon, galley},
+		      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+		      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+		      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+		      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
 	    }
 	  }; /* StartBoard */
 
 		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
 	    {
-			thisColor = WHITE;
+			thisColor = Piece.WHITE;
 		      for (thisRank = 0; thisRank < RANKS; ++thisRank)
 		      {
 	          /* From the 4th rank on is black's half of the board */
 	          if (thisRank == 4)
-	            thisColor = BLACK;
+	            thisColor = Piece.BLACK;
 
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
 	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-		            if(thisTitle != none)
+		            if(thisTitle != Piece.none)
 		            {
 		            	//Create holding var for piece... can't pull this stunt in Java afaik.
 		            	Piece temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
@@ -617,7 +600,7 @@ public class threeD_Chess extends Activity {
 	boolean TRUE = true;
 	Object NULL = null;
 	
-	private int computer = NOCOL;
+	private int computer = Piece.NOCOL;
 	private boolean gamePaused = FALSE;
 	
 //Local Boolean SetupAutoplay(char *);
@@ -629,10 +612,10 @@ public class threeD_Chess extends Activity {
 {
 	//  if (!strcmp(colourName, "black"))
 	  if (colourName.equals("black") )
-    computer = BLACK;
+    computer = Piece.BLACK;
 	//  else if (!strcmp(colourName, "white"))
 	  else if (colourName.equals("white"))
-    computer = WHITE;
+    computer = Piece.WHITE;
   else
     {
       return FALSE;
@@ -655,7 +638,7 @@ public class threeD_Chess extends Activity {
 //		  	//	      if (IsGameFinished() && !gamePaused)
 		      if (IsGameFinished() && !gamePaused)
 		      {
-		    	  FinishGame((bwToMove == BLACK) ? WHITE : BLACK);
+		    	  FinishGame((bwToMove == Piece.BLACK) ? Piece.WHITE : Piece.BLACK);
 		      }
       if ( (bwToMove == computer) && !gamePaused)
         {    	  
@@ -673,7 +656,7 @@ public class threeD_Chess extends Activity {
 					                  /* Can we delay after this? */
 					//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
 					//                  XFlush( XtDisplay( firstGFX->mainWindow ));
-                  FinishGame((computer == BLACK) ? WHITE : BLACK);
+                  FinishGame((computer == Piece.BLACK) ? Piece.WHITE : Piece.BLACK);
                 }
 			///*** This assertion fails with stack size of 1---or at least it used to */
 			//            else if ( (Board[ automove->xyzBefore.zLevel ]
@@ -713,7 +696,7 @@ public class threeD_Chess extends Activity {
                   retry = FALSE;
                   PrintMove( automove );
 
-                  bwToMove = ((computer == WHITE) ? BLACK : WHITE);
+                  bwToMove = ((computer == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
                 } /* End 'found computer move' */
             } /* Still finding computer's move? */
         } /* End computer's move */
@@ -817,25 +800,25 @@ public boolean IsGamePaused()
 		    blackSecondPrinceVisible, whiteSecondPrinceVisible;
 
        	  Context context = getApplicationContext();
-     	  CharSequence text = "Black:" + BLACK 
-				+ "\nWhite: " +  WHITE
-				+ "\nKing: " +  king
+     	  CharSequence text = "Black:" + Piece.BLACK 
+				+ "\nWhite: " +  Piece.WHITE
+				+ "\nKing: " +  Piece.king
 				+ "\n...";
      	  int duration = Toast.LENGTH_LONG;
      	  Toast toast = Toast.makeText(context, text, duration);
      	  toast.show();
 		   
-		   blackKingVisible = Muster[BLACK][MusterIdx(king, 0)].bVisible;
-		   whiteKingVisible = Muster[WHITE][MusterIdx(king, 0)].bVisible;
+		   blackKingVisible = Muster[Piece.BLACK][MusterIdx(Piece.king, 0)].bVisible;
+		   whiteKingVisible = Muster[Piece.WHITE][MusterIdx(Piece.king, 0)].bVisible;
 
      	  
      	  
      	  
-		   blackFirstPrinceVisible = Muster[BLACK][MusterIdx(prince, 0)].bVisible;
-		   whiteFirstPrinceVisible = Muster[WHITE][MusterIdx(prince, 0)].bVisible;
+		   blackFirstPrinceVisible = Muster[Piece.BLACK][MusterIdx(Piece.prince, 0)].bVisible;
+		   whiteFirstPrinceVisible = Muster[Piece.WHITE][MusterIdx(Piece.prince, 0)].bVisible;
 		   
-		   blackSecondPrinceVisible = Muster[BLACK][MusterIdx(prince, 1)].bVisible;
-		   whiteSecondPrinceVisible = Muster[WHITE][MusterIdx(prince, 1)].bVisible;
+		   blackSecondPrinceVisible = Muster[Piece.BLACK][MusterIdx(Piece.prince, 1)].bVisible;
+		   whiteSecondPrinceVisible = Muster[Piece.WHITE][MusterIdx(Piece.prince, 1)].bVisible;
 
 		   if ((!whiteKingVisible || 
 				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
@@ -852,7 +835,7 @@ public boolean IsGamePaused()
 	  gamePaused = TRUE;
 	//  sprintf(winString, "%s player wins!",
 	//          (bwWinner == BLACK) ? "Black" : "White");
-	  winString = (bwWinner == BLACK) ? "Black wins!" : "White wins!";
+	  winString = (bwWinner == Piece.BLACK) ? "Black wins!" : "White wins!";
 
       AlertDialog.Builder builder = new AlertDialog.Builder(this);
       builder.setMessage(winString)
@@ -904,7 +887,7 @@ public boolean IsGamePaused()
 
 //enemy = Muster[(piece->bwSide == WHITE) ? BLACK : WHITE]
 //[ MusterIdx(king, 0) ];
-  enemy = Muster[(piece.bwSide == WHITE) ? BLACK : WHITE] [ MusterIdx(king, 0) ];
+  enemy = Muster[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
 //pos = enemy->xyzPos;
   pos = enemy.xyzPos;
 
@@ -962,7 +945,7 @@ public boolean IsGamePaused()
 
 Err3Dc( firstGFX, moveString,
 (/* (Computer() == bwToMove) || */
- ( (secondGFX != NULL) && (bwToMove == BLACK) ) ||
+ ( (secondGFX != NULL) && (bwToMove == Piece.BLACK) ) ||
  ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
 
   
@@ -1401,7 +1384,7 @@ Err3Dc( firstGFX, moveString,
 //		  /*
 //		   * Pawns must move at least 1 forward
 //		   */
-		  if ((yDiff == 0) || ((yInc < 0) && (piece.bwSide == WHITE)) || ((yInc > 0) && (piece.bwSide == BLACK))) /* Moving backwards */
+		  if ((yDiff == 0) || ((yInc < 0) && (piece.bwSide == Piece.WHITE)) || ((yInc > 0) && (piece.bwSide == Piece.BLACK))) /* Moving backwards */
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1430,7 +1413,7 @@ Err3Dc( firstGFX, moveString,
 //		            1) /* Dummy line to reduce no. of changes */
 
 		        if (Board[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
-	            (Board[zNew][yNew - yInc][xNew].nName == pawn) && /* Is pawn */
+	            (Board[zNew][yNew - yInc][xNew].nName == Piece.pawn) && /* Is pawn */
 	            (Board[zNew][yNew - yInc][xNew].bwSide != piece.bwSide) ) /* Dummy line to reduce no. of changes */
 		          {
 //		            return EnPASSANT;
@@ -1473,8 +1456,8 @@ Err3Dc( firstGFX, moveString,
 //		  if ((yNew == FILES-1 && piece->bwSide == WHITE) ||
 //		      (yNew == 0 && piece->bwSide == BLACK))
 //		    return PROMOTE;
-			  if ((yNew == FILES-1 && piece.bwSide == WHITE) ||
-		      (yNew == 0 && piece.bwSide == BLACK))
+			  if ((yNew == FILES-1 && piece.bwSide == Piece.WHITE) ||
+		      (yNew == 0 && piece.bwSide == Piece.BLACK))
 		    return true;
 
 			  //
@@ -2583,7 +2566,7 @@ Err3Dc( firstGFX, moveString,
 	      return SQUARE_INVALID;
 	    }
 
-	  if ((piece.nName != knight) && (piece.nName != cannon))
+	  if ((piece.nName != Piece.knight) && (piece.nName != Piece.cannon))
 	    {
 //	      /* Make all directions be 1, -1 or 0 */
 	      if (xDir != 0) xDir /= ABS(xDir);
@@ -2651,9 +2634,9 @@ Err3Dc( firstGFX, moveString,
 //	 * Return TRUE if the king is checked in the current board layout.
 	public Boolean IsKingChecked( int bwSide )
 	{
-	  Coord xyz = Muster[ bwSide ][ MusterIdx( king, 0 ) ].xyzPos;
+	  Coord xyz = Muster[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
 
-	  return ( SquareThreatened( (bwSide == WHITE) ? BLACK : WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
+	  return ( SquareThreatened( (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
 	}
 
 //	/* Check move re. putting own king in check */
@@ -2672,11 +2655,11 @@ Err3Dc( firstGFX, moveString,
 	  Board[z][y][x] = piece;
 	  Board[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
 
-	  if (piece.nName == king)
+	  if (piece.nName == Piece.king)
 	    {
 //	      /* We're moving the king, so it's xyzPos may not be accurate.
 //	       * check manually. */
-	      retVal = (SquareThreatened( (piece.bwSide == WHITE) ? BLACK : WHITE, x, y, z ) != NULL) ;
+	      retVal = (SquareThreatened( (piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, x, y, z ) != NULL) ;
 	    }
 	  else
 	  {
@@ -3722,10 +3705,10 @@ Err3Dc( firstGFX, moveString,
 	  Coord xyzPos;
 	  Piece moving;
 	  Piece storing;
-	  bwEnemy = ( bwSide == WHITE ) ? BLACK : WHITE;
+	  bwEnemy = ( bwSide == Piece.WHITE ) ? Piece.BLACK : Piece.WHITE;
 
 	  /* Rate taking king */
-	  if (move.pVictim == Muster[ bwEnemy ][ MusterIdx( king, 0 )])
+	  if (move.pVictim == Muster[ bwEnemy ][ MusterIdx( Piece.king, 0 )])
 	    return INT_MAX;
 
 //	  /* Fake the move for simple lookahead */
@@ -3741,7 +3724,7 @@ Err3Dc( firstGFX, moveString,
 //	   * inside the move faked below but that would mean nasty code
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
-	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( king, 0 )],
+	  if ( FakeMoveAndIsKingChecked( Muster[ bwSide ][ MusterIdx( Piece.king, 0 )],
 		      move.xyzAfter.xFile,
 		      move.xyzAfter.yRank,
 		      move.xyzAfter.zLevel ))
@@ -3754,9 +3737,9 @@ Err3Dc( firstGFX, moveString,
 	    storing.bVisible = FALSE;
 
 	  /* Rate check */
-	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( king, 0 )]).xyzPos;
+	  xyzPos = (Muster[ bwEnemy ][ MusterIdx( Piece.king, 0 )]).xyzPos;
 	  if ( SquareThreatened( bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
-		  rating += values[ king ];
+		  rating += values[ Piece.king ];
 
 	  /* Rate danger: if there's a chance of being captured in the new pos. */
 	  xyzPos = move.xyzAfter;
@@ -3792,16 +3775,16 @@ Err3Dc( firstGFX, moveString,
 //	  /* En passant and castling not yet possible for computer */
  if (( move.pVictim != null ) && ( move.pVictim.bwSide == bwSide))
 	    rating += 10; /* Castling */
- if (( move.xyzAfter.yRank == (bwSide == WHITE ? RANKS-1 : 0) ) && ( moving.nName == pawn ))
-	    rating += values[queen]; /* Promotion */
+ if (( move.xyzAfter.yRank == (bwSide == Piece.WHITE ? RANKS-1 : 0) ) && ( moving.nName == Piece.pawn ))
+	    rating += values[Piece.queen]; /* Promotion */
 	  /* Note the horrible magic numbers below */
- if ( (ABS( move.xyzAfter.yRank - move.xyzBefore.yRank ) == 2) && ( moving.nName == pawn ))
+ if ( (ABS( move.xyzAfter.yRank - move.xyzBefore.yRank ) == 2) && ( moving.nName == Piece.pawn ))
 	    rating += 1; /* Two-forward by pawn: the computer doesn't
 	                  * usually like opening its attack routes otherwise */
 
 	  /* Rate position; distance forward (should be proximity to
 	   * enemy king except for pawns */
-	  if ( bwSide == WHITE )
+	  if ( bwSide == Piece.WHITE )
 		    rating += move.xyzAfter.yRank - move.xyzBefore.yRank;
 	  else
 		    rating += 7 - move.xyzAfter.yRank + move.xyzBefore.yRank;
@@ -3883,10 +3866,10 @@ Err3Dc( firstGFX, moveString,
 	    return null;
 	  }
 
-	  bwEnemy = ((piece.bwSide == WHITE) ? BLACK : WHITE);
+	  bwEnemy = ((piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
 	  move.xyzBefore = piece.xyzPos;
 
-	  if (piece.nName == knight)
+	  if (piece.nName == Piece.knight)
 	    {
 	      for (y = MAX(0, CURY -2); y < MIN(RANKS, CURY +3); y++)
 	        {
@@ -3915,7 +3898,7 @@ Err3Dc( firstGFX, moveString,
 	            } /* End x loop */
 	        } /* End y loop */
 	    } /* End knight */
-	  else if (piece.nName == cannon)
+	  else if (piece.nName == Piece.cannon)
 	    {
 	      for (z = 0; z < LEVELS; z++)
 	        {
@@ -3954,9 +3937,9 @@ Err3Dc( firstGFX, moveString,
 	            } /* End y loop */
 	        } /* End z loop */
 	    } /* End cannon */
-	  else if (piece.nName == pawn) /* Don't bother searching for en passant */
+	  else if (piece.nName == Piece.pawn) /* Don't bother searching for en passant */
 	    {
-	      y = ((piece.bwSide == WHITE) ? 1 : -1);
+	      y = ((piece.bwSide == Piece.WHITE) ? 1 : -1);
 
 	      for (x = MAX(0, CURX-1); x < MIN(FILES, CURX+2); ++x)
 	        {
@@ -4003,7 +3986,7 @@ Err3Dc( firstGFX, moveString,
 	       * For a regular board, this is 7.  (Not 8: If you moved 8
 	       * in any direction you would be off the edge of the board)
 	       */
-	      if ((piece.nName == king) || (piece.nName == prince))
+	      if ((piece.nName == Piece.king) || (piece.nName == Piece.prince))
 	        dist = 1;
 	      else
 	        dist = MAX(FILES, RANKS) -1;
@@ -4013,8 +3996,8 @@ Err3Dc( firstGFX, moveString,
 	       /*
 	        * Cater for pieces that can't change level.
 	        */
-		       if (((piece.nName == prince) || (piece.nName == princess) || (piece.nName == abbey)
-		    		   || (piece.nName == galley)) && (z != 0))
+		       if (((piece.nName == Piece.prince) || (piece.nName == Piece.princess) || (piece.nName == Piece.abbey)
+		    		   || (piece.nName == Piece.galley)) && (z != 0))
 	         continue;
 
 	       for (y = -1; y <= 1; ++y)
@@ -4028,13 +4011,13 @@ Err3Dc( firstGFX, moveString,
 	            * Cater for the pieces that can only move
 	            * horizontally/vertically.
 	            */
-	           if (((piece.nName == rook) || (piece.nName == galley)) && !HORZ(x, y))
+	           if (((piece.nName == Piece.rook) || (piece.nName == Piece.galley)) && !HORZ(x, y))
 	             continue;
 //	           /*
 //	            * Cater for the pieces that can only move
 //	            * diagonally.
 //	            */
-	           else if (((piece.nName == bishop) || (piece.nName == abbey)) && !DIAG(x, y))
+	           else if (((piece.nName == Piece.bishop) || (piece.nName == Piece.abbey)) && !DIAG(x, y))
 	             continue;
 
 	           for (d = 1; d <= dist; ++d)
