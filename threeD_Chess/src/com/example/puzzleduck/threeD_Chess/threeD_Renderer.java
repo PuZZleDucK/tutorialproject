@@ -5,7 +5,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
@@ -171,11 +175,11 @@ import android.widget.TextView;
 //	        /*
 //	         * State-tracking constants
 //	         */
-//	        public static final int STATE_LOSE = 1;
-//	        public static final int STATE_PAUSE = 2;
-//	        public static final int STATE_READY = 3;
-//	        public static final int STATE_RUNNING = 4;
-//	        public static final int STATE_WIN = 5;
+	        public static final int STATE_LOSE = 1;
+	        public static final int STATE_PAUSE = 2;
+	        public static final int STATE_READY = 3;
+	        public static final int STATE_RUNNING = 4;
+	        public static final int STATE_WIN = 5;
 //
 //	        /*
 //	         * Goal condition constants
@@ -212,21 +216,21 @@ import android.widget.TextView;
 //	         * Member (state) fields
 //	         */
 //	        /** The drawable to use as the background of the animation canvas */
-//	        private Bitmap mBackgroundImage;
+	        private Bitmap mBackgroundImage;
 //
 //	        /**
 //	         * Current height of the surface/canvas.
 //	         * 
 //	         * @see #setSurfaceSize
 //	         */
-//	        private int mCanvasHeight = 1;
+	        private int mCanvasHeight = 1;
 //
 //	        /**
 //	         * Current width of the surface/canvas.
 //	         * 
 //	         * @see #setSurfaceSize
 //	         */
-//	        private int mCanvasWidth = 1;
+	        private int mCanvasWidth = 1;
 //
 //	        /** What to draw for the Lander when it has crashed */
 //	        private Drawable mCrashedImage;
@@ -265,7 +269,7 @@ import android.widget.TextView;
 //	        private int mGoalX;
 //
 //	        /** Message handler used by thread to interact with TextView */
-//	        private Handler mHandler;
+	        private Handler mHandler;
 //
 //	        /**
 //	         * Lander heading in degrees, with 0 up, 90 right. Kept in the range
@@ -276,7 +280,20 @@ import android.widget.TextView;
 //	        /** Pixel height of lander image. */
 //	        private int mLanderHeight;
 //
-//	        /** What to draw for the Lander in its normal state */
+
+	        
+	        private Drawable kingImage;
+	        private Drawable queenImage;
+	        private Drawable bishopImage;
+	        private Drawable knightImage;
+	        private Drawable rookImage;
+	        private Drawable princeImage;
+	        private Drawable princessImage;
+	        private Drawable abbeyImage;
+	        private Drawable cannonImage;
+	        private Drawable galleyImage;
+	        private Drawable pawnImage;
+	        private Drawable noneImage;
 //	        private Drawable mLanderImage;
 //
 //	        /** Pixel width of lander image. */
@@ -292,19 +309,19 @@ import android.widget.TextView;
 //	        private Paint mLinePaintBad;
 //
 //	        /** The state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
-//	        private int mMode;
+	        private int mMode;
 //
 //	        /** Currently rotating, -1 left, 0 none, 1 right. */
 //	        private int mRotating;
 //
 //	        /** Indicate whether the surface has been created & is ready to draw */
-//	        private boolean mRun = false;
+	        private boolean mRun = false;
 //
 //	        /** Scratch rect object. */
 //	        private RectF mScratchRect;
 //
 //	        /** Handle to the surface manager object we interact with */
-//	        private SurfaceHolder mSurfaceHolder;
+	        private SurfaceHolder mSurfaceHolder;
 //
 //	        /** Number of wins in a row. */
 //	        private int mWinsInARow;
@@ -317,24 +334,33 @@ import android.widget.TextView;
 //
 	        public threeD_Thread(SurfaceHolder surfaceHolder, Context context,
 	                Handler handler) {
-//	            // get handles to some important objects
-//	            mSurfaceHolder = surfaceHolder;
-//	            mHandler = handler;
-//	            mContext = context;
-//
-//	            Resources res = context.getResources();
-//	            // cache handles to our key sprites & other drawables
-//	            mLanderImage = context.getResources().getDrawable(
-//	                    R.drawable.lander_plain);
-//	            mFiringImage = context.getResources().getDrawable(
-//	                    R.drawable.lander_firing);
-//	            mCrashedImage = context.getResources().getDrawable(
-//	                    R.drawable.lander_crashed);
+	            // get handles to some important objects
+	            mSurfaceHolder = surfaceHolder;
+	            mHandler = handler;
+	            mContext = context;
+
+	            Resources res = context.getResources();
+	            // cache handles to our key sprites & other drawables
+//	            mLanderImage = context.getResources().getDrawable( R.drawable.k_abbey);
+	            
+
+		        kingImage = context.getResources().getDrawable( R.drawable.k_king);
+		        queenImage = context.getResources().getDrawable( R.drawable.k_queen);
+		        bishopImage = context.getResources().getDrawable( R.drawable.k_bishop);
+		        knightImage = context.getResources().getDrawable( R.drawable.k_knight);
+		        rookImage = context.getResources().getDrawable( R.drawable.k_rook);
+		        princeImage = context.getResources().getDrawable( R.drawable.k_prince);
+		        princessImage = context.getResources().getDrawable( R.drawable.k_princess);
+		        abbeyImage = context.getResources().getDrawable( R.drawable.k_abbey);
+		        cannonImage = context.getResources().getDrawable( R.drawable.k_cannon);
+		        galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
+		        pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
+		        noneImage = context.getResources().getDrawable( R.drawable.k_none);
+
 //
 //	            // load background image as a Bitmap instead of a Drawable b/c
 //	            // we don't need to transform it and it's faster to draw this way
-//	            mBackgroundImage = BitmapFactory.decodeResource(res,
-//	                    R.drawable.earthrise);
+	            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.k_none);
 //
 //	            // Use the regular lander image as the model size for all sprites
 //	            mLanderWidth = mLanderImage.getIntrinsicWidth();
@@ -368,7 +394,7 @@ import android.widget.TextView;
 //	         * Starts the game, setting parameters for the current difficulty.
 //	         */
 	        public void doStart() {
-//	            synchronized (mSurfaceHolder) {
+	            synchronized (mSurfaceHolder) {
 //	                // First set the game for Medium difficulty
 //	                mFuel = PHYS_FUEL_INIT;
 //	                mEngineFiring = false;
@@ -408,17 +434,17 @@ import android.widget.TextView;
 //	                }
 //
 //	                mLastTime = System.currentTimeMillis() + 100;
-//	                setState(STATE_RUNNING);
-//	            }
+	                setState(STATE_RUNNING);
+	            }
 	        }
 //
 //	        /**
 //	         * Pauses the physics update & animation.
 //	         */
 	        public void pause() {
-//	            synchronized (mSurfaceHolder) {
-//	                if (mMode == STATE_RUNNING) setState(STATE_PAUSE);
-//	            }
+	            synchronized (mSurfaceHolder) {
+	                if (mMode == STATE_RUNNING) setState(STATE_PAUSE);
+	            }
 	        }
 //
 //	        /**
@@ -429,8 +455,8 @@ import android.widget.TextView;
 //	         * @param savedState Bundle containing the game state
 //	         */
 	        public synchronized void restoreState(Bundle savedState) {
-//	            synchronized (mSurfaceHolder) {
-//	                setState(STATE_PAUSE);
+	            synchronized (mSurfaceHolder) {
+	                setState(STATE_PAUSE);
 //	                mRotating = 0;
 //	                mEngineFiring = false;
 //
@@ -449,28 +475,28 @@ import android.widget.TextView;
 //	                mGoalWidth = savedState.getInt(KEY_GOAL_WIDTH);
 //	                mWinsInARow = savedState.getInt(KEY_WINS);
 //	                mFuel = savedState.getDouble(KEY_FUEL);
-//	            }
+	            }
 	        }
 //
 //	        @Override
 	        public void run() {
-//	            while (mRun) {
-//	                Canvas c = null;
-//	                try {
-//	                    c = mSurfaceHolder.lockCanvas(null);
-//	                    synchronized (mSurfaceHolder) {
-//	                        if (mMode == STATE_RUNNING) updatePhysics();
-//	                        doDraw(c);
-//	                    }
-//	                } finally {
+	            while (mRun) {
+	                Canvas c = null;
+	                try {
+	                    c = mSurfaceHolder.lockCanvas(null);
+	                    synchronized (mSurfaceHolder) {
+	                        if (mMode == STATE_RUNNING) updatePhysics();
+	                        doDraw(c);
+	                    }
+	                } finally {
 //	                    // do this in a finally so that if an exception is thrown
 //	                    // during the above, we don't leave the Surface in an
 //	                    // inconsistent state
-//	                    if (c != null) {
-//	                        mSurfaceHolder.unlockCanvasAndPost(c);
-//	                    }
-//	                }
-//	            }
+	                    if (c != null) {
+	                        mSurfaceHolder.unlockCanvasAndPost(c);
+	                    }
+	                }
+	            }
 	        }
 //
 //	        /**
@@ -480,8 +506,8 @@ import android.widget.TextView;
 //	         * @return Bundle with this view's state
 //	         */
 	        public Bundle saveState(Bundle map) {
-//	            synchronized (mSurfaceHolder) {
-//	                if (map != null) {
+	            synchronized (mSurfaceHolder) {
+	                if (map != null) {
 //	                    map.putInt(KEY_DIFFICULTY, Integer.valueOf(mDifficulty));
 //	                    map.putDouble(KEY_X, Double.valueOf(mX));
 //	                    map.putDouble(KEY_Y, Double.valueOf(mY));
@@ -497,8 +523,8 @@ import android.widget.TextView;
 //	                    map.putInt(KEY_GOAL_WIDTH, Integer.valueOf(mGoalWidth));
 //	                    map.putInt(KEY_WINS, Integer.valueOf(mWinsInARow));
 //	                    map.putDouble(KEY_FUEL, Double.valueOf(mFuel));
-//	                }
-//	            }
+	                }
+	            }
 	            return map;
 	        }
 //
@@ -508,18 +534,18 @@ import android.widget.TextView;
 //	         * @param difficulty
 //	         */
 	        public void setDifficulty(int difficulty) {
-//	            synchronized (mSurfaceHolder) {
+	            synchronized (mSurfaceHolder) {
 //	                mDifficulty = difficulty;
-//	            }
+	            }
 	        }
 //
 //	        /**
 //	         * Sets if the engine is currently firing.
 //	         */
 	        public void setFiring(boolean firing) {
-//	            synchronized (mSurfaceHolder) {
+	            synchronized (mSurfaceHolder) {
 //	                mEngineFiring = firing;
-//	            }
+	            }
 	        }
 //
 //	        /**
@@ -531,7 +557,7 @@ import android.widget.TextView;
 //	         * @param b true to run, false to shut down
 //	         */
 	        public void setRunning(boolean b) {
-//	            mRun = b;
+	            mRun = b;
 	        }
 //
 //	        /**
@@ -542,9 +568,9 @@ import android.widget.TextView;
 //	         * @param mode one of the STATE_* constants
 //	         */
 	        public void setState(int mode) {
-//	            synchronized (mSurfaceHolder) {
-//	                setState(mode, null);
-//	            }
+	            synchronized (mSurfaceHolder) {
+	                setState(mode, null);
+	            }
 	        }
 //
 //	        /**
@@ -563,21 +589,21 @@ import android.widget.TextView;
 //	             * Instead we use a Message + Handler to relay commands to the main
 //	             * thread, which updates the user-text View.
 //	             */
-//	            synchronized (mSurfaceHolder) {
-//	                mMode = mode;
-//
-//	                if (mMode == STATE_RUNNING) {
-//	                    Message msg = mHandler.obtainMessage();
-//	                    Bundle b = new Bundle();
-//	                    b.putString("text", "");
+	            synchronized (mSurfaceHolder) {
+	                mMode = mode;
+
+	                if (mMode == STATE_RUNNING) {
+	                    Message msg = mHandler.obtainMessage();
+	                    Bundle b = new Bundle();
+	                    b.putString("text", "");
 //	                    b.putInt("viz", View.INVISIBLE);
-//	                    msg.setData(b);
-//	                    mHandler.sendMessage(msg);
-//	                } else {
+	                    msg.setData(b);
+	                    mHandler.sendMessage(msg);
+	                } else {
 //	                    mRotating = 0;
 //	                    mEngineFiring = false;
-//	                    Resources res = mContext.getResources();
-//	                    CharSequence str = "";
+	                    Resources res = mContext.getResources();
+	                    CharSequence str = "";
 //	                    if (mMode == STATE_READY)
 //	                        str = res.getText(R.string.mode_ready);
 //	                    else if (mMode == STATE_PAUSE)
@@ -595,27 +621,26 @@ import android.widget.TextView;
 //
 //	                    if (mMode == STATE_LOSE) mWinsInARow = 0;
 //
-//	                    Message msg = mHandler.obtainMessage();
-//	                    Bundle b = new Bundle();
-//	                    b.putString("text", str.toString());
+	                    Message msg = mHandler.obtainMessage();
+	                    Bundle b = new Bundle();
+	                    b.putString("text", str.toString());
 //	                    b.putInt("viz", View.VISIBLE);
-//	                    msg.setData(b);
-//	                    mHandler.sendMessage(msg);
-//	                }
-//	            }
+	                    msg.setData(b);
+	                    mHandler.sendMessage(msg);
+	                }
+	            }
 	        }
 //
 //	        /* Callback invoked when the surface dimensions change. */
 	        public void setSurfaceSize(int width, int height) {
-//	            // synchronized to make sure these all change atomically
-//	            synchronized (mSurfaceHolder) {
-//	                mCanvasWidth = width;
-//	                mCanvasHeight = height;
-//
-//	                // don't forget to resize the background image
-//	                mBackgroundImage = mBackgroundImage.createScaledBitmap(
-//	                        mBackgroundImage, width, height, true);
-//	            }
+	            // synchronized to make sure these all change atomically
+	            synchronized (mSurfaceHolder) {
+	            	mCanvasWidth = width;
+	                mCanvasHeight = height;
+
+	                // don't forget to resize the background image
+	                mBackgroundImage = mBackgroundImage.createScaledBitmap( mBackgroundImage, width, height, true);
+	            }
 	        }
 //
 //	        /**
@@ -623,10 +648,10 @@ import android.widget.TextView;
 //	         */
 	        public void unpause() {
 //	            // Move the real time clock up to now
-//	            synchronized (mSurfaceHolder) {
+	            synchronized (mSurfaceHolder) {
 //	                mLastTime = System.currentTimeMillis() + 100;
-//	            }
-//	            setState(STATE_RUNNING);
+	            }
+	            setState(STATE_RUNNING);
 	        }
 //
 //	        /**
@@ -637,48 +662,48 @@ import android.widget.TextView;
 //	         * @return true
 //	         */
 	        boolean doKeyDown(int keyCode, KeyEvent msg) {
-//	            synchronized (mSurfaceHolder) {
-//	                boolean okStart = false;
-//	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
-//	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
-//	                if (keyCode == KeyEvent.KEYCODE_S) okStart = true;
-//
-//	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
-//
-//	                if (okStart
-//	                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
-//	                    // ready-to-start -> start
-//	                    doStart();
-//	                    return true;
-//	                } else if (mMode == STATE_PAUSE && okStart) {
-//	                    // paused -> running
-//	                    unpause();
-//	                    return true;
-//	                } else if (mMode == STATE_RUNNING) {
-//	                    // center/space -> fire
-//	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-//	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-//	                        setFiring(true);
-//	                        return true;
-//	                        // left/q -> left
-//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-//	                            || keyCode == KeyEvent.KEYCODE_Q) {
+	            synchronized (mSurfaceHolder) {
+	                boolean okStart = false;
+	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
+	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
+	                if (keyCode == KeyEvent.KEYCODE_S) okStart = true;
+
+	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
+
+	                if (okStart
+	                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
+	                    // ready-to-start -> start
+	                    doStart();
+	                    return true;
+	                } else if (mMode == STATE_PAUSE && okStart) {
+	                    // paused -> running
+	                    unpause();
+	                    return true;
+	                } else if (mMode == STATE_RUNNING) {
+	                    // center/space -> fire
+	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
+	                        setFiring(true);
+	                        return true;
+	                        // left/q -> left
+	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+	                            || keyCode == KeyEvent.KEYCODE_Q) {
 //	                        mRotating = -1;
-//	                        return true;
-//	                        // right/w -> right
-//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-//	                            || keyCode == KeyEvent.KEYCODE_W) {
+	                        return true;
+	                        // right/w -> right
+	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+	                            || keyCode == KeyEvent.KEYCODE_W) {
 //	                        mRotating = 1;
-//	                        return true;
-//	                        // up -> pause
-//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-//	                        pause();
-//	                        return true;
-//	                    }
-//	                }
-//
+	                        return true;
+	                        // up -> pause
+	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+	                        pause();
+	                        return true;
+	                    }
+	                }
+
 	                return false;
-//	            }
+	            }
 	        }
 //
 //	        /**
@@ -691,21 +716,21 @@ import android.widget.TextView;
 	        boolean doKeyUp(int keyCode, KeyEvent msg) {
 	            boolean handled = false;
 
-//	            synchronized (mSurfaceHolder) {
-//	                if (mMode == STATE_RUNNING) {
-//	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-//	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-//	                        setFiring(false);
-//	                        handled = true;
-//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-//	                            || keyCode == KeyEvent.KEYCODE_Q
-//	                            || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-//	                            || keyCode == KeyEvent.KEYCODE_W) {
+	            synchronized (mSurfaceHolder) {
+	                if (mMode == STATE_RUNNING) {
+	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
+	                        setFiring(false);
+	                        handled = true;
+	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+	                            || keyCode == KeyEvent.KEYCODE_Q
+	                            || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+	                            || keyCode == KeyEvent.KEYCODE_W) {
 //	                        mRotating = 0;
-//	                        handled = true;
-//	                    }
-//	                }
-//	            }
+	                        handled = true;
+	                    }
+	                }
+	            }
 //
 	            return handled;
 	        }
@@ -717,11 +742,11 @@ import android.widget.TextView;
 	        private void doDraw(Canvas canvas) {
 //	            // Draw the background image. Operations on the Canvas accumulate
 //	            // so this is like clearing the screen.
-//	            canvas.drawBitmap(mBackgroundImage, 0, 0, null);
-//
+	            canvas.drawBitmap(mBackgroundImage, 0, 0, null);
+
 //	            int yTop = mCanvasHeight - ((int) mY + mLanderHeight / 2);
 //	            int xLeft = (int) mX - mLanderWidth / 2;
-//
+
 //	            // Draw the fuel gauge
 //	            int fuelWidth = (int) (UI_BAR * mFuel / PHYS_FUEL_MAX);
 //	            mScratchRect.set(4, 4, 4 + fuelWidth, 4 + UI_BAR_HEIGHT);
@@ -779,8 +804,8 @@ import android.widget.TextView;
 //	         * Detects the end-of-game and sets the UI to the next state.
 //	         */
 	        private void updatePhysics() {
-//	            long now = System.currentTimeMillis();
-//
+	            long now = System.currentTimeMillis();
+
 //	            // Do nothing if mLastTime is in the future.
 //	            // This allows the game-start to delay the start of the physics
 //	            // by 100ms or whatever.
