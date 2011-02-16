@@ -13,6 +13,7 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -50,6 +51,11 @@ public class threeD_Chess extends Activity {
 
 //    /** A handle to the View in which the game is running. */
     private threeD_Renderer mthreeD_Renderer;
+    
+    
+    
+//    private LunarView mLunarView;
+//    private threeD_Renderer mLunarView;
 
 //    /**
 //     * Invoked during init to give the Activity a chance to set up its Menu.
@@ -129,26 +135,26 @@ public class threeD_Chess extends Activity {
   	  toast.show();
 
         
-        Init3Dc();
         
         
 //        // tell system to use the layout defined in our XML file
         setContentView(R.layout.threedc);
 //
 //        // get handles to the LunarView from XML, and its LunarThread
-//        mLunarView = (LunarView) findViewById(R.id.lunar);
+        mthreeD_Renderer = (threeD_Renderer) findViewById(R.layout.threedc);
 
-        //public threeD_Renderer(Context context, AttributeSet attrs)
         mthreeD_Renderer = new threeD_Renderer(getApplicationContext(), null);
-        
       mthreeD_Thread = mthreeD_Renderer.getThread();
-//debug only:
-  	  toast.show();
         
 //
 //        // give the LunarView a handle to the TextView used for messages
-//        mLunarView.setTextView((TextView) findViewById(R.id.text));
-//
+        mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text));
+
+        
+        
+        
+
+        Init3Dc();
 //        if (savedInstanceState == null) {
 //            // we were just launched: set up a new game
 //            mLunarThread.setState(LunarThread.STATE_READY);
@@ -417,124 +423,144 @@ public class threeD_Chess extends Activity {
 		int[][] count = {{0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0}};
 		int thisTitle;
 
-	  /* This structure is mainly for "obviousness"; it is entirely trivial */
+		/* This structure is mainly for "obviousness"; it is entirely trivial */
 		int StartBoard[][][] =
-	  { /* The boards */
-	    { /* Bottom board */
-	      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-	      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-	    },
-	    { /* Middle board */
-	      {   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook},
-	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-	      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-	      {   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook}
-	    },
-	    { /* Top board */
-		      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-		      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-		      {   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-		      {   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-		      { Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-	    }
-	  }; /* StartBoard */
+		{ /* The boards */
+				{ /* Bottom board */
+					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+				},
+				{ /* Middle board */
+					{   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook}
+				},
+				{ /* Top board */
+					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
+					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+				}
+		}; /* StartBoard */
 
 		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
-	    {
+		{
 			thisColor = Piece.WHITE;
-		      for (thisRank = 0; thisRank < RANKS; ++thisRank)
-		      {
-	          /* From the 4th rank on is black's half of the board */
-	          if (thisRank == 4)
-	            thisColor = Piece.BLACK;
-	          Piece temp = null;
-	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
-	            {
-	          		thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-		            if(thisTitle != Piece.none)
-		            {
-		            	//Create holding var for piece... can't pull this stunt in Java afaik.
-		            	temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
-//		            	Piece temp = new Piece(1, 1, 1, 1, 1);
-//Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
-		          	  Context context = getApplicationContext();
-//		        	  CharSequence text = "Tit:" + thisTitle 
-//	  					+ "\nLvl: " +  thisLevel
-//	  					+ "\nRnk: " +  thisRank
-//	  					+ "\nFil: " +  thisFile
-//	  					+ "\nCol: " + thisColor + ".";
-//		        	  int duration = Toast.LENGTH_LONG;
-//		        	  Toast toast = Toast.makeText(context, text, duration);
-//		        	  toast.show();
+			for (thisRank = 0; thisRank < RANKS; ++thisRank)
+			{
+				/* From the 4th rank on is black's half of the board */
+				if (thisRank == 4)
+					thisColor = Piece.BLACK;
+				Piece temp = null;
+				for (thisFile = 0; thisFile < FILES; ++thisFile)
+				{
+					thisTitle = StartBoard[thisLevel][thisRank][thisFile];
+					if(thisTitle != Piece.none)
+					{
+						//Create holding var for piece... can't pull this stunt in Java afaik.
+						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+						//		            	Piece temp = new Piece(1, 1, 1, 1, 1);
+						//Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
+						Context context = getApplicationContext();
+						//		        	  CharSequence text = "Tit:" + thisTitle 
+						//	  					+ "\nLvl: " +  thisLevel
+						//	  					+ "\nRnk: " +  thisRank
+						//	  					+ "\nFil: " +  thisFile
+						//	  					+ "\nCol: " + thisColor + ".";
+						//		        	  int duration = Toast.LENGTH_LONG;
+						//		        	  Toast toast = Toast.makeText(context, text, duration);
+						//		        	  toast.show();
 
-		            	
-		            	
-		            	
-		            	
-		            	
-		            	
-		                Board.getMuster()[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
-		                Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
-	                    temp = null;
-	                    (count[thisColor][thisTitle])++;
-	                }
-	            }
-		      }
-	    }
+
+
+
+
+
+
+						Board.getMuster()[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
+						Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
+						temp = null;
+						(count[thisColor][thisTitle])++;
+					}
+				}
+			}
+		}
 		StackNew();
 		n3DcErr = 0;
 
-	  Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
-	  Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
-	  
-	  //Debug display of board after setup
-	  
-  	  Context context = getApplicationContext();
-	  String text = "";
-	  text	= text + "\n Board: \n";
+		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
+		Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
 
-	  
+		//Debug display of board after setup
+
+		Context context = getApplicationContext();
+		String text = "";
+		text	= text + "Boards: \n";
+
+
 
 		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
-	    {
-			  text	= text + "\n Level: " + thisLevel;
-			
+		{
+			text	= text + "\n\nLevel: " + thisLevel;
+
 			for (thisRank = 0; thisRank < RANKS; ++thisRank)
-		      {
-				  text	= text + "\n" + thisLevel;
-	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
-	            {
-	          		//thisTitle = StartBoard[thisLevel][thisRank][thisFile];
-	          		//Board.getBoard()[thisLevel][thisRank][thisFile] != null
-		            if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
-		            {
-//		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
-		            	text += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-//		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
-		            }else{
-		            	text += "o";
-		            }
-	            }
-		      }
-	    }
-	  
-	  int duration = Toast.LENGTH_LONG;
-	  Toast toast = Toast.makeText(context, text, duration);
-	  toast.show();
-	  
+			{
+				text	= text + "\n+---------------+\n";// + thisLevel;
+				for (thisFile = 0; thisFile < FILES; ++thisFile)
+				{
+					if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
+					{
+						if((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0))
+						{
+							text += "|" + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+						}else
+						{
+							String s = "|";
+							s += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+							s = s.toUpperCase();
+							text += s;
+						}
+					}else{
+						text += "| ";
+					}
+
+					if(thisFile == 7)
+					{
+						text	= text + "|";
+					}
+				}
+
+				if(thisRank == 7)
+				{
+					text	= text + "\n+---------------+";
+				}
+			}
+		}
+
+		mthreeD_Renderer.setDebugText(text);
+		//		setDebugText
+
+
+		//		
+		//	  int duration = Toast.LENGTH_LONG;
+		//	  Toast toast = Toast.makeText(context, text, duration);
+		//	  toast.show();
+
 	}
 
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
