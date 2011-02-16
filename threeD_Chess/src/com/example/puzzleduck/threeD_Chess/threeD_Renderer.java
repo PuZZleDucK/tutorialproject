@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
@@ -958,8 +959,9 @@ import android.widget.TextView;
 	        thread = new threeD_Thread(holder, context, new Handler() {
 	            @Override
 	            public void handleMessage(Message m) {
-	                mStatusText.setVisibility(m.getData().getInt("viz"));
-	                mStatusText.setText(m.getData().getString("text"));
+	            	//::Puzzleduck::
+//	                mStatusText.setVisibility(m.getData().getInt("viz"));
+//	                mStatusText.setText(m.getData().getString("text"));
 	            }
 	        });
 //
@@ -1006,6 +1008,20 @@ import android.widget.TextView;
 //	     */
 	    public void setTextView(TextView textView) {
 	        mStatusText = textView;
+	    }
+	    public void setDebugText(String debugText) {
+//	        mStatusText = textView;
+
+	    	
+//	    	Typeface (normal, sans, serif, monospace) for the text.
+//	    	normal	0	
+//	    	sans	1	
+//	    	serif	2	
+//	    	monospace	3
+	    	
+	    	
+//	    	mStatusText.setTypeface(android.R.layout.)
+            mStatusText.setText(debugText);
 	    }
 
 	    /* Callback invoked when the surface dimensions change. */
