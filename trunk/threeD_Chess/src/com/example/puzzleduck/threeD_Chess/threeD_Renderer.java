@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
@@ -318,7 +319,7 @@ import android.widget.TextView;
 	        private boolean mRun = false;
 //
 //	        /** Scratch rect object. */
-//	        private RectF mScratchRect;
+	        private RectF mScratchRect;
 //
 //	        /** Handle to the surface manager object we interact with */
 	        private SurfaceHolder mSurfaceHolder;
@@ -375,7 +376,7 @@ import android.widget.TextView;
 //	            mLinePaintBad.setAntiAlias(true);
 //	            mLinePaintBad.setARGB(255, 120, 180, 0);
 //
-//	            mScratchRect = new RectF(0, 0, 0, 0);
+	            mScratchRect = new RectF(0, 0, 0, 0);
 //
 //	            mWinsInARow = 0;
 //	            mDifficulty = DIFFICULTY_MEDIUM;
@@ -542,11 +543,11 @@ import android.widget.TextView;
 //	        /**
 //	         * Sets if the engine is currently firing.
 //	         */
-	        public void setFiring(boolean firing) {
-	            synchronized (mSurfaceHolder) {
-//	                mEngineFiring = firing;
-	            }
-	        }
+//	        public void setFiring(boolean firing) {
+//	            synchronized (mSurfaceHolder) {
+////	                mEngineFiring = firing;
+//	            }
+//	        }
 //
 //	        /**
 //	         * Used to signal the thread whether it should be running or not.
@@ -663,45 +664,45 @@ import android.widget.TextView;
 //	         */
 	        boolean doKeyDown(int keyCode, KeyEvent msg) {
 	            synchronized (mSurfaceHolder) {
-	                boolean okStart = false;
-	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
-	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
-	                if (keyCode == KeyEvent.KEYCODE_S) okStart = true;
-
-	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
-
-	                if (okStart
-	                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
-	                    // ready-to-start -> start
-	                    doStart();
-	                    return true;
-	                } else if (mMode == STATE_PAUSE && okStart) {
-	                    // paused -> running
-	                    unpause();
-	                    return true;
-	                } else if (mMode == STATE_RUNNING) {
-	                    // center/space -> fire
-	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-	                        setFiring(true);
-	                        return true;
-	                        // left/q -> left
-	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-	                            || keyCode == KeyEvent.KEYCODE_Q) {
-//	                        mRotating = -1;
-	                        return true;
-	                        // right/w -> right
-	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-	                            || keyCode == KeyEvent.KEYCODE_W) {
-//	                        mRotating = 1;
-	                        return true;
-	                        // up -> pause
-	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-	                        pause();
-	                        return true;
-	                    }
-	                }
-
+//	                boolean okStart = false;
+//	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
+//	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
+//	                if (keyCode == KeyEvent.KEYCODE_S) okStart = true;
+//
+//	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
+//
+//	                if (okStart
+//	                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
+//	                    // ready-to-start -> start
+//	                    doStart();
+//	                    return true;
+//	                } else if (mMode == STATE_PAUSE && okStart) {
+//	                    // paused -> running
+//	                    unpause();
+//	                    return true;
+//	                } else if (mMode == STATE_RUNNING) {
+//	                    // center/space -> fire
+//	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+//	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
+//	                        setFiring(true);
+//	                        return true;
+//	                        // left/q -> left
+//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+//	                            || keyCode == KeyEvent.KEYCODE_Q) {
+////	                        mRotating = -1;
+//	                        return true;
+//	                        // right/w -> right
+//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+//	                            || keyCode == KeyEvent.KEYCODE_W) {
+////	                        mRotating = 1;
+//	                        return true;
+//	                        // up -> pause
+//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+//	                        pause();
+//	                        return true;
+//	                    }
+//	                }
+//
 	                return false;
 	            }
 	        }
@@ -720,7 +721,7 @@ import android.widget.TextView;
 	                if (mMode == STATE_RUNNING) {
 	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
 	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-	                        setFiring(false);
+//	                        setFiring(false);
 	                        handled = true;
 	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
 	                            || keyCode == KeyEvent.KEYCODE_Q
@@ -835,7 +836,7 @@ import android.widget.TextView;
 //	         * Detects the end-of-game and sets the UI to the next state.
 //	         */
 	        private void updatePhysics() {
-	            long now = System.currentTimeMillis();
+//	            long now = System.currentTimeMillis();
 
 //	            // Do nothing if mLastTime is in the future.
 //	            // This allows the game-start to delay the start of the physics

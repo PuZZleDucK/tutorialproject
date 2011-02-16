@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -132,14 +133,17 @@ public class threeD_Chess extends Activity {
         
         
 //        // tell system to use the layout defined in our XML file
-//        setContentView(R.layout.lunar_layout);
+        setContentView(R.layout.threedc);
 //
 //        // get handles to the LunarView from XML, and its LunarThread
 //        mLunarView = (LunarView) findViewById(R.id.lunar);
 
-
-      mthreeD_Thread = mthreeD_Renderer.getThread();
+        //public threeD_Renderer(Context context, AttributeSet attrs)
+        mthreeD_Renderer = new threeD_Renderer(getApplicationContext(), null);
         
+      mthreeD_Thread = mthreeD_Renderer.getThread();
+//debug only:
+  	  toast.show();
         
 //
 //        // give the LunarView a handle to the TextView used for messages
@@ -466,7 +470,7 @@ public class threeD_Chess extends Activity {
 		            	temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
 //		            	Piece temp = new Piece(1, 1, 1, 1, 1);
 //Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
-//		          	  Context context = getApplicationContext();
+		          	  Context context = getApplicationContext();
 //		        	  CharSequence text = "Tit:" + thisTitle 
 //	  					+ "\nLvl: " +  thisLevel
 //	  					+ "\nRnk: " +  thisRank
@@ -510,18 +514,18 @@ public class threeD_Chess extends Activity {
 			
 			for (thisRank = 0; thisRank < RANKS; ++thisRank)
 		      {
-				  text	= text + "\n----------------------------------------\n" + thisLevel;
+				  text	= text + "\n" + thisLevel;
 	          	for (thisFile = 0; thisFile < FILES; ++thisFile)
 	            {
 	          		//thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 	          		//Board.getBoard()[thisLevel][thisRank][thisFile] != null
 		            if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
 		            {
-		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
-		            	text = text + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+//		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
+		            	text += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+//		            	text = text + ((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0) ? "^" : "v");
 		            }else{
-		            	text = text + "- -";
+		            	text += "o";
 		            }
 	            }
 		      }
@@ -3398,9 +3402,6 @@ Err3Dc( firstGFX, moveString,
 //
 //	  /* Free the move stack */
 //	  StackDelete(MoveStack);
-//
-//	  /* Recreate 3Dc, with pieces in the right places and an empty move stack */
-//	  Init3Dc();
 //
 //	  bwToMove = WHITE;
 //	  ResumeGame();
