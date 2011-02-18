@@ -28,63 +28,33 @@ import android.widget.Toast;
 import com.example.puzzleduck.threeD_Chess.threeD_Renderer.threeD_Thread;
 
 public class threeD_Chess extends Activity {
-	
-//	private threeD_Renderer _threeD_Chess_view;
-	
 
     private static final int MENU_EASY = 1;
-
     private static final int MENU_HARD = 2;
-
     private static final int MENU_MEDIUM = 3;
-
     private static final int MENU_PAUSE = 4;
-
     private static final int MENU_RESUME = 5;
-
     private static final int MENU_START = 6;
-
     private static final int MENU_STOP = 7;
-//
+
 //    /** A handle to the thread that's actually running the animation. */
     private threeD_Thread mthreeD_Thread;
-
 //    /** A handle to the View in which the game is running. */
     private threeD_Renderer mthreeD_Renderer;
-    
-    
-    
-//    private LunarView mLunarView;
-//    private threeD_Renderer mLunarView;
 
-//    /**
 //     * Invoked during init to give the Activity a chance to set up its Menu.
-//     * 
-//     * @param menu the Menu to which entries may be added
-//     * @return true
-//     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
 //        menu.add(0, MENU_START, 0, R.string.menu_start);
-//        menu.add(0, MENU_STOP, 0, R.string.menu_stop);
-//        menu.add(0, MENU_PAUSE, 0, R.string.menu_pause);
-//        menu.add(0, MENU_RESUME, 0, R.string.menu_resume);
-//        menu.add(0, MENU_EASY, 0, R.string.menu_easy);
-//        menu.add(0, MENU_MEDIUM, 0, R.string.menu_medium);
-//        menu.add(0, MENU_HARD, 0, R.string.menu_hard);
 
         return true;
     }
-//
-//    /**
+
 //     * Invoked when the user selects an item from the Menu.
-//     * 
 //     * @param item the Menu entry which was selected
 //     * @return true if the Menu item was legit (and we consumed it), false
-//     *         otherwise
-//     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
@@ -111,16 +81,12 @@ public class threeD_Chess extends Activity {
 //                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_HARD);
 //                return true;
 //        }
-
         return false;
     }
 
-//    /**
 //     * Invoked when the Activity is created.
-//     * 
 //     * @param savedInstanceState a Bundle containing state saved from a previous
 //     *        execution, or null if this is a new execution
-//     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,31 +96,23 @@ public class threeD_Chess extends Activity {
 						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
 						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
 						 + "\nThis version is ported to Android by PuZZleDucK\n";
-  	  
   	  Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
   	  toast.show();
 
-        
-        
-        
 //        // tell system to use the layout defined in our XML file
         setContentView(R.layout.threedc);
-//
+
 //        // get handles to the LunarView from XML, and its LunarThread
         mthreeD_Renderer = (threeD_Renderer) findViewById(R.layout.threedc);
 
         mthreeD_Renderer = new threeD_Renderer(getApplicationContext(), null);
       mthreeD_Thread = mthreeD_Renderer.getThread();
         
-//
-//        // give the LunarView a handle to the TextView used for messages
+//        // give the renderer a handle to the TextView used for messages
         mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text));
 
-        
-        
-        
-
         Init3Dc();
+        
 //        if (savedInstanceState == null) {
 //            // we were just launched: set up a new game
 //            mLunarThread.setState(LunarThread.STATE_READY);
@@ -166,21 +124,16 @@ public class threeD_Chess extends Activity {
 //        }
     }
 
-//    /**
 //     * Invoked when the Activity loses user focus.
-//     */
 //    @Override
 //    protected void onPause() {
 //        super.onPause();
 //        mLunarView.getThread().pause(); // pause game when Activity pauses
 //    }
-//
-//    /**
+
 //     * Notification that something is about to happen, to give the Activity a
 //     * chance to save state.
-//     * 
 //     * @param outState a Bundle into which this Activity should save its state
-//     */
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
 //        // just have the View's thread save its state into our Bundle
@@ -191,30 +144,14 @@ public class threeD_Chess extends Activity {
 //}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
 //	/** Called when the activity is first created. */
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 
-        
+    /////////////////////////////////////////////////////////////////////////////////
         //eventually replace this with android propperties/settings
       //Define Black and White as Human, AI or remote
-              
-              
 //                  if (!strcmp(argv[argNum], "-play"))
 //                                  "%s: -play requires a colour (black or white)\n",
 //                                  "%s: %s is not a colour (must be black or white)\n",
@@ -233,33 +170,8 @@ public class threeD_Chess extends Activity {
 
 
 
-        
-    
     //Moving to a simpler graphics model: Dropping GL and using native android rendering
     //I think most of this will now eventually migrate over to the renderer
-    
-    //Blocking openGLdisplay... moving to renderer? but would need to make it static...
-    //                          maybe...
-//        while(true)
-//        {
-//        	DoMain3DcLoop();
-//        }
-    
-//    }
-    
-//    //NeHe Tutorial: adding pause and resume:
-//    @Override
-//    protected void onResume(){
-//    	super.onResume();
-//    	_threeD_Chess_view.onResume();
-//    }
-//    
-//    @Override
-//    protected void onPause(){
-//    	super.onPause();
-//    	_threeD_Chess_view.onPause();
-//    }
-    
 	public int ABS(int x)
 	{
 		return (x > 0) ? x : -x;
