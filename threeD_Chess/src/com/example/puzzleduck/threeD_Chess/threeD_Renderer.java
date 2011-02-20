@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -44,10 +45,10 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private Bitmap mBackgroundImage;
 
 		//	         * Current height of the surface/canvas.
-		private int mCanvasHeight = 1;
+		private int mCanvasHeight = 0;
 
 		//	         * Current width of the surface/canvas.
-		private int mCanvasWidth = 1;
+		private int mCanvasWidth = 0;
 
 		//	        /** Message handler used by thread to interact with TextView */
 		private Handler mHandler;
@@ -92,6 +93,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			mSurfaceHolder = surfaceHolder;
 			mHandler = handler;
 			mContext = context;
+			
 
 			Resources res = context.getResources();
 			// cache handles to our key sprites & other drawables
@@ -162,7 +164,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				try {
 					c = mSurfaceHolder.lockCanvas(null);
 					synchronized (mSurfaceHolder) {
-						if (mMode == STATE_RUNNING) updatePhysics();
+//						if (mMode == STATE_RUNNING) updatePhysics();
+						//if running do main game loop
 						doDraw(c);
 					}
 				} finally {
@@ -343,10 +346,10 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Draws the ship, fuel/speed bars, and background to the provided
 		//	         * Canvas.
 		private void doDraw(Canvas canvas) {
-			//	            // Draw the background image. Operations on the Canvas accumulate
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
 
+			
 			//	            int yTop = mCanvasHeight - ((int) mY + mLanderHeight / 2);
 			//	            int xLeft = (int) mX - mLanderWidth / 2;
 
@@ -384,37 +387,166 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			//	            // Draw the ship with its current rotation
 
 			//	            canvas.save(); //before rotation/transform
-			int x = mCanvasWidth/2;
-			int y = mCanvasHeight/2;
-			//                noneImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-			//                noneImage.setVisible(true,true);
-			//                noneImage.draw(canvas);
-			kingImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-			kingImage.setVisible(true,true);
-			kingImage.draw(canvas);
-			queenImage.setBounds(20, 20, queenImage.getIntrinsicWidth(), queenImage.getIntrinsicHeight());
-			queenImage.draw(canvas);
-			bishopImage.setBounds(30, 30, bishopImage.getIntrinsicWidth(), bishopImage.getIntrinsicHeight());
-			bishopImage.draw(canvas);
-			knightImage.setBounds(40, 40, knightImage.getIntrinsicWidth(), knightImage.getIntrinsicHeight());
-			knightImage.draw(canvas);
-			rookImage.setBounds(50, 50, rookImage.getIntrinsicWidth(), rookImage.getIntrinsicHeight());
-			rookImage.draw(canvas);
-			princeImage.setBounds(60, 60, princeImage.getIntrinsicWidth(), princeImage.getIntrinsicHeight());
-			princeImage.draw(canvas);
-			princessImage.setBounds(70, 70, princessImage.getIntrinsicWidth(), princessImage.getIntrinsicHeight());
-			princessImage.draw(canvas);
-			abbeyImage.setBounds(80, 80, abbeyImage.getIntrinsicWidth(), abbeyImage.getIntrinsicHeight());
-			abbeyImage.draw(canvas);
-			cannonImage.setBounds(90, 90, cannonImage.getIntrinsicWidth(), cannonImage.getIntrinsicHeight());
-			cannonImage.draw(canvas);
-			galleyImage.setBounds(100, 100, galleyImage.getIntrinsicWidth(), galleyImage.getIntrinsicHeight());
-			galleyImage.draw(canvas);
-			pawnImage.setBounds(110, 110, pawnImage.getIntrinsicWidth(), pawnImage.getIntrinsicHeight());
-			pawnImage.draw(canvas);
-			pawnImage.setBounds(120, 120, pawnImage.getIntrinsicWidth(), pawnImage.getIntrinsicHeight());
-			pawnImage.draw(canvas);
+			int x = 32;
+			int y = 32;
+//			//                noneImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			//                noneImage.setVisible(true,true);
+//			//                noneImage.draw(canvas);
+//			kingImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			kingImage.draw(canvas);
+//			x+=32;
+//			queenImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			queenImage.draw(canvas);
+//			y+=32;
+//			bishopImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			bishopImage.draw(canvas);
+//			y+=32;
+//			knightImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			knightImage.draw(canvas);
+//			y+=32;
+//			rookImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			rookImage.draw(canvas);
+//			y+=32;
+//			princeImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			princeImage.draw(canvas);
+//			y+=32;
+//			princessImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			princessImage.draw(canvas);
+//			x+=32; y+=32;
+//			abbeyImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			abbeyImage.draw(canvas);
+//			x+=32; y+=32;
+//			cannonImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			cannonImage.draw(canvas);
+//			x+=32; y+=32;
+//			galleyImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			galleyImage.draw(canvas);
+//			x+=32; y+=32;
+//			pawnImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			pawnImage.draw(canvas);
+//			x+=32; y+=32;
+//			pawnImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
+//			pawnImage.draw(canvas);
+//			x+=32; y+=32;
 			//	            canvas.restore();
+			
+			
+			//Debug display of board after setup
+//			Context context = getApplicationContext();
+//			String text = "Boards: \n";
+			for (int thisLevel = 0; thisLevel < threeD_Chess.LEVELS; ++thisLevel)
+			{
+//				text	= text + "\n\nLevel: " + thisLevel;
+				for (int thisRank = 0; thisRank < threeD_Chess.RANKS; ++thisRank)
+				{
+//					text	= text + "\n+---------------+\n";// + thisLevel;
+					for (int thisFile = 0; thisFile < threeD_Chess.FILES; ++thisFile)
+					{
+						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
+						{
+							switch(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].nName)
+							{
+							case(Piece.c_pawn):
+								pawnImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								pawnImage.setAlpha(75);	
+								pawnImage.draw(canvas);
+								break;
+							case(Piece.c_galley):
+								galleyImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								galleyImage.setAlpha(75);	
+								galleyImage.draw(canvas);
+								break;
+							case(Piece.c_cannon):
+								cannonImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								cannonImage.setAlpha(75);	
+								cannonImage.draw(canvas);
+								break;
+							case(Piece.c_abbey):
+								abbeyImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								abbeyImage.setAlpha(75);	
+								abbeyImage.draw(canvas);
+								break;
+							case(Piece.c_princess):
+								princessImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								princessImage.setAlpha(75);	
+								princessImage.draw(canvas);
+								break;
+							case(Piece.c_prince):
+								princeImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								princeImage.setAlpha(75);	
+								princeImage.draw(canvas);
+								break;
+							case(Piece.c_rook):
+								rookImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								rookImage.setAlpha(75);	
+								rookImage.draw(canvas);
+								break;
+							case(Piece.c_knight):
+								knightImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								knightImage.setAlpha(75);	
+								knightImage.draw(canvas);
+								break;
+							case(Piece.c_bishop):
+								bishopImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								bishopImage.setAlpha(75);
+								bishopImage.draw(canvas);
+								break;
+							case(Piece.c_queen):
+								queenImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								queenImage.setAlpha(75);
+								queenImage.draw(canvas);
+								break;
+							case(Piece.c_king):
+								kingImage.setBounds(thisFile * x + thisLevel*6,
+										thisRank * y + thisLevel*6, 
+										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
+										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+								kingImage.setAlpha(75);
+								kingImage.draw(canvas);
+								break;
+							}
+						}else{
+//							text += "| ";
+						}
+					}
+				}
+			}
+//			mthreeD_Renderer.setDebugText(text);
+	//////END DEBUG
+			
+			
+			
+			
 		}
 
 		//	         * Figures the lander state (x, y, fuel, ...) based on the passage of

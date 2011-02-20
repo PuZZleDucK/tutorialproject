@@ -12,6 +12,18 @@ package com.example.puzzleduck.threeD_Chess;
 
 public class Piece {
 	
+	public static final int c_king = 0;
+	public static final int c_queen = 1;
+	public static final int c_bishop = 2;
+	public static final int c_knight = 3;
+	public static final int c_rook = 4;
+	public static final int c_prince = 5;
+	public static final int c_princess = 6;
+	public static final int c_abbey = 7;
+	public static final int c_cannon = 8;
+	public static final int c_galley = 9;
+	public static final int c_pawn = 10;
+
 	private static char[] pieceChar = {'k','q','b','k','r','p','s','a','c','g','i',' '};
 
 	public Coord xyzPos;
@@ -20,21 +32,21 @@ public class Piece {
 	public boolean bVisible;
 	public boolean bHasMoved;
 
-	static int BLACK = 1;
-	static int WHITE = 0;
-	static int NOCOL = -1;
+	static int BLACK = c_queen;
+	static int WHITE = c_king;
+	static int NOCOL = -c_queen;
 
-	static int king = 0;
-	static int queen = 1;
-	static int bishop = 2;
-	static int knight = 3;
-	static int rook = 4;
-	static int prince = 5;
-	static int princess = 6;
-	static int abbey = 7;
-	static int cannon = 8;
-	static int galley = 9;
-	static int pawn = 10;
+	static int king = c_king;
+	static int queen = c_queen;
+	static int bishop = c_bishop;
+	static int knight = c_knight;
+	static int rook = c_rook;
+	static int prince = c_prince;
+	static int princess = c_princess;
+	static int abbey = c_abbey;
+	static int cannon = c_cannon;
+	static int galley = c_galley;
+	static int pawn = c_pawn;
 	static int none = 11;
 
 	public Piece(int type, int file, int rank, int level, int side) {

@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -109,19 +110,20 @@ public class threeD_Chess extends Activity {
       mthreeD_Thread = mthreeD_Renderer.getThread();
         
 //        // give the renderer a handle to the TextView used for messages
-        mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text));
+      mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text)); //origional... for text display
+//      setContentView(findViewById(R.id.basicGraphics));
 
         Init3Dc();
         
-//        if (savedInstanceState == null) {
-//            // we were just launched: set up a new game
-//            mLunarThread.setState(LunarThread.STATE_READY);
-//            Log.w(this.getClass().getName(), "SIS is null");
-//        } else {
-//            // we are being restored: resume a previous game
-//            mLunarThread.restoreState(savedInstanceState);
-//            Log.w(this.getClass().getName(), "SIS is nonnull");
-//        }
+        if (savedInstanceState == null) {
+            // we were just launched: set up a new game
+        	mthreeD_Thread.setState(mthreeD_Thread.STATE_READY);
+            Log.w(this.getClass().getName(), "SIS is null");
+        } else {
+            // we are being restored: resume a previous game
+        	mthreeD_Thread.restoreState(savedInstanceState);
+            Log.w(this.getClass().getName(), "SIS is nonnull");
+        }
     }
 
 //     * Invoked when the Activity loses user focus.
@@ -211,6 +213,10 @@ public class threeD_Chess extends Activity {
 	
 	private String winString = "";
 	private Random rng = new Random();
+	
+	private int n3DcErr;
+	
+	public static Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
 
 	private int RANDDIR()
 	{
@@ -264,66 +270,6 @@ public class threeD_Chess extends Activity {
 		    }
 		return true;
 	}
-
-
-	//	Global GfxInfo *firstGFX, *secondGFX;
-	public Object firstGFX, secondGFX; //just a fudge to get these defined
-
-	private int XPM_SIZE = 32;
-
-//	/* Functions */
-//	/* Interface stuff */
-//	Global int Init3DcGFX(int, char **);
-//	Global int InitPixmaps( GfxInfo * );
-//	Global int InitMainWindow( GfxInfo * );
-//	Global int InitBoardWindows( GfxInfo * );
-//	Global void Draw3DcBoard(void);
-	
-//	Global void UpdateMuster(Colour, Title, Boolean);
-//	private void UpdateMuster(int color, int title, boolean notSureYet)
-//	{
-//		//TODO:
-//		// notSureYet could be delete?
-//	}
-//	
-//	//	Global void PieceDisplay(const Piece *, const Boolean);
-//	private void PieceDisplay(Piece piece, boolean display)
-//	{
-//		//TODO:
-//	}
-//	
-//	//	Global void PiecePromote( Piece * );
-//	private void PiecePromote(Piece piece)
-//	{
-//		//TODO:
-//	}
-	
-	
-//	/* 2nd interface stuff */
-//	Global Boolean Open2ndDisplay(const char *);
-//
-//	/* Callbacks */
-//	Global void DrawBoard(Widget, XtPointer, XtPointer);
-//	Global void DrawMuster(Widget, XtPointer, XtPointer);
-//	Global void ResignGame(Widget, XtPointer, XtPointer);
-//	Global void MouseInput(Widget, XtPointer, XtPointer);
-//	Global void PromotePiece(Widget, XtPointer, XtPointer);
-//	Global void CancelDialog(Widget, XtPointer, XtPointer);
-//	Global void UndoMove(Widget, XtPointer, XtPointer);
-//	Global void Restart3Dc(Widget, XtPointer, XtPointer);
-//	Global void Quit3Dc(Widget, XtPointer, XtPointer);
-//
-//	/* Useful macros */
-//	#define SQ_POS_X(gfx, boardNum, x) \
-//	   (((gfx->width[(boardNum)]%FILES) / 2) + \
-//	    ((gfx->width[(boardNum)]/FILES) * (x)))
-//	#define SQ_POS_Y(gfx, boardNum, y) \
-//	  (((gfx->height[(boardNum)]%RANKS) / 2) + \
-//	   ((gfx->height[(boardNum)]/RANKS) * (y)))
-
-	private int n3DcErr;
-	
-	public Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
 
 	/* This function sets up the board*/
 	private void Init3Dc()
@@ -386,23 +332,7 @@ public class threeD_Chess extends Activity {
 					{
 						//Create holding var for piece... can't pull this stunt in Java afaik.
 						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
-						//		            	Piece temp = new Piece(1, 1, 1, 1, 1);
-						//Somehow Piece constructor is crashing... check for nulls/values?... turns out xyz was not bing inited properly
 						Context context = getApplicationContext();
-						//		        	  CharSequence text = "Tit:" + thisTitle 
-						//	  					+ "\nLvl: " +  thisLevel
-						//	  					+ "\nRnk: " +  thisRank
-						//	  					+ "\nFil: " +  thisFile
-						//	  					+ "\nCol: " + thisColor + ".";
-						//		        	  int duration = Toast.LENGTH_LONG;
-						//		        	  Toast toast = Toast.makeText(context, text, duration);
-						//		        	  toast.show();
-
-
-
-
-
-
 
 						Board.getMuster()[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
 						Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
@@ -419,59 +349,44 @@ public class threeD_Chess extends Activity {
 		Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
 
 		//Debug display of board after setup
-
-		Context context = getApplicationContext();
-		String text = "";
-		text	= text + "Boards: \n";
-
-
-
-		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
-		{
-			text	= text + "\n\nLevel: " + thisLevel;
-
-			for (thisRank = 0; thisRank < RANKS; ++thisRank)
-			{
-				text	= text + "\n+---------------+\n";// + thisLevel;
-				for (thisFile = 0; thisFile < FILES; ++thisFile)
-				{
-					if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
-					{
-						if((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0))
-						{
-							text += "|" + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-						}else
-						{
-							String s = "|";
-							s += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-							s = s.toUpperCase();
-							text += s;
-						}
-					}else{
-						text += "| ";
-					}
-
-					if(thisFile == 7)
-					{
-						text	= text + "|";
-					}
-				}
-
-				if(thisRank == 7)
-				{
-					text	= text + "\n+---------------+";
-				}
-			}
-		}
-
-		mthreeD_Renderer.setDebugText(text);
-		//		setDebugText
-
-
-		//		
-		//	  int duration = Toast.LENGTH_LONG;
-		//	  Toast toast = Toast.makeText(context, text, duration);
-		//	  toast.show();
+//		Context context = getApplicationContext();
+//		String text = "Boards: \n";
+//		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
+//		{
+//			text	= text + "\n\nLevel: " + thisLevel;
+//			for (thisRank = 0; thisRank < RANKS; ++thisRank)
+//			{
+//				text	= text + "\n+---------------+\n";// + thisLevel;
+//				for (thisFile = 0; thisFile < FILES; ++thisFile)
+//				{
+//					if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
+//					{
+//						if((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0))
+//						{
+//							text += "|" + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+//						}else
+//						{
+//							String s = "|";
+//							s += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
+//							s = s.toUpperCase();
+//							text += s;
+//						}
+//					}else{
+//						text += "| ";
+//					}
+//					if(thisFile == 7)
+//					{
+//						text	= text + "|";
+//					}
+//				}
+//				if(thisRank == 7)
+//				{
+//					text	= text + "\n+---------------+";
+//				}
+//			}
+//		}
+//		mthreeD_Renderer.setDebugText(text);
+//////END DEBUG
 
 	}
 
@@ -825,9 +740,9 @@ public boolean IsGamePaused()
 //              ( IsKingChecked( piece->bwSide ))) ?
 //             TRUE : FALSE );
 
-Err3Dc( firstGFX, moveString,
+Err3Dc( moveString,
 (/* (Computer() == bwToMove) || */
- ( (secondGFX != NULL) && (Board.getBwToMove() == Piece.BLACK) ) ||
+ ( (Board.getBwToMove() == Piece.BLACK) ) ||
  ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
 
   
@@ -2141,7 +2056,7 @@ Err3Dc( firstGFX, moveString,
 
 	private Vibrator vibe;
 	
-	public int Err3Dc( Object gfx, String pszLeader, Boolean beep )
+	public int Err3Dc( String pszLeader, Boolean beep )
 	{
 //		  char *err;
 		  String err = "";
