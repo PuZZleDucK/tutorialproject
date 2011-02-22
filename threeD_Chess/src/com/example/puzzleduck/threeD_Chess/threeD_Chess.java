@@ -632,71 +632,43 @@ public boolean IsGamePaused()
 	//PrintMove( const Move *move )
 	public void PrintMove( Move move )
 {
-	//  char *moveString = NULL;
 	  String moveString = null;
 	  String printMoveString;
 
-//  if (move != NULL)
-//    moveString = (char *)malloc(26);
-
-//  /* moveString is TRUE only if move != NULL too */
-//  if (moveString)
-//    {
-//    Piece *piece, *enemy;
-//    Coord pos;
-    Piece piece, enemy;
+  if (move != null)
+  {
+	  Piece piece, enemy;
     Coord pos;
 
-//  piece = Board[ move->xyzAfter.zLevel]
-//  [ move->xyzAfter.yRank ]
-//  [ move->xyzAfter.xFile ];
   piece = Board.getBoard()[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
 
-//      CHECK( piece != NULL );
+if (piece != null)
+{
 
-//enemy = Muster[(piece->bwSide == WHITE) ? BLACK : WHITE]
-//[ MusterIdx(king, 0) ];
   enemy = Board.getMuster()[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
-//pos = enemy->xyzPos;
   pos = enemy.xyzPos;
 
-//      sprintf( moveString, "%s %c%c%c to %c%c%c%s",
-//              Piece2String( piece ),
-//              move->xyzBefore.zLevel + 'X',
-//              move->xyzBefore.xFile + 'a',
-//              move->xyzBefore.yRank + '1',
-//              move->xyzAfter.zLevel + 'X',
-//              move->xyzAfter.xFile + 'a',
-//              move->xyzAfter.yRank + '1',
-//              IsKingChecked( piece->bwSide ) ? " check!" : "");
-  String checkString;
-  if(IsKingChecked( piece.bwSide ))
-	  {
-	  checkString = " check!"; 
-	  }else
-	  {
-		  checkString =  "";
-	  }
-  printMoveString = "{" + Piece2String( piece ) + "}"
-  				  + " - "
-  				  + "[" + move.xyzBefore.zLevel 
-  				  + "," + move.xyzBefore.xFile
-  				  + "," + move.xyzBefore.yRank 
-  				  + "] to [" + move.xyzAfter.zLevel
-  				  + "," + move.xyzAfter.xFile
-  				  + "," + move.xyzAfter.yRank
-  				  + "]" + checkString;
-	  
-  //eventually want to toss this into a H.U.D. style display area
-  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-  builder.setMessage(printMoveString)
-         .setCancelable(false)
-         .setNeutralButton("dismiss", new DialogInterface.OnClickListener() {
-             public void onClick(DialogInterface dialog, int id) {
-                  dialog.cancel();
-             }
-         });
-  AlertDialog alert = builder.create();
+  moveString = "Move: " + piece.nName + " [" 
+  + move.xyzBefore.zLevel + ","
+  + move.xyzBefore.yRank + ","
+  + move.xyzBefore.xFile + "]->["
+  + move.xyzAfter.zLevel + ","
+  + move.xyzAfter.zLevel + ","
+  + move.xyzAfter.zLevel + "]"
+  + (IsKingChecked( piece.bwSide ) ? " check!" : "");
+  
+//DEBUG:
+mthreeD_Renderer.setDebugText(moveString);
+  
+//  String checkString;
+//  if(IsKingChecked( piece.bwSide ))
+//	  {
+//	  checkString = " check!"; 
+//	  }else
+//	  {
+//		  checkString =  "";
+//	  }
+
 
   //no audio alerts, maybe vibe.
 //      /* Display the move: beep if
@@ -712,8 +684,7 @@ public boolean IsGamePaused()
 //              ( IsKingChecked( piece->bwSide ))) ?
 //             TRUE : FALSE );
 
-Err3Dc( moveString,
-(/* (Computer() == bwToMove) || */
+Err3Dc( moveString,(/* (Computer() == bwToMove) || */
  ( (Board.getBwToMove() == Piece.BLACK) ) ||
  ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
 
@@ -737,7 +708,8 @@ Err3Dc( moveString,
 //        Err3Dc(firstGFX, "Opponent has moved", TRUE);
 //      else if ( (secondGFX != NULL) && (bwToMove == WHITE) )
 //        Err3Dc(secondGFX, "Opponent has moved", TRUE);
-//    }
+    }
+  }
 }
 	
 	
