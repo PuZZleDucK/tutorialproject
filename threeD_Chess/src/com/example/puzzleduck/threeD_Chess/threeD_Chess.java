@@ -400,17 +400,10 @@ public class threeD_Chess extends Activity {
 	private int computer = Piece.NOCOL;
 	private boolean gamePaused = FALSE;
 	
-//Local Boolean SetupAutoplay(char *);
-
-///* Set up the computer intelligence and all that */
-//Local Boolean
-	//SetupAutoplay(char *colourName)
 	public boolean SetupAutoplay(String colourName)
 {
-	//  if (!strcmp(colourName, "black"))
 	  if (colourName.equals("black") )
     computer = Piece.BLACK;
-	//  else if (!strcmp(colourName, "white"))
 	  else if (colourName.equals("white"))
     computer = Piece.WHITE;
   else
@@ -519,8 +512,6 @@ public class threeD_Chess extends Activity {
 	
 
 ///* Utility functions */
-//Global int
-//MusterIdx(const Title name, const int nth)
 	private int MusterIdx(int title, int thisCount)
 	{
 	  int i, count = 0;
@@ -544,46 +535,32 @@ public class threeD_Chess extends Activity {
 	}
 
 
-	//Global char *Piece2String( Piece *piece )
 public String Piece2String( Piece piece )
 {
-//  static char *names[] =
   String names[] =
     {
       "King",   "Queen",    "Bishop", "Knight", "Rook",
       "Prince", "Princess", "Abbey",  "Cannon", "Galley",
       "Pawn", ""
     };
-
-//return names[piece->nName];
 return names[piece.nName];
 }
 
-//Global Colour
-//Computer(void)
 public int Computer()
 {
   return computer;
 }
 
-//Global void
-//PauseGame(void)
 public void PauseGame()
 {
   gamePaused = TRUE;
-//  return;
 }
 
-//Global void
-//ResumeGame(void)
 public void ResumeGame()
 {
   gamePaused = FALSE;
-//  return;
 }
 
-//Global Boolean
-//IsGamePaused(void)
 public boolean IsGamePaused()
 {
   return gamePaused;
@@ -607,9 +584,6 @@ public boolean IsGamePaused()
 		   
 		   blackKingVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.king, 0)].bVisible;
 		   whiteKingVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.king, 0)].bVisible;
-
-     	  
-     	  
      	  
 		   blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.prince, 0)].bVisible;
 		   whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.prince, 0)].bVisible;
@@ -630,8 +604,6 @@ public boolean IsGamePaused()
 	private void FinishGame(int bwWinner)
 	{
 	  gamePaused = TRUE;
-	//  sprintf(winString, "%s player wins!",
-	//          (bwWinner == BLACK) ? "Black" : "White");
 	  winString = (bwWinner == Piece.BLACK) ? "Black wins!" : "White wins!";
 
       AlertDialog.Builder builder = new AlertDialog.Builder(this);
