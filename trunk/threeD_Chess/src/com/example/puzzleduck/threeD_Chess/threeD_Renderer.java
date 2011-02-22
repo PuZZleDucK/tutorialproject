@@ -1,27 +1,18 @@
 package com.example.puzzleduck.threeD_Chess;
 
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.RectF;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
-import android.opengl.GLU;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -53,18 +44,18 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	        /** Message handler used by thread to interact with TextView */
 		private Handler mHandler;
 
-		private Drawable kingImage;
-		private Drawable queenImage;
-		private Drawable bishopImage;
-		private Drawable knightImage;
-		private Drawable rookImage;
-		private Drawable princeImage;
-		private Drawable princessImage;
-		private Drawable abbeyImage;
-		private Drawable cannonImage;
-		private Drawable galleyImage;
-		private Drawable pawnImage;
-		private Drawable noneImage;
+		private ColorDrawable kingImage;
+		private ColorDrawable queenImage;
+		private ColorDrawable bishopImage;
+		private ColorDrawable knightImage;
+		private ColorDrawable rookImage;
+		private ColorDrawable princeImage;
+		private ColorDrawable princessImage;
+		private ColorDrawable abbeyImage;
+		private ColorDrawable cannonImage;
+		private ColorDrawable galleyImage;
+		private ColorDrawable pawnImage = new ColorDrawable(1);
+		private ColorDrawable noneImage;
 
 
 		//	        /** Used to figure out elapsed time between frames */
@@ -97,18 +88,18 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 			Resources res = context.getResources();
 			// cache handles to our key sprites & other drawables
-			kingImage = context.getResources().getDrawable( R.drawable.k_king);
-			queenImage = context.getResources().getDrawable( R.drawable.k_queen);
-			bishopImage = context.getResources().getDrawable( R.drawable.k_bishop);
-			knightImage = context.getResources().getDrawable( R.drawable.k_knight);
-			rookImage = context.getResources().getDrawable( R.drawable.k_rook);
-			princeImage = context.getResources().getDrawable( R.drawable.k_prince);
-			princessImage = context.getResources().getDrawable( R.drawable.k_princess);
-			abbeyImage = context.getResources().getDrawable( R.drawable.k_abbey);
-			cannonImage = context.getResources().getDrawable( R.drawable.k_cannon);
-			galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
-			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
-			noneImage = context.getResources().getDrawable( R.drawable.k_none);
+			kingImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_king);
+			queenImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_queen);
+			bishopImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_bishop);
+			knightImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_knight);
+			rookImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_rook);
+			princeImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_prince);
+			princessImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_princess);
+			abbeyImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_abbey);
+			cannonImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_cannon);
+			galleyImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_galley);
+			pawnImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_pawn);
+			noneImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_none);
 
 			//	            // load background image as a Bitmap instead of a Drawable b/c
 			//	            // we don't need to transform it and it's faster to draw this way
@@ -348,98 +339,19 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private void doDraw(Canvas canvas) {
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
-
 			
-			//	            int yTop = mCanvasHeight - ((int) mY + mLanderHeight / 2);
-			//	            int xLeft = (int) mX - mLanderWidth / 2;
-
-			//	            // Draw the fuel gauge
-			//	            int fuelWidth = (int) (UI_BAR * mFuel / PHYS_FUEL_MAX);
-			//	            mScratchRect.set(4, 4, 4 + fuelWidth, 4 + UI_BAR_HEIGHT);
-			//	            canvas.drawRect(mScratchRect, mLinePaint);
-			//
-			//	            // Draw the speed gauge, with a two-tone effect
-			//	            double speed = Math.sqrt(mDX * mDX + mDY * mDY);
-			//	            int speedWidth = (int) (UI_BAR * speed / PHYS_SPEED_MAX);
-			//
-			//	            if (speed <= mGoalSpeed) {
-			//	                mScratchRect.set(4 + UI_BAR + 4, 4,
-			//	                        4 + UI_BAR + 4 + speedWidth, 4 + UI_BAR_HEIGHT);
-			//	                canvas.drawRect(mScratchRect, mLinePaint);
-			//	            } else {
-			//	                // Draw the bad color in back, with the good color in front of
-			//	                // it
-			//	                mScratchRect.set(4 + UI_BAR + 4, 4,
-			//	                        4 + UI_BAR + 4 + speedWidth, 4 + UI_BAR_HEIGHT);
-			//	                canvas.drawRect(mScratchRect, mLinePaintBad);
-			//	                int goalWidth = (UI_BAR * mGoalSpeed / PHYS_SPEED_MAX);
-			//	                mScratchRect.set(4 + UI_BAR + 4, 4, 4 + UI_BAR + 4 + goalWidth,
-			//	                        4 + UI_BAR_HEIGHT);
-			//	                canvas.drawRect(mScratchRect, mLinePaint);
-			//	            }
-			//
-			//	            // Draw the landing pad
-			//	            canvas.drawLine(mGoalX, 1 + mCanvasHeight - TARGET_PAD_HEIGHT,
-			//	                    mGoalX + mGoalWidth, 1 + mCanvasHeight - TARGET_PAD_HEIGHT,
-			//	                    mLinePaint);
-			//
-			//
 			//	            // Draw the ship with its current rotation
-
 			//	            canvas.save(); //before rotation/transform
+
 			int x = 32;
 			int y = 32;
-//			//                noneImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			//                noneImage.setVisible(true,true);
-//			//                noneImage.draw(canvas);
-//			kingImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			kingImage.draw(canvas);
-//			x+=32;
-//			queenImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			queenImage.draw(canvas);
-//			y+=32;
-//			bishopImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			bishopImage.draw(canvas);
-//			y+=32;
-//			knightImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			knightImage.draw(canvas);
-//			y+=32;
-//			rookImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			rookImage.draw(canvas);
-//			y+=32;
-//			princeImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			princeImage.draw(canvas);
-//			y+=32;
-//			princessImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			princessImage.draw(canvas);
-//			x+=32; y+=32;
-//			abbeyImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			abbeyImage.draw(canvas);
-//			x+=32; y+=32;
-//			cannonImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			cannonImage.draw(canvas);
-//			x+=32; y+=32;
-//			galleyImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			galleyImage.draw(canvas);
-//			x+=32; y+=32;
-//			pawnImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			pawnImage.draw(canvas);
-//			x+=32; y+=32;
-//			pawnImage.setBounds(x, y, noneImage.getIntrinsicWidth()+x, noneImage.getIntrinsicHeight()+y);
-//			pawnImage.draw(canvas);
-//			x+=32; y+=32;
 			//	            canvas.restore();
 			
 			
-			//Debug display of board after setup
-//			Context context = getApplicationContext();
-//			String text = "Boards: \n";
 			for (int thisLevel = 0; thisLevel < threeD_Chess.LEVELS; ++thisLevel)
 			{
-//				text	= text + "\n\nLevel: " + thisLevel;
 				for (int thisRank = 0; thisRank < threeD_Chess.RANKS; ++thisRank)
 				{
-//					text	= text + "\n+---------------+\n";// + thisLevel;
 					for (int thisFile = 0; thisFile < threeD_Chess.FILES; ++thisFile)
 					{
 						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
@@ -451,6 +363,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										thisRank * y + thisLevel*6, 
 										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
 										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
+//								pawnImage.setColor(1); //not sure why this is not working... yet
+//								pawnImage.
 								pawnImage.setAlpha(75);	
 								pawnImage.draw(canvas);
 								break;
@@ -536,16 +450,10 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 								break;
 							}
 						}else{
-//							text += "| ";
 						}
 					}
 				}
 			}
-//			mthreeD_Renderer.setDebugText(text);
-	//////END DEBUG
-			
-			
-			
 			
 		}
 

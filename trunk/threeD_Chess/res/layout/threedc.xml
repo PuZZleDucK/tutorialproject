@@ -11,11 +11,10 @@
   android:textSize="7sp"  
   android:scrollHorizontally="true"
   android:text=""/>
-  
-  	<com.example.puzzleduck.threeD_Chess.threeD_Renderer
+  <com.example.puzzleduck.threeD_Chess.threeD_Renderer
 	android:id="@+id/basicGraphics"
 	android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    />
+  	android:layout_height="fill_parent"
+  />
   
 </LinearLayout>
