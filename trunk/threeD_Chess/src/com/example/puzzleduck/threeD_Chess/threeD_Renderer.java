@@ -157,6 +157,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					synchronized (mSurfaceHolder) {
 //						if (mMode == STATE_RUNNING) updatePhysics();
 						//if running do main game loop
+						
 						doDraw(c);
 					}
 				} finally {
