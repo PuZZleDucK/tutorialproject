@@ -627,9 +627,6 @@ public boolean IsGamePaused()
 	}
 
 
-	//not sure if i'll implement this one yet... now i'm sure i will :) i think i holds some ui functionality
-	//Global void
-	//PrintMove( const Move *move )
 	public void PrintMove( Move move )
 {
 	  String moveString = null;

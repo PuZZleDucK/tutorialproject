@@ -6,8 +6,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,19 +45,35 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	        /** Message handler used by thread to interact with TextView */
 		private Handler mHandler;
 
-		private ColorDrawable kingImage;
-		private ColorDrawable queenImage;
-		private ColorDrawable bishopImage;
-		private ColorDrawable knightImage;
-		private ColorDrawable rookImage;
-		private ColorDrawable princeImage;
-		private ColorDrawable princessImage;
-		private ColorDrawable abbeyImage;
-		private ColorDrawable cannonImage;
-		private ColorDrawable galleyImage;
-		private ColorDrawable pawnImage = new ColorDrawable(1);
-		private ColorDrawable noneImage;
+		private Drawable kingImage;
+		private Drawable queenImage;
+		private Drawable bishopImage;
+		private Drawable knightImage;
+		private Drawable rookImage;
+		private Drawable princeImage;
+		private Drawable princessImage;
+		private Drawable abbeyImage;
+		private Drawable cannonImage;
+		private Drawable galleyImage;
+		private Drawable pawnImage;
+		private Drawable noneImage;
 
+//Color
+//		private ColorFilter cf;
+//		float[] matrix = new float[] {
+//				1, 0, 0, 0, 1,
+//				0, 1, 0, 0, 1,
+//				0, 0, 1, 0, 1,
+//				0, 0, 0, 1, 0,
+//		};
+		
+		float[] matrix = new float[] {
+				1, 0, 0, 0, 0,
+				0, 1, 0, 0, 0,
+				0, 0, 1, 0, 0,
+				0, 0, 0, 1, 0,
+		};
+			//;
 
 		//	        /** Used to figure out elapsed time between frames */
 		//	        private long mLastTime;
@@ -88,26 +105,27 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 			Resources res = context.getResources();
 			// cache handles to our key sprites & other drawables
-			kingImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_king);
-			queenImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_queen);
-			bishopImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_bishop);
-			knightImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_knight);
-			rookImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_rook);
-			princeImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_prince);
-			princessImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_princess);
-			abbeyImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_abbey);
-			cannonImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_cannon);
-			galleyImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_galley);
-			pawnImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_pawn);
-			noneImage = (ColorDrawable) context.getResources().getDrawable( R.drawable.k_none);
+			kingImage = context.getResources().getDrawable( R.drawable.k_king);
+			queenImage = context.getResources().getDrawable( R.drawable.k_queen);
+			bishopImage = context.getResources().getDrawable( R.drawable.k_bishop);
+			knightImage = context.getResources().getDrawable( R.drawable.k_knight);
+			rookImage = context.getResources().getDrawable( R.drawable.k_rook);
+			princeImage = context.getResources().getDrawable( R.drawable.k_prince);
+			princessImage = context.getResources().getDrawable( R.drawable.k_princess);
+			abbeyImage = context.getResources().getDrawable( R.drawable.k_abbey);
+			cannonImage = context.getResources().getDrawable( R.drawable.k_cannon);
+			galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
+			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
+			noneImage = context.getResources().getDrawable( R.drawable.k_none);
+			pawnImage.setColorFilter(new ColorMatrixColorFilter(matrix));
 
 			//	            // load background image as a Bitmap instead of a Drawable b/c
 			//	            // we don't need to transform it and it's faster to draw this way
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.k_none);
 			//
 			//	            // Use the blank image as the model size for all sprites
-			int width = noneImage.getIntrinsicWidth();
-			int height = noneImage.getIntrinsicHeight();
+//			int width = noneImage.getIntrinsicWidth();
+//			int height = noneImage.getIntrinsicHeight();
 
 			mScratchRect = new RectF(0, 0, 0, 0);
 		}
@@ -157,8 +175,11 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					synchronized (mSurfaceHolder) {
 //						if (mMode == STATE_RUNNING) updatePhysics();
 						//if running do main game loop
-						
 						doDraw(c);
+						
+						
+						
+						
 					}
 				} finally {
 					//	                    // do this in a finally so that if an exception is thrown
@@ -614,4 +635,5 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 	}
+
 }
