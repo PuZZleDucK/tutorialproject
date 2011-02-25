@@ -66,15 +66,22 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //				0, 0, 1, 0, 1,
 //				0, 0, 0, 1, 0,
 //		};
-		
-		float[] matrix = new float[] {
+
+		float[] redMatrix = new float[] {
 			//   R     G     B     A     X
 		/* R */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 		/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 		/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 		/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 		};
-			//;
+
+		float[] blueMatrix = new float[] {
+			//   R     G     B     A     X
+		/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+		/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+		};
 
 		//	        /** Used to figure out elapsed time between frames */
 		//	        private long mLastTime;
@@ -118,7 +125,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
 			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
 			noneImage = context.getResources().getDrawable( R.drawable.k_none);
-			pawnImage.setColorFilter(new ColorMatrixColorFilter(matrix));
+			
 
 			//	            // load background image as a Bitmap instead of a Drawable b/c
 			//	            // we don't need to transform it and it's faster to draw this way
@@ -386,9 +393,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										thisRank * y + thisLevel*6, 
 										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
 										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-//								pawnImage.setColor(1); //not sure why this is not working... yet
-//								pawnImage.
-								pawnImage.setAlpha(75);	
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								{
+									pawnImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+								}else
+								{
+									pawnImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+								}
 								pawnImage.draw(canvas);
 								break;
 							case(Piece.c_galley):
@@ -396,7 +407,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										thisRank * y + thisLevel*6, 
 										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
 										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								galleyImage.setAlpha(75);	
+							if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								galleyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								galleyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
 								galleyImage.draw(canvas);
 								break;
 							case(Piece.c_cannon):
