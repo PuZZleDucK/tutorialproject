@@ -68,10 +68,11 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //		};
 		
 		float[] matrix = new float[] {
-				1, 0, 0, 0, 0,
-				0, 1, 0, 0, 0,
-				0, 0, 1, 0, 0,
-				0, 0, 0, 1, 0,
+			//   R     G     B     A     X
+		/* R */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+		/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 		};
 			//;
 
