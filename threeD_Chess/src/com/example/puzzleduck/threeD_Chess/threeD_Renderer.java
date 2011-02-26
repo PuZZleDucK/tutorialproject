@@ -76,12 +76,28 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		};
 
 		float[] blueMatrix = new float[] {
-			//   R     G     B     A     X
-		/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-		/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-		/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-		/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-		};
+				//   R     G     B     A     X
+			/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			};
+
+		float[] blackMatrix = new float[] {
+				//   R     G     B     A     X
+			/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			};
+		float[] whiteMatrix = new float[] {
+				//   R     G     B     A     X
+			/* R */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			/* G */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			};
+
 
 		//	        /** Used to figure out elapsed time between frames */
 		//	        private long mLastTime;
@@ -298,6 +314,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Handles a key-down event.
 		boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
+				
 				//	                boolean okStart = false;
 				//	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
 				//	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
@@ -364,132 +381,316 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			return handled;
 		}
 
-		//	         * Draws the ship, fuel/speed bars, and background to the provided
-		//	         * Canvas.
+		private int LEVEL_OFFSETx = 0;
+		private int LEVEL_OFFSETy = 16*8;
+		private int LEVEL_SPLIT = 16;
+		private int RANK_OFFSETx = 16;
+		private int RANK_OFFSETy = 16;
+		private int FILE_OFFSETx = 16;
+		private int FILE_OFFSETy = 16;
 		private void doDraw(Canvas canvas) {
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
-			
-			//	            // Draw the ship with its current rotation
 			//	            canvas.save(); //before rotation/transform
-
-			int x = 32;
-			int y = 32;
+			int x = 16;
+			int y = 16;
+			int totalXOffset = 0;
+			int totalYOffset = 0; 
 			//	            canvas.restore();
-			
-			
 			for (int thisLevel = 0; thisLevel < threeD_Chess.LEVELS; ++thisLevel)
 			{
 				for (int thisRank = 0; thisRank < threeD_Chess.RANKS; ++thisRank)
 				{
 					for (int thisFile = 0; thisFile < threeD_Chess.FILES; ++thisFile)
 					{
+						totalXOffset = thisFile*FILE_OFFSETx + thisLevel*LEVEL_OFFSETx;
+						totalYOffset = thisRank*RANK_OFFSETx + thisLevel*LEVEL_OFFSETy + thisLevel*LEVEL_SPLIT;
+						noneImage.setBounds(
+								totalXOffset,
+								totalYOffset, 
+								x+totalXOffset, 
+								y+totalYOffset);								
+
+						if( (thisRank + thisFile) % 2 == 0 )
+						{
+							noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+						}else
+						{
+							noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+						}
+							noneImage.draw(canvas);
+
 						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
 						{
+																			
 							switch(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].nName)
 							{
 							case(Piece.c_pawn):
-								pawnImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
-								{
-									pawnImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
-								}else
-								{
-									pawnImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
-								}
+								pawnImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+							if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								pawnImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								pawnImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}								
+							if( (thisRank + thisFile) % 2 == 0 )
+							{
+								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+							}else
+							{
+								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+							}
+								noneImage.draw(canvas);
 								pawnImage.draw(canvas);
 								break;
 							case(Piece.c_galley):
-								galleyImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-							if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								galleyImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								galleyImage.draw(canvas);
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
+									galleyImage.draw(canvas);
 								break;
 							case(Piece.c_cannon):
-								cannonImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								cannonImage.setAlpha(75);	
+								cannonImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								cannonImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								cannonImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								cannonImage.draw(canvas);
 								break;
 							case(Piece.c_abbey):
-								abbeyImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								abbeyImage.setAlpha(75);	
+								abbeyImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								abbeyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								abbeyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								abbeyImage.draw(canvas);
 								break;
 							case(Piece.c_princess):
-								princessImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								princessImage.setAlpha(75);	
+								princessImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								princessImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								princessImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								princessImage.draw(canvas);
 								break;
 							case(Piece.c_prince):
-								princeImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								princeImage.setAlpha(75);	
+								princeImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								princeImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								princeImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								princeImage.draw(canvas);
 								break;
 							case(Piece.c_rook):
-								rookImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								rookImage.setAlpha(75);	
+								rookImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								rookImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								rookImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								rookImage.draw(canvas);
 								break;
 							case(Piece.c_knight):
-								knightImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								knightImage.setAlpha(75);	
+								knightImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								knightImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								knightImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								knightImage.draw(canvas);
 								break;
 							case(Piece.c_bishop):
-								bishopImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								bishopImage.setAlpha(75);
+								bishopImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								bishopImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								bishopImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								bishopImage.draw(canvas);
 								break;
 							case(Piece.c_queen):
-								queenImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								queenImage.setAlpha(75);
+								queenImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								queenImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								queenImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								queenImage.draw(canvas);
 								break;
 							case(Piece.c_king):
-								kingImage.setBounds(thisFile * x + thisLevel*6,
-										thisRank * y + thisLevel*6, 
-										noneImage.getIntrinsicWidth()+thisFile * x + thisLevel*6, 
-										noneImage.getIntrinsicHeight()+thisRank * x + thisLevel*6);
-								kingImage.setAlpha(75);
+								kingImage.setBounds(
+										totalXOffset,
+										totalYOffset, 
+										x+totalXOffset, 
+										y+totalYOffset);
+								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							{
+								kingImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
+							}else
+							{
+								kingImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
+							}
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
 								kingImage.draw(canvas);
 								break;
-							}
+							default:
+								if( (thisRank + thisFile) % 2 == 0 )
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+								}else
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+								}
+									noneImage.draw(canvas);
+									break;
+									}
 						}else{
+							
 						}
 					}
 				}
