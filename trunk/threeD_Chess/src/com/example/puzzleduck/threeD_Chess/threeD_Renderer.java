@@ -806,7 +806,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	public boolean onKeyUp(int keyCode, KeyEvent msg) {
 		return thread.doKeyUp(keyCode, msg);
 	}
-
+	
+	//threeD_Chess.DoMain3DcLoop();
 	//	     * Standard window-focus override. Notice focus lost so we can pause on
 	//	     * focus lost. e.g. user switches to take a call.
 	@Override
