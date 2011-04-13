@@ -55,7 +55,6 @@ public class threeD_Chess extends Activity {
         menu.add(0, MENU_MEDIUM, 0, "Help");
         menu.add(0, MENU_MEDIUM, 0, "Settings");
 //        menu.add(0, MENU_HARD, 0, R.string.menu_start);
-
         return true;
     }
 
