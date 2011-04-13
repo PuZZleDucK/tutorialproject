@@ -30,13 +30,13 @@ import com.example.puzzleduck.threeD_Chess.threeD_Renderer.threeD_Thread;
 
 public class threeD_Chess extends Activity {
 
-    private static final int MENU_EASY = 1;
-    private static final int MENU_HARD = 2;
-    private static final int MENU_MEDIUM = 3;
-    private static final int MENU_PAUSE = 4;
-    private static final int MENU_RESUME = 5;
-    private static final int MENU_START = 6;
-    private static final int MENU_STOP = 7;
+    private static final int MENU_HINT = 1;
+    private static final int MENU_UNDO = 2;
+    private static final int MENU_DIFFICULTY = 3;
+    private static final int MENU_ABOUT = 4;
+    private static final int MENU_HELP = 5;
+    private static final int MENU_SETTINGS = 6;
+//    private static final int MENU_STOP = 7;
 
 //    /** A handle to the thread that's actually running the animation. */
     private threeD_Thread mthreeD_Thread;
@@ -48,12 +48,12 @@ public class threeD_Chess extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, MENU_EASY, 0, "Hint");
-        menu.add(0, MENU_MEDIUM, 0, "Undo");
-        menu.add(0, MENU_MEDIUM, 0, "Difficulty");
-        menu.add(0, MENU_MEDIUM, 0, "About");
-        menu.add(0, MENU_MEDIUM, 0, "Help");
-        menu.add(0, MENU_MEDIUM, 0, "Settings");
+        menu.add(0, MENU_HINT, 0, "Hint");
+        menu.add(0, MENU_UNDO, 0, "Undo");
+        menu.add(0, MENU_DIFFICULTY, 0, "Difficulty");
+        menu.add(0, MENU_ABOUT, 0, "About");
+        menu.add(0, MENU_HELP, 0, "Help");
+        menu.add(0, MENU_SETTINGS, 0, "Settings");
 //        menu.add(0, MENU_HARD, 0, R.string.menu_start);
         return true;
     }
@@ -63,30 +63,31 @@ public class threeD_Chess extends Activity {
 //     * @return true if the Menu item was legit (and we consumed it), false
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case MENU_START:
+        switch (item.getItemId()) {
+            case MENU_HINT:
 //                mLunarThread.doStart();
-//                return true;
-//            case MENU_STOP:
+                return true;
+            case MENU_UNDO:
 //                mLunarThread.setState(LunarThread.STATE_LOSE,
 //                        getText(R.string.message_stopped));
-//                return true;
-//            case MENU_PAUSE:
+                return true;
+            case MENU_DIFFICULTY:
 //                mLunarThread.pause();
-//                return true;
-//            case MENU_RESUME:
+                return true;
+            case MENU_ABOUT:
+            	
 //                mLunarThread.unpause();
-//                return true;
-//            case MENU_EASY:
+                return true;
+            case MENU_HELP:
 //                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_EASY);
-//                return true;
-//            case MENU_MEDIUM:
+                return true;
+            case MENU_SETTINGS:
 //                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_MEDIUM);
-//                return true;
+                return true;
 //            case MENU_HARD:
 //                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_HARD);
 //                return true;
-//        }
+        }
         return false;
     }
 
