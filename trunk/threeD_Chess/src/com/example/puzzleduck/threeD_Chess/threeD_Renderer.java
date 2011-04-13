@@ -14,8 +14,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
 //Simplifying things (hopefully) by using basic android rendering instead of GL
@@ -31,6 +33,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		public static final int STATE_RUNNING = 4;
 		public static final int STATE_WIN = 5;
 
+
+//		private int LEVEL_OFFSETx = 0;
+//		private int LEVEL_OFFSETy = 16*8;
+//		private int LEVEL_SPLIT = 16;
+//		private int RANK_OFFSETx = 16;
+//		private int RANK_OFFSETy = 16;
+//		private int FILE_OFFSETx = 16;
+//		private int FILE_OFFSETy = 16;
 
 		//	         * Member (state) fields
 		//	        /** The drawable to use as the background of the animation canvas */
@@ -311,6 +321,12 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			setState(STATE_RUNNING);
 		}
 
+		
+		
+		
+		
+		
+		
 		//	         * Handles a key-down event.
 		boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
@@ -381,13 +397,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			return handled;
 		}
 
-		private int LEVEL_OFFSETx = 0;
-		private int LEVEL_OFFSETy = 16*8;
-		private int LEVEL_SPLIT = 16;
-		private int RANK_OFFSETx = 16;
-		private int RANK_OFFSETy = 16;
-		private int FILE_OFFSETx = 16;
-		private int FILE_OFFSETy = 16;
 		private void doDraw(Canvas canvas) {
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
@@ -771,6 +780,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	//	    /** The thread that actually draws the animation */
 	private threeD_Thread thread;
 
+	private int LEVEL_OFFSETx = 0;
+	private int LEVEL_OFFSETy = 16*8;
+	private int LEVEL_SPLIT = 16;
+	private int RANK_OFFSETx = 16;
+	private int RANK_OFFSETy = 16;
+	private int FILE_OFFSETx = 16;
+	private int FILE_OFFSETy = 16;
+
 	public threeD_Renderer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
@@ -796,6 +813,19 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	//	     * Standard override to get key-press events.
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent msg) {
+		
+
+		this.LEVEL_OFFSETx += 0;
+		this.LEVEL_OFFSETy += 2*8;
+//		this.LEVEL_SPLIT += 2;
+		this.RANK_OFFSETx += 0;
+		this.RANK_OFFSETy += 2;
+		this.FILE_OFFSETx += 0;
+		this.FILE_OFFSETy += 2;		
+		
+
+		
+		
 		return thread.doKeyDown(keyCode, msg);
 	}
 
@@ -807,6 +837,15 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		return thread.doKeyUp(keyCode, msg);
 	}
 	
+
+	public boolean onTouch(View v, MotionEvent event) {
+///does not seem to be attached
+
+	    return true;
+	}
+
+
+
 	//threeD_Chess.DoMain3DcLoop();
 	//	     * Standard window-focus override. Notice focus lost so we can pause on
 	//	     * focus lost. e.g. user switches to take a call.

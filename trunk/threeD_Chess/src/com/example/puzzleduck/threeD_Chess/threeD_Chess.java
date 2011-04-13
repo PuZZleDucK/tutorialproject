@@ -63,6 +63,9 @@ public class threeD_Chess extends Activity {
 //     * @return true if the Menu item was legit (and we consumed it), false
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Context context = getApplicationContext();
+        Toast toast;
+        CharSequence text;
         switch (item.getItemId()) {
             case MENU_HINT:
 //                mLunarThread.doStart();
@@ -75,10 +78,22 @@ public class threeD_Chess extends Activity {
 //                mLunarThread.pause();
                 return true;
             case MENU_ABOUT:
-            	
+            	  text = "3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
+          						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
+          						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
+          						 + "\nThis version is ported to Android by PuZZleDucK\n";
+            	  toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+            	  toast.show();
 //                mLunarThread.unpause();
                 return true;
             case MENU_HELP:
+//                Context context = getApplicationContext();
+          	  text = "Sorry, cant help you that much yet...\n "
+        						 + "you see nothing works yet except: \n"
+        						 + "-This help message\n"
+        						 + "-About message\n";
+          	  toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+          	  toast.show();
 //                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_EASY);
                 return true;
             case MENU_SETTINGS:
@@ -98,13 +113,7 @@ public class threeD_Chess extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context context = getApplicationContext();
-  	  CharSequence text = "3Dc, Copyright (C) 1995,1996 Paul Hicks\n "
-						 + "3Dc comes with ABSOLUTELY NO WARRANTY: see the GPL for details \n"
-						 + "This is free software: you are welcome to redistribute it under certain conditions (see the GPL).\n"
-						 + "\nThis version is ported to Android by PuZZleDucK\n";
-  	  Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
-  	  toast.show();
+
 
 //        // tell system to use the layout defined in our XML file
         setContentView(R.layout.threedc);
@@ -354,56 +363,16 @@ public class threeD_Chess extends Activity {
 		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
 		Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
 
-		//Debug display of board after setup
-//		Context context = getApplicationContext();
-//		String text = "Boards: \n";
-//		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
-//		{
-//			text	= text + "\n\nLevel: " + thisLevel;
-//			for (thisRank = 0; thisRank < RANKS; ++thisRank)
-//			{
-//				text	= text + "\n+---------------+\n";// + thisLevel;
-//				for (thisFile = 0; thisFile < FILES; ++thisFile)
-//				{
-//					if(Board.getBoard()[thisLevel][thisRank][thisFile] != null)
-//					{
-//						if((Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == 0))
-//						{
-//							text += "|" + Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-//						}else
-//						{
-//							String s = "|";
-//							s += Board.getBoard()[thisLevel][thisRank][thisFile].getTypeChar();
-//							s = s.toUpperCase();
-//							text += s;
-//						}
-//					}else{
-//						text += "| ";
-//					}
-//					if(thisFile == 7)
-//					{
-//						text	= text + "|";
-//					}
-//				}
-//				if(thisRank == 7)
-//				{
-//					text	= text + "\n+---------------+";
-//				}
-//			}
-//		}
-//		mthreeD_Renderer.setDebugText(text);
-//////END DEBUG
-
 	}
 
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
 
-	//defining FALSE and TRUE as they are used heaps
+	//defining FALSE, TRUE and NULL as they are used heaps
 	boolean FALSE = false;
 	boolean TRUE = true;
 	Object NULL = null;
 	
-	private int computer = Piece.NOCOL;
+	private int computer = Piece.BLACK;//defaulting to ai as black
 	private boolean gamePaused = FALSE;
 	
 	public boolean SetupAutoplay(String colourName)
