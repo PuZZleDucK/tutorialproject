@@ -48,7 +48,13 @@ public class threeD_Chess extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-//        menu.add(0, MENU_START, 0, R.string.menu_start);
+        menu.add(0, MENU_EASY, 0, "Hint");
+        menu.add(0, MENU_MEDIUM, 0, "Undo");
+        menu.add(0, MENU_MEDIUM, 0, "Difficulty");
+        menu.add(0, MENU_MEDIUM, 0, "About");
+        menu.add(0, MENU_MEDIUM, 0, "Help");
+        menu.add(0, MENU_MEDIUM, 0, "Settings");
+//        menu.add(0, MENU_HARD, 0, R.string.menu_start);
 
         return true;
     }
