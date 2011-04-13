@@ -19,6 +19,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //Simplifying things (hopefully) by using basic android rendering instead of GL
 class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
@@ -814,14 +815,29 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent msg) {
 		
-
-		this.LEVEL_OFFSETx += 0;
-		this.LEVEL_OFFSETy += 2*8;
-//		this.LEVEL_SPLIT += 2;
-		this.RANK_OFFSETx += 0;
-		this.RANK_OFFSETy += 2;
-		this.FILE_OFFSETx += 0;
-		this.FILE_OFFSETy += 2;		
+		
+		
+		
+//        Context context = getApplicationContext();
+        Toast toast;
+        CharSequence text;
+            	  text = "\n Key: " + keyCode;
+            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+            	  toast.show();
+            	  // 20 down... 19 up... 21 left... 22 right.. 82 menu...
+		
+		
+		
+		
+		
+//
+//		this.LEVEL_OFFSETx += 0;
+//		this.LEVEL_OFFSETy += 2*8;
+////		this.LEVEL_SPLIT += 2;
+//		this.RANK_OFFSETx += 0;
+//		this.RANK_OFFSETy += 2;
+//		this.FILE_OFFSETx += 0;
+//		this.FILE_OFFSETy += 2;		
 		
 
 		
@@ -837,12 +853,12 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		return thread.doKeyUp(keyCode, msg);
 	}
 	
-
-	public boolean onTouch(View v, MotionEvent event) {
-///does not seem to be attached
-
-	    return true;
-	}
+//
+//	public boolean onTouch(View v, MotionEvent event) {
+/////does not seem to be attached
+//
+//	    return true;
+//	}
 
 
 

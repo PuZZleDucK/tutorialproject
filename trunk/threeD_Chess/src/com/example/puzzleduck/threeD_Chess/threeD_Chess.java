@@ -57,6 +57,8 @@ public class threeD_Chess extends Activity {
 //        menu.add(0, MENU_HARD, 0, R.string.menu_start);
         return true;
     }
+    
+
 
 //     * Invoked when the user selects an item from the Menu.
 //     * @param item the Menu entry which was selected
