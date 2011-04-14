@@ -11,7 +11,8 @@ package com.example.puzzleduck.threeD_Chess;
 
 
 public class Piece {
-	
+
+	public static final int c_select = -1; //used for signaling selected square
 	public static final int c_king = 0;
 	public static final int c_queen = 1;
 	public static final int c_bishop = 2;
@@ -32,9 +33,9 @@ public class Piece {
 	public boolean bVisible;
 	public boolean bHasMoved;
 
-	static int BLACK = c_queen;
-	static int WHITE = c_king;
-	static int NOCOL = -c_queen;
+	static int BLACK = 1;
+	static int WHITE = 0;
+	static int NOCOL = -1;
 
 	static int king = c_king;
 	static int queen = c_queen;
@@ -95,6 +96,27 @@ public class Piece {
 
 	public char getTypeChar() {
 		return pieceChar[nName];
+	}
+
+	public void moveDown() {
+		xyzPos.xFile-=1;
+		
+	}
+
+	public void moveUp() {
+		xyzPos.xFile+=1;
+		
+	}
+
+	public void moveLeft() {
+//		xyzPos.zLevel+=1;
+		xyzPos.yRank+=1;
+		
+	}
+
+	public void moveRight() {
+		xyzPos.yRank-=1;
+		
 	}
 
 	

@@ -25,25 +25,13 @@ import android.widget.Toast;
 class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	class threeD_Thread extends Thread {
 
-		//	        /*
 		//	         * State-tracking constants
-		//	         */
 		public static final int STATE_LOSE = 1;
 		public static final int STATE_PAUSE = 2;
 		public static final int STATE_READY = 3;
 		public static final int STATE_RUNNING = 4;
 		public static final int STATE_WIN = 5;
 
-
-//		private int LEVEL_OFFSETx = 0;
-//		private int LEVEL_OFFSETy = 16*8;
-//		private int LEVEL_SPLIT = 16;
-//		private int RANK_OFFSETx = 16;
-//		private int RANK_OFFSETy = 16;
-//		private int FILE_OFFSETx = 16;
-//		private int FILE_OFFSETy = 16;
-
-		//	         * Member (state) fields
 		//	        /** The drawable to use as the background of the animation canvas */
 		private Bitmap mBackgroundImage;
 
@@ -108,6 +96,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 			};
+		float[] yellowMatrix = new float[] {
+				//   R     G     B     A     X
+			/* R */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
+			/* G */	0.0f, 0.0f, 0.0f, 2.0f, 0.0f,
+			/* B */	0.0f, 0.0f, 0.0f, 2.0f, 0.0f,
+			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			};
 
 
 		//	        /** Used to figure out elapsed time between frames */
@@ -169,15 +164,10 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		public void doStart() {
 			synchronized (mSurfaceHolder) {
 				//	                // First set the game for Medium difficulty
-				//
 				//	                // Adjust difficulty params for EASY/HARD
-				//
 				//	                // pick a convenient initial location for the lander sprite
-				//
 				//	                // start with a little random motion
-				//
 				//	                // Figure initial spot for landing, not too near center
-				//
 				//	                mLastTime = System.currentTimeMillis() + 100;
 				setState(STATE_RUNNING);
 			}
@@ -421,14 +411,23 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 								x+totalXOffset, 
 								y+totalYOffset);								
 
-						if( (thisRank + thisFile) % 2 == 0 )
+						//check for selected square and highlight "yellow"
+						if(thisLevel == threeD_Chess.selectedSquare.xyzPos.zLevel && 
+								thisRank == threeD_Chess.selectedSquare.xyzPos.zLevel &&
+								thisFile == threeD_Chess.selectedSquare.xyzPos.zLevel)
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+							noneImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 						}else
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+							if( (thisRank + thisFile) % 2 == 0 )
+							{
+								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+							}else
+							{
+								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+							}
 						}
-							noneImage.draw(canvas);
+						noneImage.draw(canvas);
 
 						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
 						{
@@ -448,14 +447,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								pawnImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}								
-							if( (thisRank + thisFile) % 2 == 0 )
-							{
-								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-							}else
-							{
-								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-							}
-								noneImage.draw(canvas);
+//							if( (thisRank + thisFile) % 2 == 0 )
+//							{
+//								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//							}else
+//							{
+//								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//							}
+//								noneImage.draw(canvas);
 								pawnImage.draw(canvas);
 								break;
 							case(Piece.c_galley):
@@ -471,14 +470,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 									galleyImage.draw(canvas);
 								break;
 							case(Piece.c_cannon):
@@ -494,14 +493,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								cannonImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								cannonImage.draw(canvas);
 								break;
 							case(Piece.c_abbey):
@@ -517,14 +516,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								abbeyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								abbeyImage.draw(canvas);
 								break;
 							case(Piece.c_princess):
@@ -540,14 +539,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								princessImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								princessImage.draw(canvas);
 								break;
 							case(Piece.c_prince):
@@ -563,14 +562,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								princeImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								princeImage.draw(canvas);
 								break;
 							case(Piece.c_rook):
@@ -586,14 +585,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								rookImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								rookImage.draw(canvas);
 								break;
 							case(Piece.c_knight):
@@ -609,14 +608,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								knightImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								knightImage.draw(canvas);
 								break;
 							case(Piece.c_bishop):
@@ -632,14 +631,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								bishopImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								bishopImage.draw(canvas);
 								break;
 							case(Piece.c_queen):
@@ -655,14 +654,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								queenImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								queenImage.draw(canvas);
 								break;
 							case(Piece.c_king):
@@ -678,25 +677,25 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								kingImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 								kingImage.draw(canvas);
 								break;
 							default:
-								if( (thisRank + thisFile) % 2 == 0 )
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-								}else
-								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-								}
-									noneImage.draw(canvas);
+//								if( (thisRank + thisFile) % 2 == 0 )
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+//								}else
+//								{
+//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+//								}
+//									noneImage.draw(canvas);
 									break;
 									}
 						}else{
@@ -711,7 +710,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Figures the lander state (x, y, fuel, ...) based on the passage of
 		//	         * realtime. Does not invalidate(). Called at the start of draw().
 		//	         * Detects the end-of-game and sets the UI to the next state.
-		private void updatePhysics() {
+//		private void updatePhysics() {
 			//	            long now = System.currentTimeMillis();
 
 			//	            // Do nothing if mLastTime is in the future.
@@ -769,7 +768,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			//
 			//	                setState(result, message);
 			//	            }
-		}
+//		}
 	}
 
 	//	    /** Handle to the application context, used to e.g. fetch Drawables. */
@@ -819,16 +818,40 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		
 		
 //        Context context = getApplicationContext();
+
         Toast toast;
         CharSequence text;
-            	  text = "\n Key: " + keyCode;
-            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
-            	  toast.show();
-            	  // 20 down... 19 up... 21 left... 22 right.. 82 menu...
 		
-		
-		
-		
+        switch(keyCode)
+		{
+			case(20): // 20 down...
+				threeD_Chess.selectedSquare.moveDown();
+	            	  text = "\n DOWN: ";
+	            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+	            	  toast.show();
+			break;
+
+			case(19): // 19 up...
+				threeD_Chess.selectedSquare.moveUp();
+	            	  text = "\n DOWN: ";
+	            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+	            	  toast.show();
+			break;
+
+			case(21): // 21 left...
+				threeD_Chess.selectedSquare.moveLeft();
+			break;
+
+			case(22): // 22 right....
+				threeD_Chess.selectedSquare.moveRight();
+			break;
+
+//			case(82): // . 82 menu...
+//			break;
+			
+			
+			
+		}
 		
 //
 //		this.LEVEL_OFFSETx += 0;

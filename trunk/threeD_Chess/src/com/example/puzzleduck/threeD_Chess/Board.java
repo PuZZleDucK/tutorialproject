@@ -9,12 +9,12 @@ public class Board {
 	private int bwToMove;
 	private Piece SQUARE_EMPTY;
 	private Piece SQUARE_INVALID;
-	private int[] titleCount;
+	private int[] TitleCount;
 
 	public Board(Piece[][][] board, Piece[][] muster, int[] titleCount) {
 		Board = board;
 		Muster = muster;
-		this.titleCount = titleCount;
+		TitleCount = titleCount;
 	}
 
 	public Stack getMoveStack() {
@@ -66,10 +66,10 @@ public class Board {
 	}
 
 	public int[] getTitleCount() {
-		return titleCount;
+		return TitleCount;
 	}
 
 	public void setTitleCount(int[] titleCount) {
-		this.titleCount = titleCount;
+		TitleCount = titleCount;
 	}
 }

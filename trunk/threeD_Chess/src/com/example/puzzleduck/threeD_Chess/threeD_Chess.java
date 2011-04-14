@@ -114,7 +114,23 @@ public class threeD_Chess extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //eventually replace this with android propperties/settings
+        //Define Black and White as Human, AI or remote
+//                    if (!strcmp(argv[argNum], "-play"))
+//                                    "%s: -play requires a colour (black or white)\n",
+//                                    "%s: %s is not a colour (must be black or white)\n",
+//                      } /* End autoplay setup */
 
+//                    else if (!strcmp(argv[argNum], "-altdisplay") ||
+//                                    "%s: option %s requires a display name parameter\n",
+//                            Open2ndDisplay(argv[argNum]);
+//                      } /* End net setup */
+        //I'll need to allow remote connection of game eventually :)
+                
+              //%s ; play 3Dc, two humans on one display\n\
+              //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
+              //%s -play colour ; play against the computer, which plays colour\n",
+//                  } /* Finish parameters */
 
 
 //        // tell system to use the layout defined in our XML file
@@ -127,7 +143,7 @@ public class threeD_Chess extends Activity {
       mthreeD_Thread = mthreeD_Renderer.getThread();
         
 //        // give the renderer a handle to the TextView used for messages
-      mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text)); //origional... for text display
+//      mthreeD_Renderer.setTextView((TextView) findViewById(R.id.text)); //origional... debug text display
 //      setContentView(findViewById(R.id.basicGraphics));
 
         Init3Dc();
@@ -144,54 +160,25 @@ public class threeD_Chess extends Activity {
     }
 
 //     * Invoked when the Activity loses user focus.
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
+    @Override
+    protected void onPause() {
+        super.onPause();
 //        mLunarView.getThread().pause(); // pause game when Activity pauses
-//    }
+    }
 
 //     * Notification that something is about to happen, to give the Activity a
 //     * chance to save state.
 //     * @param outState a Bundle into which this Activity should save its state
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        // just have the View's thread save its state into our Bundle
-//        super.onSaveInstanceState(outState);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // just have the View's thread save its state into our Bundle
+        super.onSaveInstanceState(outState);
 //        mLunarThread.saveState(outState);
-//        Log.w(this.getClass().getName(), "SIS called");
-//    }
-//}
+        Log.w(this.getClass().getName(), "SIS called");
+    }
 
 
-//	/** Called when the activity is first created. */
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-
-    /////////////////////////////////////////////////////////////////////////////////
-        //eventually replace this with android propperties/settings
-      //Define Black and White as Human, AI or remote
-//                  if (!strcmp(argv[argNum], "-play"))
-//                                  "%s: -play requires a colour (black or white)\n",
-//                                  "%s: %s is not a colour (must be black or white)\n",
-//                    } /* End autoplay setup */
-
-//                  else if (!strcmp(argv[argNum], "-altdisplay") ||
-//                                  "%s: option %s requires a display name parameter\n",
-//                          Open2ndDisplay(argv[argNum]);
-//                    } /* End net setup */
-      //I'll need to allow remote connection of game eventually :)
-              
-            //%s ; play 3Dc, two humans on one display\n\
-            //%s -ad|-altdisplay [display] ; black plays on display `display'\n\
-            //%s -play colour ; play against the computer, which plays colour\n",
-//                } /* Finish parameters */
-
-
-
-    //Moving to a simpler graphics model: Dropping GL and using native android rendering
-    //I think most of this will now eventually migrate over to the renderer
-	public int ABS(int x)
+ 	public int ABS(int x)
 	{
 		return (x > 0) ? x : -x;
 	}
@@ -234,7 +221,9 @@ public class threeD_Chess extends Activity {
 	private int n3DcErr;
 	
 	public static Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
-
+	public static Piece selectedSquare = new Piece(-1,1,1,1,-1);
+	
+	
 	private int RANDDIR()
 	{
 		return rng.nextInt(2);  // this is 0-1
