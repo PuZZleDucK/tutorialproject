@@ -178,16 +178,16 @@ public class threeD_Chess extends Activity {
     }
 
 
- 	public int ABS(int x)
+ 	public static int ABS(int x)
 	{
 		return (x > 0) ? x : -x;
 	}
 
-	public int MAX(int x, int y)
+	public static int MAX(int x, int y)
 	{
 		return (x > y) ? x : y;
 	}
-	public int MIN(int x, int y)
+	public static int MIN(int x, int y)
 	{
 		return (x > y) ? x : y;
 	}
@@ -221,7 +221,7 @@ public class threeD_Chess extends Activity {
 	private int n3DcErr;
 	
 	public static Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
-	public static Piece selectedSquare = new Piece(-1,1,1,1,-1);
+	public static Piece selectedSquare = new Piece(-1,0,0,1,-1);
 	
 	
 	private int RANDDIR()
@@ -229,12 +229,12 @@ public class threeD_Chess extends Activity {
 		return rng.nextInt(2);  // this is 0-1
 	}
 
-	private boolean HORZ(int x, int y)
+	static boolean HORZ(int x, int y)
 	{
 		return ((x)==0) ^ ((y)==0);
 	}
 	
-	private boolean DIAG(int x, int y)
+	static boolean DIAG(int x, int y)
 	{
 		return (x)!=0 && (ABS(x)==ABS(y));
 	}
@@ -359,9 +359,9 @@ public class threeD_Chess extends Activity {
 	private int MAX_RETRIES = 100; /* Number of times to guess a tricky move */
 
 	//defining FALSE, TRUE and NULL as they are used heaps
-	boolean FALSE = false;
-	boolean TRUE = true;
-	Object NULL = null;
+	static boolean FALSE = false;
+	static boolean TRUE = true;
+	static Object NULL = null;
 	
 	private int computer = Piece.BLACK;//defaulting to ai as black
 	private boolean gamePaused = FALSE;
@@ -760,9 +760,9 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  if (FakeMoveAndIsKingChecked( piece, xNew, yNew, zNew) ||
+		  if (piece.FakeMoveAndIsKingChecked( Board, xNew, yNew, zNew) ||
 		      ( (xDiff == 2) &&
-		       FakeMoveAndIsKingChecked( piece, (xNew + piece.xyzPos.xFile)/2,
+		    	piece.FakeMoveAndIsKingChecked( Board, (xNew + piece.xyzPos.xFile)/2,
 		                                yNew, zNew ) ))
 		    {
 		      n3DcErr = E3DcCHECK;
@@ -843,7 +843,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
@@ -870,7 +870,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
 
@@ -920,7 +920,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, zDiff,
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
@@ -978,7 +978,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0,
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0,
 		                            MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
@@ -1009,7 +1009,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
 
@@ -1063,7 +1063,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = TraverseDir(piece, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
 		  return IsMoveLegal(piece, pDestSquare);
 		}
 
@@ -1479,7 +1479,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //s->nSize = 0;
 //return s;
 //}
-	public Stack StackNew()
+	public static Stack StackNew()
 	{
 //		stack = new Stack();
 		return new Stack();
@@ -1503,7 +1503,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 	
 //Global void
 	//StackPush(stack *s, const Move *newMove)
-	private void StackPush(Stack targetStack, Move newMove)
+	static void StackPush(Stack targetStack, Move newMove)
 	{
 		//struct stack_el *newEl;
 		Stack_el newEl = new Stack_el();
@@ -2255,85 +2255,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //	 * members of the xyzPos struct are equal to UINT_MAX then there was
 //	 * error which utterly precludes moving (e.g. dist == 0).
 //	 */
-	
-	private Piece TraverseDir(Piece piece, int xDir, int yDir, int zDir, int dist)
-	{
-	  int x, y, z, d = 0;
 
-//	  /* Most move at least one in a real direction */
-	  if ((dist == 0) || ((xDir == 0) && (yDir == 0) && (zDir == 0)))
-	    {
-	      Board.getSQUARE_INVALID().xyzPos.xFile = UINT_MAX;
-	      Board.getSQUARE_INVALID().xyzPos.yRank = UINT_MAX;
-	      Board.getSQUARE_INVALID().xyzPos.zLevel = UINT_MAX;
-
-	      return Board.getSQUARE_INVALID();
-	    }
-
-	  if ((piece.nName != Piece.knight) && (piece.nName != Piece.cannon))
-	    {
-//	      /* Make all directions be 1, -1 or 0 */
-	      if (xDir != 0) xDir /= ABS(xDir);
-	      if (yDir != 0) yDir /= ABS(yDir);
-	      if (zDir != 0) zDir /= ABS(zDir);
-	    }
-	  else
-		  dist = 1;
-		  x = piece.xyzPos.xFile;
-		  y = piece.xyzPos.yRank;
-		  z = piece.xyzPos.zLevel;
-	  do{
-	      x += xDir;
-	      y += yDir;
-	      z += zDir;
-
-	      if (!((x >= 0) && (y >= 0) && (z >= 0) && (x < FILES) && (y < RANKS) && (z < LEVELS)))
-	        {
-	          Board.getSQUARE_INVALID().xyzPos.xFile = x;
-	          Board.getSQUARE_INVALID().xyzPos.yRank = y;
-	          Board.getSQUARE_INVALID().xyzPos.zLevel = z;
-	          return Board.getSQUARE_INVALID();
-	        }
-
-	      if (Board.getBoard()[z][y][x] != null)
-	        {
-	          if (Board.getBoard()[z][y][x].bwSide == piece.bwSide)
-	            {
-	              Board.getSQUARE_INVALID().xyzPos.xFile = x;
-	              Board.getSQUARE_INVALID().xyzPos.yRank = y;
-	              Board.getSQUARE_INVALID().xyzPos.zLevel = z;
-	              return Board.getSQUARE_INVALID();
-	            }
-	          else
-	          {
-	            return Board.getBoard()[z][y][x];
-	          }
-	        }
-	    } while (++d < dist);
-
-//	  /*
-//	   * At this point, because we haven't returned, we know these things:
-//	   *  We have not encountered another piece.
-//	   *  We have moved dist spaces.
-//	   */
-	  if ((x >= 0) && (y >= 0) && (z >= 0) && (z < LEVELS) && (y < RANKS) && (x < FILES))
-	    {
-//	      /* Valid (empty) square */
-	      Board.getSQUARE_EMPTY().xyzPos.xFile = x;
-	      Board.getSQUARE_EMPTY().xyzPos.yRank = y;
-	      Board.getSQUARE_EMPTY().xyzPos.zLevel = z;
-
-	      return Board.getSQUARE_EMPTY();
-	    }
-
-//	   * We fell off the board. Go back one place to the last valid
-//	   * location.
-	  Board.getSQUARE_INVALID().xyzPos.xFile = x - xDir;
-	  Board.getSQUARE_INVALID().xyzPos.yRank = y - yDir;
-	  Board.getSQUARE_INVALID().xyzPos.zLevel = z - zDir;
-
-	  return Board.getSQUARE_INVALID();
-	}
 
 //	 * Return TRUE if the king is checked in the current board layout.
 	public Boolean IsKingChecked( int bwSide )
@@ -2343,42 +2265,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 	  return ( SquareThreatened( (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
 	}
 
-//	/* Check move re. putting own king in check */
-	public Boolean FakeMoveAndIsKingChecked( Piece piece, int x, int y, int z)
-	{
-		  Piece temp;
-	  Boolean retVal;
-	  Coord xyz;
 
-	  xyz = piece.xyzPos;
-	  temp = Board.getBoard()[z][y][x];
-	  if ( temp != NULL )
-	  {
-		    temp.bVisible = FALSE;
-	  }
-	  Board.getBoard()[z][y][x] = piece;
-	  Board.getBoard()[xyz.zLevel][xyz.yRank][xyz.xFile] = null;
-
-	  if (piece.nName == Piece.king)
-	    {
-//	      /* We're moving the king, so it's xyzPos may not be accurate.
-//	       * check manually. */
-	      retVal = (SquareThreatened( (piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, x, y, z ) != NULL) ;
-	    }
-	  else
-	  {
-		    retVal = IsKingChecked(piece.bwSide);
-	  }
-	  
-	  Board.getBoard()[z][y][x] = temp;
-	  if ( temp != NULL )
-	  {
-		    temp.bVisible = TRUE;
-	  }
-	  Board.getBoard()[xyz.zLevel][xyz.yRank][xyz.xFile] = piece;
-
-	  return retVal;
-	}	
 	
 
 //	/* DrawingA.c: The DrawingArea Widget Methods */
@@ -3425,7 +3312,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //	   * inside the move faked below but that would mean nasty code
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
-	  if ( FakeMoveAndIsKingChecked( Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 )],
+	  if ( Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
 		      move.xyzAfter.xFile,
 		      move.xyzAfter.yRank,
 		      move.xyzAfter.zLevel ))
@@ -3513,7 +3400,8 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 
 	  if ( Board.getMuster()[bwSide][pieceIdx].bVisible )
 	    {
-	      moves = FindAllMoves( Board.getMuster()[bwSide][pieceIdx] );
+//	      moves = FindAllMoves( Board.getMuster()[bwSide][pieceIdx] );
+	      moves = Board.getMuster()[bwSide][pieceIdx].FindAllMoves(Board);
 	      if (moves != null)
 	        {
 //	#         ifdef NOTDEF
@@ -3548,205 +3436,6 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 		  return TRUE;
 	}
 
-//	/* Creates a stack of legal moves that this piece can take in this go */
-	//This is where i need to update interface to shade/highlight possible moves to improve UI
-	Stack FindAllMoves(Piece piece)
-	{
-		  Stack moves;
-	  Move move = new Move();
-	  int bwEnemy;
-	  int x, y, z;
-
-		int CURX = (piece.xyzPos.xFile);
-		int CURY = (piece.xyzPos.yRank);
-		int CURZ = (piece.xyzPos.zLevel);
-
-	  moves = StackNew();
-	  if (moves == null)
-	  {
-	    return null;
-	  }
-
-	  bwEnemy = ((piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
-	  move.xyzBefore = piece.xyzPos;
-
-	  if (piece.nName == Piece.knight)
-	    {
-	      for (y = MAX(0, CURY -2); y < MIN(RANKS, CURY +3); y++)
-	        {
-	          if (y == CURY)
-	            continue;
-	          for (x = MAX(0, CURX -2); x < MIN(FILES, CURX +3); x++)
-	            {
-	              if (x == CURX)
-	                continue;
-
-	              if (ABS(CURX-x) == ABS(CURY-y))
-	                continue;
-	              if ((Board.getBoard()[CURZ][y][x] == NULL) || (Board.getBoard()[CURZ][y][x].bwSide == bwEnemy))
-	                {
-	                  move.xyzAfter.xFile = x;
-	                  move.xyzAfter.yRank = y;
-	                  move.xyzAfter.zLevel = CURZ;
-	                  move.pVictim = Board.getBoard()[CURZ][y][x];
-	                  move.nHadMoved = piece.bHasMoved;
-	                  
-	                  if (!FakeMoveAndIsKingChecked( piece, x, y, CURZ ))
-	                  {
-		                    StackPush(moves, move);
-	                  }
-	                } /* End valid move */
-	            } /* End x loop */
-	        } /* End y loop */
-	    } /* End knight */
-	  else if (piece.nName == Piece.cannon)
-	    {
-	      for (z = 0; z < LEVELS; z++)
-	        {
-	          if (z == CURZ)
-	            continue;
-
-	          for (y = MAX( 0, CURY -3 ); y < MIN( RANKS, CURY +4 ); y++)
-	            {
-	              if (y == CURY)
-	                continue;
-
-	              for (x = MAX( 0, CURX -3 ); x < MIN( FILES, CURX +4 ); x++)
-	                {
-	                  if (x == CURX)
-	                    continue;
-
-	                  if ((ABS(CURX-x) == ABS(CURY-y)) ||
-	                      (ABS(CURX-x) == ABS(CURZ-z)) ||
-	                      (ABS(CURY-y) == ABS(CURZ-z)))
-	                    continue;
-
-	                  if ((Board.getBoard()[z][y][x] == NULL) || (Board.getBoard()[z][y][x].bwSide == bwEnemy))
-	                    {
-	                      move.xyzAfter.xFile = x;
-	                      move.xyzAfter.yRank = y;
-	                      move.xyzAfter.zLevel = z;
-	                      move.pVictim = Board.getBoard()[z][y][x];
-	                      move.nHadMoved = piece.bHasMoved;
-
-	                      if (!FakeMoveAndIsKingChecked( piece, x, y, z ))
-	                      {
-		                        StackPush(moves, move);
-	                      }
-	                    } /* End valid move */
-	                } /* End x loop */
-	            } /* End y loop */
-	        } /* End z loop */
-	    } /* End cannon */
-	  else if (piece.nName == Piece.pawn) /* Don't bother searching for en passant */
-	    {
-	      y = ((piece.bwSide == Piece.WHITE) ? 1 : -1);
-
-	      for (x = MAX(0, CURX-1); x < MIN(FILES, CURX+2); ++x)
-	        {
-	          /* Due to the complexity of the conditional this time,
-	           * I've opted for aborting when illegal instead of
-	           * proceeding when legal. */
-	          if ((x == CURX) && (Board.getBoard()[CURZ][CURY+y][CURX] != NULL))
-	            continue;
-
-	          if ( (x != CURX) && 
-	        		  ((Board.getBoard()[CURZ][CURY + y][x] == NULL) || ((Board.getBoard()[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
-	          {
-	            continue;
-	          }
-	          move.xyzAfter.xFile = x;
-	          move.xyzAfter.yRank = CURY + y;
-	          move.xyzAfter.zLevel = CURZ;
-	          move.pVictim = Board.getBoard()[CURZ][CURY + y][x];
-	          move.nHadMoved = piece.bHasMoved;
-
-	          if (!FakeMoveAndIsKingChecked(piece, x, CURY+y, CURZ))
-	          {
-		            StackPush(moves, move);
-	          }
-//	          /* This next conditional is for the two-forward move:
-//	           * it only happens when the previous attempt was the one-forward
-//	           * move and makes assumptions based on that fact. */
-	          if ( (x==CURX) && (piece.bHasMoved == FALSE) && (Board.getBoard()[CURZ][CURY + y+y][CURX] == NULL) )
-	            {
-	              move.xyzAfter.yRank += y;
-	              if (!FakeMoveAndIsKingChecked(piece, CURX, CURY+y+y, CURZ))
-		                StackPush(moves, move);
-	            }
-	        } /* End x loop */
-	    } /* End pawn */
-	  else
-	    {
-	      int d, dist;
-	      Piece pEncountered;
-
-	      /*
-	       * The king and prince can only move one square;
-	       * all others can move MAX(FILES,RANKS)-1.
-	       * For a regular board, this is 7.  (Not 8: If you moved 8
-	       * in any direction you would be off the edge of the board)
-	       */
-	      if ((piece.nName == Piece.king) || (piece.nName == Piece.prince))
-	        dist = 1;
-	      else
-	        dist = MAX(FILES, RANKS) -1;
-
-	      for (z = -1; z <= 1; ++z)
-	      {
-	       /*
-	        * Cater for pieces that can't change level.
-	        */
-		       if (((piece.nName == Piece.prince) || (piece.nName == Piece.princess) || (piece.nName == Piece.abbey)
-		    		   || (piece.nName == Piece.galley)) && (z != 0))
-	         continue;
-
-	       for (y = -1; y <= 1; ++y)
-	       {
-	         for (x = -1; x <= 1; ++x)
-	         {
-	           if ((x==0) && (y==0) && (z==0))
-	             continue;
-
-	           /*
-	            * Cater for the pieces that can only move
-	            * horizontally/vertically.
-	            */
-	           if (((piece.nName == Piece.rook) || (piece.nName == Piece.galley)) && !HORZ(x, y))
-	             continue;
-//	           /*
-//	            * Cater for the pieces that can only move
-//	            * diagonally.
-//	            */
-	           else if (((piece.nName == Piece.bishop) || (piece.nName == Piece.abbey)) && !DIAG(x, y))
-	             continue;
-
-	           for (d = 1; d <= dist; ++d)
-	           {
-	             pEncountered = TraverseDir(piece, x, y, z, d);
-	             if (IsMoveLegal(piece, pEncountered))
-	               {
-	                 move.xyzAfter = pEncountered.xyzPos;
-	                 move.pVictim = pEncountered;
-	                 move.nHadMoved = piece.bHasMoved;
-
-	                 /* Check for putting own king in check */
-	                 if (!FakeMoveAndIsKingChecked(piece,
-	                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
-	                   StackPush(moves, move);
-	               }
-
-	             if (pEncountered != Board.getSQUARE_EMPTY())
-	               break; /* No point on continuing in this direction if
-	                       * we've hit a piece or the edge of the board.. */
-	           } /* End d loop */
-	         } /* End x loop */
-	       } /* End y loop */
-	     } /* End z loop */
-	    }
-
-	  return moves;
-	}
 	
 //	 * This file is supposed to get over any machine-dependent
 //	 * problems.  Some, like ulimit(2) are fixed in the kernel (usually);
