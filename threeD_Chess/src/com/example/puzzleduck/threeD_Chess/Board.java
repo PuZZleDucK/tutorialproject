@@ -8,7 +8,7 @@ public class Board {
 	private Piece[][] Muster;
 	private int bwToMove;
 	private Piece SQUARE_EMPTY;
-	private Piece SQUARE_INVALID;
+	private static Piece SQUARE_INVALID;
 	private int[] TitleCount;
 
 	public Board(Piece[][][] board, Piece[][] muster, int[] titleCount) {
@@ -57,7 +57,7 @@ public class Board {
 		SQUARE_EMPTY = sQUARE_EMPTY;
 	}
 
-	public Piece getSQUARE_INVALID() {
+	public static Piece getSQUARE_INVALID() {
 		return SQUARE_INVALID;
 	}
 
@@ -71,5 +71,10 @@ public class Board {
 
 	public void setTitleCount(int[] titleCount) {
 		TitleCount = titleCount;
+	}
+
+	public Piece getPieceAt(int i, int j, int k) {
+		// TODO Auto-generated method stub
+		return Board[i][j][k];
 	}
 }

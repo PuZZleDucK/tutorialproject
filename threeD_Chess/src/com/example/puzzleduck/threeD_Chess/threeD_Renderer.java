@@ -361,41 +361,38 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //					                    }
 //					                }
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 
-					                Toast toast;
-					                CharSequence text;
-					        		
 					                switch(keyCode)
 					        		{
-					        			case(20): // 20 down...
+					        			case(KeyEvent.KEYCODE_DPAD_DOWN): // 20 down...
 					        				threeD_Chess.selectedSquare.moveDown();
 					        			break;
 
-					        			case(19): // 19 up...
+					        			case(KeyEvent.KEYCODE_DPAD_UP): // 19 up...
 					        				threeD_Chess.selectedSquare.moveUp();
 					        			break;
 
-					        			case(21): // 21 left...
+					        			case(KeyEvent.KEYCODE_DPAD_LEFT): // 21 left...
 					        				threeD_Chess.selectedSquare.moveLeft();
 					        			break;
 
-					        			case(22): // 22 right....
+					        			case(KeyEvent.KEYCODE_DPAD_RIGHT): // 22 right....
 					        				threeD_Chess.selectedSquare.moveRight();
 					        			break;
+					        			case(KeyEvent.KEYCODE_DPAD_CENTER): // 22 right....
+					        				Piece thisPiece = threeD_Chess.Board.getPieceAt(
+					        						threeD_Chess.selectedSquare.xyzPos.xFile,
+					        						threeD_Chess.selectedSquare.xyzPos.yRank,
+					        						threeD_Chess.selectedSquare.xyzPos.zLevel
+					        				);
+					        				if(thisPiece != null)
+					        				{
+					        					thisPiece.FindAllMoves(threeD_Chess.Board);
+					        					
+					        				}
 
+					        			break;
+					        			
 //					        			case(82): // . 82 menu...
 //					        			break;
 					        			
