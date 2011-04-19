@@ -99,23 +99,45 @@ public class Piece {
 	}
 
 	public void moveDown() {
-		xyzPos.xFile-=1;
+//		xyzPos.zLevel+=1;
 		
+		if(xyzPos.yRank < 7 )
+		{
+			xyzPos.yRank+=1;
+		}else
+		if(xyzPos.zLevel < 2)
+		{
+			xyzPos.yRank = 0;
+			xyzPos.zLevel += 1;
+		}
 	}
 
 	public void moveUp() {
-		xyzPos.xFile+=1;
-		
+
+		if(xyzPos.yRank > 0 )
+		{
+			xyzPos.yRank-=1;
+		}else
+		if(xyzPos.zLevel > 0)
+		{
+			xyzPos.yRank = 7;
+			xyzPos.zLevel -= 1;
+		}
 	}
 
 	public void moveLeft() {
-//		xyzPos.zLevel+=1;
-		xyzPos.yRank+=1;
+		if(xyzPos.xFile > 0 )
+		{
+			xyzPos.xFile-=1;
+		}
 		
 	}
 
 	public void moveRight() {
-		xyzPos.yRank-=1;
+		if(xyzPos.xFile < 7 )
+		{
+			xyzPos.xFile+=1;
+		}
 		
 	}
 

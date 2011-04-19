@@ -96,11 +96,11 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 			};
-		float[] yellowMatrix = new float[] {
+		float[] greenMatrix = new float[] {
 				//   R     G     B     A     X
-			/* R */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
-			/* G */	0.0f, 0.0f, 0.0f, 2.0f, 0.0f,
-			/* B */	0.0f, 0.0f, 0.0f, 2.0f, 0.0f,
+			/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+			/* G */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+			/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 			/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 			};
 
@@ -329,38 +329,108 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				//
 				//	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
 				//
-				//	                if (okStart
-				//	                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
-				//	                    // ready-to-start -> start
-				//	                    doStart();
-				//	                    return true;
-				//	                } else if (mMode == STATE_PAUSE && okStart) {
-				//	                    // paused -> running
-				//	                    unpause();
-				//	                    return true;
-				//	                } else if (mMode == STATE_RUNNING) {
-				//	                    // center/space -> fire
-				//	                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-				//	                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-				//	                        setFiring(true);
-				//	                        return true;
-				//	                        // left/q -> left
-				//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-				//	                            || keyCode == KeyEvent.KEYCODE_Q) {
-				////	                        mRotating = -1;
-				//	                        return true;
-				//	                        // right/w -> right
-				//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-				//	                            || keyCode == KeyEvent.KEYCODE_W) {
-				////	                        mRotating = 1;
-				//	                        return true;
-				//	                        // up -> pause
-				//	                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-				//	                        pause();
-				//	                        return true;
-				//	                    }
-				//	                }
-				//
+//					                if (okStart
+//					                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
+//					                    // ready-to-start -> start
+//					                    doStart();
+//					                    return true;
+//					                } else if (mMode == STATE_PAUSE && okStart) {
+//					                    // paused -> running
+//					                    unpause();
+//					                    return true;
+//					                } else if (mMode == STATE_RUNNING) {
+//					                    // center/space -> fire
+//					                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+//					                            || keyCode == KeyEvent.KEYCODE_SPACE) {
+//					                        setFiring(true);
+//					                        return true;
+//					                        // left/q -> left
+//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+//					                            || keyCode == KeyEvent.KEYCODE_Q) {
+//					                        mRotating = -1;
+//					                        return true;
+//					                        // right/w -> right
+//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+//					                            || keyCode == KeyEvent.KEYCODE_W) {
+//					                        mRotating = 1;
+//					                        return true;
+//					                        // up -> pause
+//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+//					                        pause();
+//					                        return true;
+//					                    }
+//					                }
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+
+					                Toast toast;
+					                CharSequence text;
+					        		
+					                switch(keyCode)
+					        		{
+					        			case(20): // 20 down...
+					        				threeD_Chess.selectedSquare.moveDown();
+					        			break;
+
+					        			case(19): // 19 up...
+					        				threeD_Chess.selectedSquare.moveUp();
+					        			break;
+
+					        			case(21): // 21 left...
+					        				threeD_Chess.selectedSquare.moveLeft();
+					        			break;
+
+					        			case(22): // 22 right....
+					        				threeD_Chess.selectedSquare.moveRight();
+					        			break;
+
+//					        			case(82): // . 82 menu...
+//					        			break;
+					        			
+					        			
+					        			
+					        		}
+					        		
+					        //
+//					        		this.LEVEL_OFFSETx += 0;
+//					        		this.LEVEL_OFFSETy += 2*8;
+////					        		this.LEVEL_SPLIT += 2;
+//					        		this.RANK_OFFSETx += 0;
+//					        		this.RANK_OFFSETy += 2;
+//					        		this.FILE_OFFSETx += 0;
+//					        		this.FILE_OFFSETy += 2;		
+					        		
+
+					        		
+					        		
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				return false;
 			}
 		}
@@ -411,14 +481,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 								x+totalXOffset, 
 								y+totalYOffset);								
 
-						//check for selected square and highlight "yellow"
-						if(thisLevel == threeD_Chess.selectedSquare.xyzPos.zLevel && 
-								thisRank == threeD_Chess.selectedSquare.xyzPos.zLevel &&
-								thisFile == threeD_Chess.selectedSquare.xyzPos.zLevel)
-						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
-						}else
-						{
+						//background
 							if( (thisRank + thisFile) % 2 == 0 )
 							{
 								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
@@ -426,7 +489,15 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							{
 								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
 							}
-						}
+							//selection
+							//check for selected square and highlight "green"
+							if(thisLevel == threeD_Chess.selectedSquare.xyzPos.zLevel && 
+									thisRank == threeD_Chess.selectedSquare.xyzPos.yRank &&
+									thisFile == threeD_Chess.selectedSquare.xyzPos.xFile)
+							{
+								noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
+							}
+							
 						noneImage.draw(canvas);
 
 						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
@@ -813,58 +884,9 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	//	     * Standard override to get key-press events.
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent msg) {
-		
-		
-		
-		
+		//moving to new key handler above.
 //        Context context = getApplicationContext();
 
-        Toast toast;
-        CharSequence text;
-		
-        switch(keyCode)
-		{
-			case(20): // 20 down...
-				threeD_Chess.selectedSquare.moveDown();
-	            	  text = "\n DOWN: ";
-	            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
-	            	  toast.show();
-			break;
-
-			case(19): // 19 up...
-				threeD_Chess.selectedSquare.moveUp();
-	            	  text = "\n DOWN: ";
-	            	  toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
-	            	  toast.show();
-			break;
-
-			case(21): // 21 left...
-				threeD_Chess.selectedSquare.moveLeft();
-			break;
-
-			case(22): // 22 right....
-				threeD_Chess.selectedSquare.moveRight();
-			break;
-
-//			case(82): // . 82 menu...
-//			break;
-			
-			
-			
-		}
-		
-//
-//		this.LEVEL_OFFSETx += 0;
-//		this.LEVEL_OFFSETy += 2*8;
-////		this.LEVEL_SPLIT += 2;
-//		this.RANK_OFFSETx += 0;
-//		this.RANK_OFFSETy += 2;
-//		this.FILE_OFFSETx += 0;
-//		this.FILE_OFFSETy += 2;		
-		
-
-		
-		
 		return thread.doKeyDown(keyCode, msg);
 	}
 
