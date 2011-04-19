@@ -292,7 +292,7 @@ public class Piece {
 		           {
 //			             pEncountered = TraverseDir(this, x, y, z, d);
 			             pEncountered = this.TraverseDir(board, x, y, z, d);
-		             if (IsMoveLegal(this, pEncountered))
+		             if (this.IsMoveLegal(board, pEncountered))
 		               {
 		                 move.xyzAfter = pEncountered.xyzPos;
 		                 move.pVictim = pEncountered;
@@ -317,6 +317,29 @@ public class Piece {
 //		}
 
 		
+	}
+
+	boolean IsMoveLegal(Board board, Piece defender) {
+
+//		private boolean IsMoveLegal(Piece attacker, Piece defender)
+//		{
+			if (defender == board.getSQUARE_EMPTY())
+				return threeD_Chess.TRUE;
+			  if (defender == board.getSQUARE_INVALID())
+			    {
+				  threeD_Chess.n3DcErr = threeD_Chess.E3DcSIMPLE;
+			      return threeD_Chess.FALSE;
+			    }
+			  else if ( this.bwSide == defender.bwSide )
+			    {
+				  threeD_Chess.n3DcErr = threeD_Chess.E3DcBLOCK;
+			      return threeD_Chess.FALSE;
+			    }
+			return true;
+//		}
+		
+		
+//		return false;
 	}
 
 	Piece TraverseDir(Board board, int xDir, int yDir, int zDir, int new_d) {
@@ -405,7 +428,7 @@ public class Piece {
 		
 		
 		
-		return null;
+//		return null;
 	}
 
 	boolean FakeMoveAndIsKingChecked(Board board, int x, int y, int z) {
@@ -430,11 +453,11 @@ public class Piece {
 		    {
 //		      /* We're moving the king, so it's xyzPos may not be accurate.
 //		       * check manually. */
-		      retVal = (SquareThreatened( (this.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, x, y, z ) != NULL) ;
+		      retVal = (SquareThreatened( board, (this.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, x, y, z ) != threeD_Chess.NULL) ;
 		    }
 		  else
 		  {
-			    retVal = IsKingChecked(this.bwSide);
+			    retVal = IsKingChecked(board, this.bwSide);
 		  }
 		  
 		  board.getBoard()[z][y][x] = temp;
@@ -451,4 +474,47 @@ public class Piece {
 		//return false;
 	}
 
+	
+	
+	
+	
+Boolean IsKingChecked(Board board, int bwSide) {
+
+//	 * Return TRUE if the king is checked in the current board layout.
+//	public Boolean IsKingChecked( int bwSide )
+//	{
+	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
+
+	  return ( SquareThreatened(board, (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != threeD_Chess.NULL );
+//	}
+	
+		return null;
+	}
+
+//	/*
+//	 * Returns a pointer to any one piece of the specified colour threatening
+//	 * the mentioned square.  Will return NULL if the square is not
+//	 * threatened.
+//	 */
+
+	public Piece SquareThreatened(Board board, int bwSide, int xFile, int yRank, int zLevel)
+	{
+	  int pieceIdx;
+
+	  for (pieceIdx = 0; pieceIdx < threeD_Chess.PIECES; ++pieceIdx)
+	    {
+	      if (board.getMuster()[bwSide][pieceIdx].bVisible && PieceMayMove( Board.getMuster()[bwSide][pieceIdx], xFile, yRank, zLevel ))
+	        return board.getMuster()[bwSide][pieceIdx];
+	    }
+
+	  return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
