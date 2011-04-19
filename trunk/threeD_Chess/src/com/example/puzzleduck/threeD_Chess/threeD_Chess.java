@@ -199,7 +199,7 @@ public class threeD_Chess extends Activity {
 	private static int PROMOTE = 4;
 	
 	private static int TITLES = 11;
-	private static int PIECES = 48;
+	static int PIECES = 48;
 	private static int COLOURS = 2;
 	
 	public static int FILES = 8;
@@ -218,7 +218,7 @@ public class threeD_Chess extends Activity {
 	private String winString = "";
 	private Random rng = new Random();
 	
-	private int n3DcErr;
+	static int n3DcErr;
 	
 	public static Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
 	public static Piece selectedSquare = new Piece(-1,0,0,1,-1);
@@ -260,22 +260,7 @@ public class threeD_Chess extends Activity {
 	}
 
 //	/* This function interprets the result of TraverseDir(piece...) */
-	private boolean IsMoveLegal(Piece attacker, Piece defender)
-	{
-		if (defender == Board.getSQUARE_EMPTY())
-			return TRUE;
-		  if (defender == Board.getSQUARE_INVALID())
-		    {
-		      n3DcErr = E3DcSIMPLE;
-		      return FALSE;
-		    }
-		  else if ( attacker.bwSide == defender.bwSide )
-		    {
-		      n3DcErr = E3DcBLOCK;
-		      return FALSE;
-		    }
-		return true;
-	}
+
 
 	/* This function sets up the board*/
 	private void Init3Dc()
@@ -450,7 +435,7 @@ public class threeD_Chess extends Activity {
               else /* Move is legit: do it */
                 {
                   retry = FALSE;
-                  PrintMove( automove );
+//                  PrintMove( automove );
 
                   Board.setBwToMove(((computer == Piece.WHITE) ? Piece.BLACK : Piece.WHITE));
                 } /* End 'found computer move' */
@@ -592,89 +577,89 @@ public boolean IsGamePaused()
 	//    }
 	}
 
-
-	public void PrintMove( Move move )
-{
-	  String moveString = null;
-	  String printMoveString;
-
-  if (move != null)
-  {
-	  Piece piece, enemy;
-    Coord pos;
-
-  piece = Board.getBoard()[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
-
-if (piece != null)
-{
-
-  enemy = Board.getMuster()[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
-  pos = enemy.xyzPos;
-
-  moveString = "Move: " + piece.nName + " [" 
-  + move.xyzBefore.zLevel + ","
-  + move.xyzBefore.yRank + ","
-  + move.xyzBefore.xFile + "]->["
-  + move.xyzAfter.zLevel + ","
-  + move.xyzAfter.zLevel + ","
-  + move.xyzAfter.zLevel + "]"
-  + (IsKingChecked( piece.bwSide ) ? " check!" : "");
-  
-//DEBUG:
-mthreeD_Renderer.setDebugText(moveString);
-  
-//  String checkString;
-//  if(IsKingChecked( piece.bwSide ))
-//	  {
-//	  checkString = " check!"; 
-//	  }else
-//	  {
-//		  checkString =  "";
-//	  }
-
-
-  //no audio alerts, maybe vibe.
-//      /* Display the move: beep if
-//       *  1) the computer or
-//       *  2) the other player in a network game
-//       *     moved or if
-//       *  3) the move resulted in a check
-//       * This is now changed so that there's no beep when the computer
-//       * moves 'cos it's so fast. */
-//      Err3Dc( firstGFX, moveString,
-//             (/* (Computer() == bwToMove) || */
-//              ( (secondGFX != NULL) && (bwToMove == BLACK) ) ||
-//              ( IsKingChecked( piece->bwSide ))) ?
-//             TRUE : FALSE );
-
-Err3Dc( moveString,(/* (Computer() == bwToMove) || */
- ( (Board.getBwToMove() == Piece.BLACK) ) ||
- ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
-
-  
-  //      if ( secondGFX != NULL )
-//        {
-//          Err3Dc( secondGFX, moveString, (bwToMove == WHITE) ?
-//                 TRUE : FALSE );
-//        }
 //
-//      /* I think that this isn't allowed becase the string is
-//       * still needed by the label widget but it hasn't caused
-//       * any problems so far.. */
-//      free(moveString);
+//	public void PrintMove( Move move )
+//{
+//	  String moveString = null;
+//	  String printMoveString;
+//
+//  if (move != null)
+//  {
+//	  Piece piece, enemy;
+//    Coord pos;
+//
+//  piece = Board.getBoard()[ move.xyzAfter.zLevel] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+//
+//if (piece != null)
+//{
+//
+//  enemy = Board.getMuster()[(piece.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE] [ MusterIdx(Piece.king, 0) ];
+//  pos = enemy.xyzPos;
+//
+//  moveString = "Move: " + piece.nName + " [" 
+//  + move.xyzBefore.zLevel + ","
+//  + move.xyzBefore.yRank + ","
+//  + move.xyzBefore.xFile + "]->["
+//  + move.xyzAfter.zLevel + ","
+//  + move.xyzAfter.zLevel + ","
+//  + move.xyzAfter.zLevel + "]"
+//  + (IsKingChecked(Board,  piece.bwSide ) ? " check!" : "");
+//  
+////DEBUG:
+//mthreeD_Renderer.setDebugText(moveString);
+//  
+////  String checkString;
+////  if(IsKingChecked( piece.bwSide ))
+////	  {
+////	  checkString = " check!"; 
+////	  }else
+////	  {
+////		  checkString =  "";
+////	  }
+//
+//
+//  //no audio alerts, maybe vibe.
+////      /* Display the move: beep if
+////       *  1) the computer or
+////       *  2) the other player in a network game
+////       *     moved or if
+////       *  3) the move resulted in a check
+////       * This is now changed so that there's no beep when the computer
+////       * moves 'cos it's so fast. */
+////      Err3Dc( firstGFX, moveString,
+////             (/* (Computer() == bwToMove) || */
+////              ( (secondGFX != NULL) && (bwToMove == BLACK) ) ||
+////              ( IsKingChecked( piece->bwSide ))) ?
+////             TRUE : FALSE );
+//
+//Err3Dc( moveString,(/* (Computer() == bwToMove) || */
+// ( (Board.getBwToMove() == Piece.BLACK) ) ||
+// ( IsKingChecked( piece.bwSide ))) ? TRUE : FALSE );
+//
+//  
+//  //      if ( secondGFX != NULL )
+////        {
+////          Err3Dc( secondGFX, moveString, (bwToMove == WHITE) ?
+////                 TRUE : FALSE );
+////        }
+////
+////      /* I think that this isn't allowed becase the string is
+////       * still needed by the label widget but it hasn't caused
+////       * any problems so far.. */
+////      free(moveString);
+////    }
+////  else
+////    {
+////      /* Print something, even if out of memory.. */
+////      if ( (Computer() == bwToMove) ||
+////          ( (secondGFX != NULL) && (bwToMove == BLACK)))
+////        Err3Dc(firstGFX, "Opponent has moved", TRUE);
+////      else if ( (secondGFX != NULL) && (bwToMove == WHITE) )
+////        Err3Dc(secondGFX, "Opponent has moved", TRUE);
 //    }
-//  else
-//    {
-//      /* Print something, even if out of memory.. */
-//      if ( (Computer() == bwToMove) ||
-//          ( (secondGFX != NULL) && (bwToMove == BLACK)))
-//        Err3Dc(firstGFX, "Opponent has moved", TRUE);
-//      else if ( (secondGFX != NULL) && (bwToMove == WHITE) )
-//        Err3Dc(secondGFX, "Opponent has moved", TRUE);
-    }
-  }
-}
-	
+//  }
+//}
+//	
 	
 	public Piece PieceNew(int nType,
     int x, int y, int z,
@@ -845,7 +830,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean BishopMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -871,7 +856,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean KnightMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -922,7 +907,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
 		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean PrinceMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -980,7 +965,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0,
 		                            MAX(ABS(xDiff), ABS(yDiff)));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean AbbeyMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -1010,7 +995,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean CannonMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -1064,7 +1049,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
 		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
-		  return IsMoveLegal(piece, pDestSquare);
+		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  private boolean PawnMayMove(Piece piece, int xNew, int yNew, int zNew)
@@ -2224,24 +2209,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 	public static final int UINT_MAX = 99;
 	public static final int INT_MAX = 99;
 	
-//	/*
-//	 * Returns a pointer to any one piece of the specified colour threatening
-//	 * the mentioned square.  Will return NULL if the square is not
-//	 * threatened.
-//	 */
 
-	public Piece SquareThreatened(int bwSide, int xFile, int yRank, int zLevel)
-	{
-	  int pieceIdx;
-
-	  for (pieceIdx = 0; pieceIdx < PIECES; ++pieceIdx)
-	    {
-	      if (Board.getMuster()[bwSide][pieceIdx].bVisible && PieceMayMove( Board.getMuster()[bwSide][pieceIdx], xFile, yRank, zLevel ))
-	        return Board.getMuster()[bwSide][pieceIdx];
-	    }
-
-	  return null;
-	}
 //	/* Go dist in given direction.  Direction is positive, negative, 0,
 //	 * with obvious meanings (think of the axes).
 //	 * Return SQUARE_EMPTY, SQUARE_INVALID, or a pointer to the piece
@@ -2257,13 +2225,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 //	 */
 
 
-//	 * Return TRUE if the king is checked in the current board layout.
-	public Boolean IsKingChecked( int bwSide )
-	{
-	  Coord xyz = Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
 
-	  return ( SquareThreatened( (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != NULL );
-	}
 
 
 	
@@ -3326,12 +3288,12 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 
 	  /* Rate check */
 	  xyzPos = (Board.getMuster()[ bwEnemy ][ MusterIdx( Piece.king, 0 )]).xyzPos;
-	  if ( SquareThreatened( bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
+	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating += values[ Piece.king ];
 
 	  /* Rate danger: if there's a chance of being captured in the new pos. */
 	  xyzPos = move.xyzAfter;
-	  if ( SquareThreatened( bwEnemy, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
+	  if ( move.pVictim.SquareThreatened(Board, bwEnemy, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating -= (values[ moving.nName ] /2);
 
 	  /* Undo the fake */
@@ -3351,7 +3313,7 @@ Err3Dc( moveString,(/* (Computer() == bwToMove) || */
 	       * an authorative check and needs to be enhanced). */
 	      for ( i = 0; i < PIECES; ++i )
 	        {
-	          if ( Board.getMuster()[ bwSide ][ i ].bVisible && SquareThreatened( bwEnemy,
+	          if ( Board.getMuster()[ bwSide ][ i ].bVisible && move.pVictim.SquareThreatened(Board, bwEnemy,
 	        		  	Board.getMuster()[ bwSide ][ i ].xyzPos.xFile,
                         Board.getMuster()[ bwSide ][ i ].xyzPos.yRank,
                         Board.getMuster()[ bwSide ][ i ].xyzPos.zLevel ) ==  move.pVictim )
@@ -3536,12 +3498,12 @@ int XawCR_RESIZE = 4;
 
 //	extern int n3DcErr;
 
-	private int E3DcSIMPLE	= 0;
+	static int E3DcSIMPLE	= 0;
 	private int E3DcLEVEL	= 1;
 	private int E3DcCHECK	= 2;
 	private int E3DcDIST	= 3;
 	private int E3DcINVIS	= 4;
-	private int E3DcBLOCK	= 5;
+	static int E3DcBLOCK	= 5;
 	private int E3DcMOVED	= 6;
 
 //	 * All strings are designed to be printed thus:
