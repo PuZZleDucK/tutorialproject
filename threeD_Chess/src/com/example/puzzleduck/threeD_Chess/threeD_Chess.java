@@ -325,7 +325,7 @@ public class threeD_Chess extends Activity {
 						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
 						Context context = getApplicationContext();
 
-						Board.getMuster()[thisColor][MusterIdx(thisTitle, count[thisColor][thisTitle])] = temp;
+						Board.getMuster()[thisColor][Piece.MusterIdx(Board, thisTitle, count[thisColor][thisTitle])] = temp;
 						Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
 						temp = null;
 						(count[thisColor][thisTitle])++;
@@ -463,28 +463,6 @@ public class threeD_Chess extends Activity {
 	
 
 ///* Utility functions */
-	private int MusterIdx(int title, int thisCount)
-	{
-	  int i, count = 0;
-		
-//	  for (i = 0; i != name && i < TITLES; ++i)
-		  for (i = 0; i != title && i < TITLES; ++i)
-		    count += Board.getTitleCount()[i];
-		
-		  if (i == TITLES)
-		    return 47; /* 47 is a hack; it is a legal array index that is only
-		                * valid for pawns */
-		
-//		  if (nth < titleCount[name])
-			  if (thisCount < Board.getTitleCount()[title])
-		    {
-			      return count + thisCount;
-//			      return count + nth;
-		    }
-		  /* else */
-		  return 47;
-	}
-
 
 public String Piece2String( Piece piece )
 {
@@ -533,14 +511,14 @@ public boolean IsGamePaused()
      	  Toast toast = Toast.makeText(context, text, duration);
      	  toast.show();
 		   
-		   blackKingVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.king, 0)].bVisible;
-		   whiteKingVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.king, 0)].bVisible;
+		   blackKingVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.king, 0)].bVisible;
+		   whiteKingVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.king, 0)].bVisible;
      	  
-		   blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.prince, 0)].bVisible;
-		   whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.prince, 0)].bVisible;
+		   blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.prince, 0)].bVisible;
+		   whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.prince, 0)].bVisible;
 		   
-		   blackSecondPrinceVisible = Board.getMuster()[Piece.BLACK][MusterIdx(Piece.prince, 1)].bVisible;
-		   whiteSecondPrinceVisible = Board.getMuster()[Piece.WHITE][MusterIdx(Piece.prince, 1)].bVisible;
+		   blackSecondPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.prince, 1)].bVisible;
+		   whiteSecondPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.prince, 1)].bVisible;
 
 		   if ((!whiteKingVisible || 
 				   (!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
@@ -680,35 +658,6 @@ public boolean IsGamePaused()
 	}
 	
 
-	private boolean PieceMayMove(Piece piece, int xNew, int yNew, int zNew)
-	{
-		  boolean retval;
-
-		  if (!piece.bVisible)
-	    {
-	      n3DcErr = E3DcINVIS;
-	      return FALSE;
-	    }
-
-//	  /* Do bits which are the same for all pieces first */
-	  if (xNew == piece.xyzPos.xFile &&
-	      yNew == piece.xyzPos.yRank &&
-	      zNew == piece.xyzPos.zLevel)
-	    {
-	      n3DcErr = E3DcSIMPLE;
-	      return FALSE;//can't move to same spot
-	    }
-
-	  if ((Board.getBoard()[zNew][yNew][xNew] != NULL) &&
-	      (Board.getBoard()[zNew][yNew][xNew].bVisible == TRUE) &&
-	      (Board.getBoard()[zNew][yNew][xNew].bwSide == piece.bwSide))
-	    {
-	      n3DcErr = E3DcBLOCK;
-	      return FALSE;  /* Can't take a piece on your team */
-	    }
-      	return FALSE;  /* if all else fails... Fail!*/
-
-	}
 	  
 //		/*
 //		 * Here down are the specific piece-movement functions
@@ -1217,7 +1166,7 @@ public boolean IsGamePaused()
 //	  Boolean moveType; /* Not quite Boolean... */
 	  boolean moveType; /* Not quite Boolean... */
 
-	  if (!(moveType = PieceMayMove(piece, xNew, yNew, zNew)))
+	  if (!(moveType = piece.PieceMayMove(Board, xNew, yNew, zNew)))
 	    return FALSE;
 
 //	   * Keep record of move
@@ -2067,7 +2016,7 @@ public boolean IsGamePaused()
 	      count = 0;
 	      for (i = 0; i < Board.getTitleCount()[nType]; ++i)
 	        {
-	          if (Board.getMuster()[bwSide][MusterIdx(nType, i)].bVisible)
+	          if (Board.getMuster()[bwSide][Piece.MusterIdx(Board, nType, i)].bVisible)
 	            ++count;
 	        }
 //
@@ -3258,7 +3207,7 @@ public boolean IsGamePaused()
 	  bwEnemy = ( bwSide == Piece.WHITE ) ? Piece.BLACK : Piece.WHITE;
 
 	  /* Rate taking king */
-	  if (move.pVictim == Board.getMuster()[ bwEnemy ][ MusterIdx( Piece.king, 0 )])
+	  if (move.pVictim == Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )])
 	    return INT_MAX;
 
 //	  /* Fake the move for simple lookahead */
@@ -3274,7 +3223,7 @@ public boolean IsGamePaused()
 //	   * inside the move faked below but that would mean nasty code
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
-	  if ( Board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
+	  if ( Board.getMuster()[ bwSide ][ Piece.MusterIdx(Board, Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
 		      move.xyzAfter.xFile,
 		      move.xyzAfter.yRank,
 		      move.xyzAfter.zLevel ))
@@ -3287,7 +3236,7 @@ public boolean IsGamePaused()
 	    storing.bVisible = FALSE;
 
 	  /* Rate check */
-	  xyzPos = (Board.getMuster()[ bwEnemy ][ MusterIdx( Piece.king, 0 )]).xyzPos;
+	  xyzPos = (Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )]).xyzPos;
 	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
 		  rating += values[ Piece.king ];
 
@@ -3464,6 +3413,17 @@ public boolean IsGamePaused()
 //	 resizeCallback	     Callback		Pointer		NULL
 //	*/
 
+public static void setTITLES(int tITLES) {
+		TITLES = tITLES;
+	}
+
+
+
+	public static int getTITLES() {
+		return TITLES;
+	}
+
+
 //	extern WidgetClass drawingAreaWidgetClass;
 //
 //	typedef struct _DrawingAreaClassRec *DrawingAreaWidgetClass;
@@ -3502,7 +3462,7 @@ int XawCR_RESIZE = 4;
 	private int E3DcLEVEL	= 1;
 	private int E3DcCHECK	= 2;
 	private int E3DcDIST	= 3;
-	private int E3DcINVIS	= 4;
+	static int E3DcINVIS	= 4;
 	static int E3DcBLOCK	= 5;
 	private int E3DcMOVED	= 6;
 
