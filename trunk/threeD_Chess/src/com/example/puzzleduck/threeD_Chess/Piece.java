@@ -483,12 +483,13 @@ Boolean IsKingChecked(Board board, int bwSide) {
 //	 * Return TRUE if the king is checked in the current board layout.
 //	public Boolean IsKingChecked( int bwSide )
 //	{
-	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx( Piece.king, 0 ) ].xyzPos;
+//	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
+	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
 
 	  return ( SquareThreatened(board, (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != threeD_Chess.NULL );
 //	}
 	
-		return null;
+//		return null;
 	}
 
 //	/*
@@ -497,17 +498,85 @@ Boolean IsKingChecked(Board board, int bwSide) {
 //	 * threatened.
 //	 */
 
+	static int MusterIdx(Board board, int title, int thisCount) {
+//		private int MusterIdx(int title, int thisCount)
+//		{
+		  int i, count = 0;
+//		  for (i = 0; i != name && i < TITLES; ++i)
+			  for (i = 0; i != title && i < threeD_Chess.getTITLES(); ++i)
+			    count += board.getTitleCount()[i];
+			
+			  if (i == threeD_Chess.getTITLES())
+			    return 47; /* 47 is a hack; it is a legal array index that is only
+			                * valid for pawns */
+			
+//			  if (nth < titleCount[name])
+				  if (thisCount < board.getTitleCount()[title])
+			    {
+				      return count + thisCount;
+//				      return count + nth;
+			    }
+			  /* else */
+			  return 47;
+//		}
+//		
+//		
+//		
+//	return 0;
+}
+
 	public Piece SquareThreatened(Board board, int bwSide, int xFile, int yRank, int zLevel)
 	{
 	  int pieceIdx;
 
 	  for (pieceIdx = 0; pieceIdx < threeD_Chess.PIECES; ++pieceIdx)
 	    {
-	      if (board.getMuster()[bwSide][pieceIdx].bVisible && PieceMayMove( Board.getMuster()[bwSide][pieceIdx], xFile, yRank, zLevel ))
+	      if (board.getMuster()[bwSide][pieceIdx].bVisible && board.getMuster()[bwSide][pieceIdx].PieceMayMove( board, xFile, yRank, zLevel ))
 	        return board.getMuster()[bwSide][pieceIdx];
 	    }
 
 	  return null;
+	}
+
+	boolean PieceMayMove(Board board, int xNew, int yNew, int zNew) {
+
+		
+//		
+//		private boolean PieceMayMove(Piece piece, int xNew, int yNew, int zNew)
+//		{
+			  boolean retval;
+
+			  if (!this.bVisible)
+		    {
+				  threeD_Chess.n3DcErr = threeD_Chess.E3DcINVIS;
+		      return threeD_Chess.FALSE;
+		    }
+
+//		  /* Do bits which are the same for all pieces first */
+		  if (xNew == this.xyzPos.xFile &&
+		      yNew == this.xyzPos.yRank &&
+		      zNew == this.xyzPos.zLevel)
+		    {
+			  threeD_Chess.n3DcErr = threeD_Chess.E3DcSIMPLE;
+		      return threeD_Chess.FALSE;//can't move to same spot
+		    }
+
+		  if ((board.getBoard()[zNew][yNew][xNew] != threeD_Chess.NULL) &&
+		      (board.getBoard()[zNew][yNew][xNew].bVisible == threeD_Chess.TRUE) &&
+		      (board.getBoard()[zNew][yNew][xNew].bwSide == this.bwSide))
+		    {
+			  threeD_Chess.n3DcErr = threeD_Chess.E3DcBLOCK;
+		      return threeD_Chess.FALSE;  /* Can't take a piece on your team */
+		    }
+	      	return threeD_Chess.FALSE;  /* if all else fails... Fail!*/
+
+//		}
+//
+//		
+//		
+//		
+//		
+//		return false;
 	}
 	
 	
