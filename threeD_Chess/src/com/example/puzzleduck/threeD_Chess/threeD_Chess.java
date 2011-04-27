@@ -318,6 +318,7 @@ public class threeD_Chess extends Activity {
 				Piece temp = null;
 				for (thisFile = 0; thisFile < FILES; ++thisFile)
 				{
+					Board.targets[thisLevel][thisRank][thisFile] = false;
 					thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 					if(thisTitle != Piece.none)
 					{
