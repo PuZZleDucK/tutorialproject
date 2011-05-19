@@ -128,7 +128,7 @@ public class Piece {
 			int CURZ = (this.xyzPos.zLevel);
 
 //			  moves = threeD_Chess.StackNew();
-			  moves = new Stack();
+			  moves = new Stack<Move>();
 //		  if (moves == null)
 //		  {
 //		    return null;

@@ -1208,7 +1208,7 @@ public boolean IsGamePaused()
 
 //	  StackPush(MoveStack, thisMove);
 //	  StackPush(Board.getMoveStack(), thisMove); 
-	  
+	  currentPossibleMoves.push(thisMove);
 	  
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
