@@ -30,6 +30,11 @@ import com.example.puzzleduck.threeD_Chess.threeD_Renderer.threeD_Thread;
 
 public class threeD_Chess extends Activity {
 
+//	stackList bestMoves = new stackList();
+//	private static Stack aiBestMoves = new Stack();//might use stack list on second thoughts.
+	private static Stack currentPossibleMoves = new Stack();
+	private static Stack aiMoves = new Stack();
+
     private static final int MENU_HINT = 1;
     private static final int MENU_UNDO = 2;
     private static final int MENU_DIFFICULTY = 3;
@@ -333,7 +338,7 @@ public class threeD_Chess extends Activity {
 				}
 			}
 		}
-		StackNew();
+//		StackNew();
 		n3DcErr = 0;
 
 		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
@@ -1202,7 +1207,9 @@ public boolean IsGamePaused()
 //	    }
 
 //	  StackPush(MoveStack, thisMove);
-	  StackPush(Board.getMoveStack(), thisMove); 
+//	  StackPush(Board.getMoveStack(), thisMove); 
+	  
+	  
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
@@ -1399,7 +1406,7 @@ public boolean IsGamePaused()
 	
 //	 * The move stack for 3Dc.
 //	    Copyright (C) 1995  Paul Hicks
-	public Stack stack;		  
+//	public Stack stack;		  
 		  
 //stack has its own class... but may only need wrappers???
 //StackNew(void)
@@ -1413,11 +1420,11 @@ public boolean IsGamePaused()
 //s->nSize = 0;
 //return s;
 //}
-	public static Stack StackNew()
-	{
-//		stack = new Stack();
-		return new Stack();
-	}
+//	public static Stack StackNew()
+//	{
+////		stack = new Stack();
+//		return new Stack();
+//	}
 
 
 
@@ -1429,59 +1436,59 @@ public boolean IsGamePaused()
 //nop();
 //
 //free(s);
-		stack = null;
-		return;
+		aiMoves = null;
+//		return;
 	}
 
 	
-	
-//Global void
-	//StackPush(stack *s, const Move *newMove)
-	static void StackPush(Stack targetStack, Move newMove)
-	{
-		//struct stack_el *newEl;
-		Stack_el newEl = new Stack_el();
-
-//newEl = (struct stack_el *)malloc(sizeof(struct stack_el));
-//if (!CHECK( newEl != NULL ))
-//return;
-		//newEl->mvt = (Move *)malloc(sizeof(Move));
-//if (!CHECK( newEl->mvt != NULL ))
-//return;
-//memcpy(newEl->mvt, newMove, sizeof(Move));
-		newEl.mvt = newMove;
-		//newEl->below = s->top;
-		newEl.below = (Stack_el)targetStack.firstElement();
-//		newEl.below = stack.firstElement();
-//s->top = newEl;
-//s->nSize++;
-		targetStack.add(newEl);
-		//return;
-	}
+//		
+//	//Global void
+//		//StackPush(stack *s, const Move *newMove)
+//		static void StackPush(Stack targetStack, Move newMove)
+//		{
+//			//struct stack_el *newEl;
+//			Stack_el newEl = new Stack_el();
+//	
+//	//newEl = (struct stack_el *)malloc(sizeof(struct stack_el));
+//	//if (!CHECK( newEl != NULL ))
+//	//return;
+//			//newEl->mvt = (Move *)malloc(sizeof(Move));
+//	//if (!CHECK( newEl->mvt != NULL ))
+//	//return;
+//	//memcpy(newEl->mvt, newMove, sizeof(Move));
+//			newEl.mvt = newMove;
+//			//newEl->below = s->top;
+//			newEl.below = (Stack_el)targetStack.firstElement();
+//	//		newEl.below = stack.firstElement();
+//	//s->top = newEl;
+//	//s->nSize++;
+//			targetStack.add(newEl);
+//			//return;
+//		}
 
 	//Global Move *
 	//StackPop(stack *s)
-	public Move StackPop()
-	{
-		Move oldMove;
-//struct stack_el *oldEl;
-
-//if (s->top == NULL)
-//return NULL;
-		if(stack.empty())
-		{
-			return null;
-		}
-		
-		//oldMove = s->top->mvt;
-		oldMove = ((Stack_el)stack.pop()).mvt;
-//oldEl = s->top;
-//s->top = s->top->below;
-//s->nSize--;
-//free(oldEl);
+//	public Move StackPop()
+//	{
+//		Move oldMove;
+////struct stack_el *oldEl;
 //
-		return oldMove;
-	}
+////if (s->top == NULL)
+////return NULL;
+//		if(stack.empty())
+//		{
+//			return null;
+//		}
+//		
+//		//oldMove = s->top->mvt;
+//		oldMove = ((Stack_el)stack.pop()).mvt;
+////oldEl = s->top;
+////s->top = s->top->below;
+////s->nSize--;
+////free(oldEl);
+////
+//		return oldMove;
+//	}
 
 ///* Don't delete returned value; it's still on the stack! */
 	//Global Move *
@@ -1491,8 +1498,9 @@ public boolean IsGamePaused()
 //struct stack_el *oldEl;
 
 		//if (numMoves >= s->nSize)
-		//return NULL;
-		if (numMoves >= stack.size())
+//		//return NULL;
+//		if (numMoves >= stack.size())
+		if (numMoves >= aiMoves.size())
 		{
 			return null;
 		}
@@ -1500,7 +1508,7 @@ public boolean IsGamePaused()
 //for (oldEl = s->top; numMoves > 0; --numMoves)
 //oldEl = oldEl->below;
 
-		return (Move)stack.elementAt(numMoves);
+		return (Move)aiMoves.elementAt(numMoves);
 //return oldEl->mvt;
 	}
 
@@ -3023,6 +3031,7 @@ public boolean IsGamePaused()
 	};
 	
 	stackList bestMoves = new stackList();
+
 	public int BEST_STACKS = 5;
 	public int INT_MIN = -99;
 	
@@ -3039,6 +3048,8 @@ public boolean IsGamePaused()
 	  {
 //	    nop();
 	  }
+	  
+	  
 
 	  if ( i == BEST_STACKS )
 	    {
@@ -3048,7 +3059,11 @@ public boolean IsGamePaused()
 
 	  if ( bestMoves.ratings[i] == value )
 	    {
-	      StackPush( Board.getMoveStack(), move );
+//	      StackPush( Board.getMoveStack(), move );
+	      //different stack I'm quite sure... this one for AI
+	      aiMoves.push(move);
+	      
+	      
 	      move = null;
 	    }
 	  else
@@ -3069,8 +3084,9 @@ public boolean IsGamePaused()
 
 //	      /* Create the new stack */
 //	      bestMoves.stacks[i] = StackNew();
-	      bestMoves.stacks[i] = StackNew();
-	      StackPush( Board.getMoveStack(), move );
+	      bestMoves.stacks[i] = new Stack();
+//	      StackPush( Board.getMoveStack(), move );
+	      aiMoves.push(move);
 	      bestMoves.ratings[i] = value;
 	    }
 	}
@@ -3149,7 +3165,8 @@ public boolean IsGamePaused()
 	  if (randMove == 0)
 	    {
 //	      /* Don't free the move: it's "ret" and still in use! */
-	      StackPop( );
+//	      StackPop( );
+	      aiMoves.pop();
 //	      /* If there is only the one move then we remove the stack */
 	      if ( bestMoves.stacks[randStack].size() == 0 )
 	        {
@@ -3319,7 +3336,8 @@ public boolean IsGamePaused()
 //	          StackDump( moves );
 //	#         endif /* DEBUG */
 
-	          while ( (thisMove = StackPop( )) != null )
+//	          while ( (thisMove = StackPop( )) != null )
+	          while ( (thisMove = (Move)aiMoves.pop()) != null )
 	            {
 	              PushMove( thisMove, RateMove( thisMove, bwSide ) );
 	            }
