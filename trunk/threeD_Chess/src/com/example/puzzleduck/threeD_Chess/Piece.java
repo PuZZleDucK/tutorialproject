@@ -24,7 +24,6 @@ public class Piece {
 	public int nName;
 	public boolean bVisible;
 	public boolean bHasMoved;/* For king, rook, pawn only */
-//	public boolean target;
 
 	static int BLACK = 1;
 	static int WHITE = 0;
@@ -59,7 +58,7 @@ public class Piece {
 		bwSide = side;
 		bVisible = true;
 		bHasMoved = false;
-//		target = false;
+
 	}
 
 	public int getColor() {
@@ -119,11 +118,6 @@ public class Piece {
 //		Stack FindAllMoves(Piece piece)
 //		{
 
-		
-		
-		
-		
-		
 		Stack moves;
 		  Move move = new Move();
 		  int bwEnemy;
@@ -157,190 +151,169 @@ public class Piece {
 		                continue;
 		              if ((board.getBoard()[CURZ][y][x] == threeD_Chess.NULL) || (board.getBoard()[CURZ][y][x].bwSide == bwEnemy))
 		                {
-		            	  move.xyzAfter = new Coord(x, y, CURZ);
-//		                  move.xyzAfter.xFile = x;
-//		                  move.xyzAfter.yRank = y;
-//		                  move.xyzAfter.zLevel = CURZ;
+		                  move.xyzAfter.xFile = x;
+		                  move.xyzAfter.yRank = y;
+		                  move.xyzAfter.zLevel = CURZ;
 		                  move.pVictim = board.getBoard()[CURZ][y][x];
 		                  move.nHadMoved = this.bHasMoved;
 
 //		                  if (!FakeMoveAndIsKingChecked( this, x, y, CURZ ))
 			              if (!this.FakeMoveAndIsKingChecked( board, x, y, CURZ ))
 		                  {
-//			            	  threeD_Chess.StackPush(moves, move);
+			            	  threeD_Chess.StackPush(moves, move);
 		                  }
 		                } /* End valid move */
 		            } /* End x loop */
 		        } /* End y loop */
 		    } /* End knight */
-//		  else if (this.nName == Piece.cannon)
-//		    {
-//		      for (z = 0; z < threeD_Chess.LEVELS; z++)
-//		        {
-//		          if (z == CURZ)
-//		            continue;
-//
-//		          for (y = threeD_Chess.MAX( 0, CURY -3 ); y < threeD_Chess.MIN( threeD_Chess.RANKS, CURY +4 ); y++)
-//		            {
-//		              if (y == CURY)
-//		                continue;
-//
-//		              for (x = threeD_Chess.MAX( 0, CURX -3 ); x < threeD_Chess.MIN( threeD_Chess.FILES, CURX +4 ); x++)
-//		                {
-//		                  if (x == CURX)
-//		                    continue;
-//
-//		                  if ((threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURY-y)) ||
-//		                      (threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURZ-z)) ||
-//		                      (threeD_Chess.ABS(CURY-y) == threeD_Chess.ABS(CURZ-z)))
-//		                    continue;
-//
-//		                  if ((board.getBoard()[z][y][x] == threeD_Chess.NULL) || (board.getBoard()[z][y][x].bwSide == bwEnemy))
-//		                    {
-//		                      move.xyzAfter.xFile = x;
-//		                      move.xyzAfter.yRank = y;
-//		                      move.xyzAfter.zLevel = z;
-//		                      move.pVictim = board.getBoard()[z][y][x];
-//		                      move.nHadMoved = this.bHasMoved;
-//
-//		                      if (!this.FakeMoveAndIsKingChecked( board, x, y, z ))
-//		                      {
-//		                    	  threeD_Chess.StackPush(moves, move);
-//		                      }
-//		                    } /* End valid move */
-//		                } /* End x loop */
-//		            } /* End y loop */
-//		        } /* End z loop */
-//		    } /* End cannon */
-//		  else if (this.nName == Piece.pawn) /* Don't bother searching for en passant */
-//		    {
-//		      y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
-//
-//		      for (x = threeD_Chess.MAX(0, CURX-1); x < threeD_Chess.MIN(threeD_Chess.FILES, CURX+2); ++x)
-//		        {
-//		          /* Due to the complexity of the conditional this time,
-//		           * I've opted for aborting when illegal instead of
-//		           * proceeding when legal. */
-//		          if ((x == CURX) && (board.getBoard()[CURZ][CURY+y][CURX] != threeD_Chess.NULL))
-//		            continue;
-//
-//		          if ( (x != CURX) && 
-//		        		  ((board.getBoard()[CURZ][CURY + y][x] == threeD_Chess.NULL) || ((board.getBoard()[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
-//		          {
-//		            continue;
-//		          }
-//		          move.xyzAfter.xFile = x;
-//		          move.xyzAfter.yRank = CURY + y;
-//		          move.xyzAfter.zLevel = CURZ;
-//		          move.pVictim = board.getBoard()[CURZ][CURY + y][x];
-//		          move.nHadMoved = this.bHasMoved;
-//
-//		          if (!this.FakeMoveAndIsKingChecked(board, x, CURY+y, CURZ))
-//		          {
-//		        	  threeD_Chess.StackPush(moves, move);
-//		          }
-////		          /* This next conditional is for the two-forward move:
-////		           * it only happens when the previous attempt was the one-forward
-////		           * move and makes assumptions based on that fact. */
-//		          if ( (x==CURX) && (this.bHasMoved == threeD_Chess.FALSE) && (board.getBoard()[CURZ][CURY + y+y][CURX] == threeD_Chess.NULL) )
-//		            {
-//		              move.xyzAfter.yRank += y;
-//		              if (!this.FakeMoveAndIsKingChecked(board, CURX, CURY+y+y, CURZ))
-//		            	  threeD_Chess.StackPush(moves, move);
-//		            }
-//		        } /* End x loop */
-//		    } /* End pawn */
-//		  else
-//		    {
-//		      int d, dist;
-//		      Piece pEncountered;
-//
-//		      /*
-//		       * The king and prince can only move one square;
-//		       * all others can move MAX(FILES,RANKS)-1.
-//		       * For a regular board, this is 7.  (Not 8: If you moved 8
-//		       * in any direction you would be off the edge of the board)
-//		       */
-//		      if ((this.nName == Piece.king) || (this.nName == Piece.prince))
-//		        dist = 1;
-//		      else
-//		        dist = threeD_Chess.MAX(threeD_Chess.FILES, threeD_Chess.RANKS) -1;
-//
-//		      for (z = -1; z <= 1; ++z)
-//		      {
-//		       /*
-//		        * Cater for pieces that can't change level.
-//		        */
-//			       if (((this.nName == Piece.prince) || (this.nName == Piece.princess) || (this.nName == Piece.abbey)
-//			    		   || (this.nName == Piece.galley)) && (z != 0))
-//		         continue;
-//
-//		       for (y = -1; y <= 1; ++y)
-//		       {
-//		         for (x = -1; x <= 1; ++x)
-//		         {
-//		           if ((x==0) && (y==0) && (z==0))
-//		             continue;
-//
+		  else if (this.nName == Piece.cannon)
+		    {
+		      for (z = 0; z < threeD_Chess.LEVELS; z++)
+		        {
+		          if (z == CURZ)
+		            continue;
+
+		          for (y = threeD_Chess.MAX( 0, CURY -3 ); y < threeD_Chess.MIN( threeD_Chess.RANKS, CURY +4 ); y++)
+		            {
+		              if (y == CURY)
+		                continue;
+
+		              for (x = threeD_Chess.MAX( 0, CURX -3 ); x < threeD_Chess.MIN( threeD_Chess.FILES, CURX +4 ); x++)
+		                {
+		                  if (x == CURX)
+		                    continue;
+
+		                  if ((threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURY-y)) ||
+		                      (threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURZ-z)) ||
+		                      (threeD_Chess.ABS(CURY-y) == threeD_Chess.ABS(CURZ-z)))
+		                    continue;
+
+		                  if ((board.getBoard()[z][y][x] == threeD_Chess.NULL) || (board.getBoard()[z][y][x].bwSide == bwEnemy))
+		                    {
+		                      move.xyzAfter.xFile = x;
+		                      move.xyzAfter.yRank = y;
+		                      move.xyzAfter.zLevel = z;
+		                      move.pVictim = board.getBoard()[z][y][x];
+		                      move.nHadMoved = this.bHasMoved;
+
+		                      if (!this.FakeMoveAndIsKingChecked( board, x, y, z ))
+		                      {
+		                    	  threeD_Chess.StackPush(moves, move);
+		                      }
+		                    } /* End valid move */
+		                } /* End x loop */
+		            } /* End y loop */
+		        } /* End z loop */
+		    } /* End cannon */
+		  else if (this.nName == Piece.pawn) /* Don't bother searching for en passant */
+		    {
+		      y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
+
+		      for (x = threeD_Chess.MAX(0, CURX-1); x < threeD_Chess.MIN(threeD_Chess.FILES, CURX+2); ++x)
+		        {
+		          /* Due to the complexity of the conditional this time,
+		           * I've opted for aborting when illegal instead of
+		           * proceeding when legal. */
+		          if ((x == CURX) && (board.getBoard()[CURZ][CURY+y][CURX] != threeD_Chess.NULL))
+		            continue;
+
+		          if ( (x != CURX) && 
+		        		  ((board.getBoard()[CURZ][CURY + y][x] == threeD_Chess.NULL) || ((board.getBoard()[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
+		          {
+		            continue;
+		          }
+		          move.xyzAfter.xFile = x;
+		          move.xyzAfter.yRank = CURY + y;
+		          move.xyzAfter.zLevel = CURZ;
+		          move.pVictim = board.getBoard()[CURZ][CURY + y][x];
+		          move.nHadMoved = this.bHasMoved;
+
+		          if (!this.FakeMoveAndIsKingChecked(board, x, CURY+y, CURZ))
+		          {
+		        	  threeD_Chess.StackPush(moves, move);
+		          }
+//		          /* This next conditional is for the two-forward move:
+//		           * it only happens when the previous attempt was the one-forward
+//		           * move and makes assumptions based on that fact. */
+		          if ( (x==CURX) && (this.bHasMoved == threeD_Chess.FALSE) && (board.getBoard()[CURZ][CURY + y+y][CURX] == threeD_Chess.NULL) )
+		            {
+		              move.xyzAfter.yRank += y;
+		              if (!this.FakeMoveAndIsKingChecked(board, CURX, CURY+y+y, CURZ))
+		            	  threeD_Chess.StackPush(moves, move);
+		            }
+		        } /* End x loop */
+		    } /* End pawn */
+		  else
+		    {
+		      int d, dist;
+		      Piece pEncountered;
+
+		      /*
+		       * The king and prince can only move one square;
+		       * all others can move MAX(FILES,RANKS)-1.
+		       * For a regular board, this is 7.  (Not 8: If you moved 8
+		       * in any direction you would be off the edge of the board)
+		       */
+		      if ((this.nName == Piece.king) || (this.nName == Piece.prince))
+		        dist = 1;
+		      else
+		        dist = threeD_Chess.MAX(threeD_Chess.FILES, threeD_Chess.RANKS) -1;
+
+		      for (z = -1; z <= 1; ++z)
+		      {
+		       /*
+		        * Cater for pieces that can't change level.
+		        */
+			       if (((this.nName == Piece.prince) || (this.nName == Piece.princess) || (this.nName == Piece.abbey)
+			    		   || (this.nName == Piece.galley)) && (z != 0))
+		         continue;
+
+		       for (y = -1; y <= 1; ++y)
+		       {
+		         for (x = -1; x <= 1; ++x)
+		         {
+		           if ((x==0) && (y==0) && (z==0))
+		             continue;
+
+		           /*
+		            * Cater for the pieces that can only move
+		            * horizontally/vertically.
+		            */
+		           if (((this.nName == Piece.rook) || (this.nName == Piece.galley)) && !threeD_Chess.HORZ(x, y))
+		             continue;
 //		           /*
 //		            * Cater for the pieces that can only move
-//		            * horizontally/vertically.
+//		            * diagonally.
 //		            */
-//		           if (((this.nName == Piece.rook) || (this.nName == Piece.galley)) && !threeD_Chess.HORZ(x, y))
-//		             continue;
-////		           /*
-////		            * Cater for the pieces that can only move
-////		            * diagonally.
-////		            */
-//		           else if (((this.nName == Piece.bishop) || (this.nName == Piece.abbey)) && !threeD_Chess.DIAG(x, y))
-//		             continue;
-//
-//		           for (d = 1; d <= dist; ++d)
-//		           {
-////			             pEncountered = TraverseDir(this, x, y, z, d);
-//			             pEncountered = this.TraverseDir(board, x, y, z, d);
-//		             if (this.IsMoveLegal(board, pEncountered))
-//		               {
-//		                 move.xyzAfter = pEncountered.xyzPos;
-//		                 move.pVictim = pEncountered;
-//		                 move.nHadMoved = this.bHasMoved;
-//
-//		                 /* Check for putting own king in check */
-//		                 if (!this.FakeMoveAndIsKingChecked(board,
-//		                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
-//		                	 threeD_Chess.StackPush(moves, move);
-//		               }
-//
-//		             if (pEncountered != board.getSQUARE_EMPTY())
-//		               break; /* No point on continuing in this direction if
-//		                       * we've hit a piece or the edge of the board.. */
-//		           } /* End d loop */
-//		         } /* End x loop */
-//		       } /* End y loop */
-//		     } /* End z loop */
-//		    }
+		           else if (((this.nName == Piece.bishop) || (this.nName == Piece.abbey)) && !threeD_Chess.DIAG(x, y))
+		             continue;
 
+		           for (d = 1; d <= dist; ++d)
+		           {
+//			             pEncountered = TraverseDir(this, x, y, z, d);
+			             pEncountered = this.TraverseDir(board, x, y, z, d);
+		             if (this.IsMoveLegal(board, pEncountered))
+		               {
+		                 move.xyzAfter = pEncountered.xyzPos;
+		                 move.pVictim = pEncountered;
+		                 move.nHadMoved = this.bHasMoved;
 
-//		  return moves;
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  return null;
-		  
-		  
-		  
+		                 /* Check for putting own king in check */
+		                 if (!this.FakeMoveAndIsKingChecked(board,
+		                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
+		                	 threeD_Chess.StackPush(moves, move);
+		               }
+
+		             if (pEncountered != board.getSQUARE_EMPTY())
+		               break; /* No point on continuing in this direction if
+		                       * we've hit a piece or the edge of the board.. */
+		           } /* End d loop */
+		         } /* End x loop */
+		       } /* End y loop */
+		     } /* End z loop */
+		    }
+
+		  return moves;
 //		}
 
 		
@@ -464,7 +437,7 @@ public class Piece {
 //		public Boolean FakeMoveAndIsKingChecked( Piece piece, int x, int y, int z)
 //		{
 			  Piece temp;
-		  Boolean retVal = false;
+		  Boolean retVal;
 		  Coord xyz;
 
 		  xyz = this.xyzPos;
@@ -484,10 +457,9 @@ public class Piece {
 		    }
 		  else
 		  {
-			  //removed to trace bug
-//			    retVal = IsKingChecked(board, this.bwSide);
+			    retVal = IsKingChecked(board, this.bwSide);
 		  }
-
+		  
 		  board.getBoard()[z][y][x] = temp;
 		  if ( temp != threeD_Chess.NULL )
 		  {
@@ -514,12 +486,7 @@ Boolean IsKingChecked(Board board, int bwSide) {
 //	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
 	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
 
-	  boolean retVal = false;
-	  int side = (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE;
-	  retVal = SquareThreatened(board, side, xyz.xFile, xyz.yRank, xyz.zLevel ) != threeD_Chess.NULL;
-	  
-	  
-	  return ( retVal );
+	  return ( SquareThreatened(board, (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.xFile, xyz.yRank, xyz.zLevel ) != threeD_Chess.NULL );
 //	}
 	
 //		return null;

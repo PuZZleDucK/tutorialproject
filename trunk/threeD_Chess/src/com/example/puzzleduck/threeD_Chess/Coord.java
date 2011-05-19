@@ -43,12 +43,6 @@ public class Coord {
 		yRank = 0;
 		zLevel = 0;
 	}
-
-	public Coord(int x, int y, int z) {
-		xFile = x;
-		yRank = y;
-		zLevel = z;
-	}
 	
 	
 }

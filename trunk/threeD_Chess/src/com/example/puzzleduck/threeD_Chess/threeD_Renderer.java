@@ -1,9 +1,6 @@
 package com.example.puzzleduck.threeD_Chess;
 
 
-import java.util.Enumeration;
-import java.util.Stack;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -390,13 +387,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					        				);
 					        				if(thisPiece != null)
 					        				{
-					        					Stack allowedMoves = thisPiece.FindAllMoves(threeD_Chess.Board);
-//					        					Move thisMove = (Move)allowedMoves.pop(); 
-//					        					while(thisMove != null)
-//					        					{
-//					        						threeD_Chess.Board.setTarget(thisMove.xyzAfter.xFile,thisMove.xyzAfter.yRank,thisMove.xyzAfter.zLevel,true);
-//					        						thisMove = (Move)allowedMoves.pop();
-//					        					}
+					        					thisPiece.FindAllMoves(threeD_Chess.Board);
 					        					
 					        				}
 
@@ -500,12 +491,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							if(thisLevel == threeD_Chess.selectedSquare.xyzPos.zLevel && 
 									thisRank == threeD_Chess.selectedSquare.xyzPos.yRank &&
 									thisFile == threeD_Chess.selectedSquare.xyzPos.xFile)
-							{
-								noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
-							}
-							//check for target squares and highlight "green"
-
-							if(threeD_Chess.Board.targets[thisLevel][thisRank][thisFile] == true)
 							{
 								noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
 							}

@@ -318,7 +318,6 @@ public class threeD_Chess extends Activity {
 				Piece temp = null;
 				for (thisFile = 0; thisFile < FILES; ++thisFile)
 				{
-					Board.targets[thisLevel][thisRank][thisFile] = false;
 					thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 					if(thisTitle != Piece.none)
 					{
@@ -1203,7 +1202,7 @@ public boolean IsGamePaused()
 //	    }
 
 //	  StackPush(MoveStack, thisMove);
-	  StackPush(Board.getMoveStack(), thisMove);
+	  StackPush(Board.getMoveStack(), thisMove); 
 //        ...O.k. time to impliment stack
 //	  piece->bHasMoved = TRUE;
 //	  PieceDisplay(piece, FALSE);
