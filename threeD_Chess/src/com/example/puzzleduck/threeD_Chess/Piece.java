@@ -127,7 +127,8 @@ public class Piece {
 			int CURY = (this.xyzPos.yRank);
 			int CURZ = (this.xyzPos.zLevel);
 
-		  moves = threeD_Chess.StackNew();
+//			  moves = threeD_Chess.StackNew();
+			  moves = new Stack();
 //		  if (moves == null)
 //		  {
 //		    return null;
@@ -160,7 +161,9 @@ public class Piece {
 //		                  if (!FakeMoveAndIsKingChecked( this, x, y, CURZ ))
 			              if (!this.FakeMoveAndIsKingChecked( board, x, y, CURZ ))
 		                  {
-			            	  threeD_Chess.StackPush(moves, move);
+//			            	  threeD_Chess.StackPush(moves, move);
+			            	  moves.push(move);
+
 		                  }
 		                } /* End valid move */
 		            } /* End x loop */
@@ -198,7 +201,8 @@ public class Piece {
 
 		                      if (!this.FakeMoveAndIsKingChecked( board, x, y, z ))
 		                      {
-		                    	  threeD_Chess.StackPush(moves, move);
+//		                    	  threeD_Chess.StackPush(moves, move);
+		                    	  moves.push(move);
 		                      }
 		                    } /* End valid move */
 		                } /* End x loop */
@@ -230,7 +234,8 @@ public class Piece {
 
 		          if (!this.FakeMoveAndIsKingChecked(board, x, CURY+y, CURZ))
 		          {
-		        	  threeD_Chess.StackPush(moves, move);
+//		        	  threeD_Chess.StackPush(moves, move);
+		        	  moves.push(move);
 		          }
 //		          /* This next conditional is for the two-forward move:
 //		           * it only happens when the previous attempt was the one-forward
@@ -239,7 +244,8 @@ public class Piece {
 		            {
 		              move.xyzAfter.yRank += y;
 		              if (!this.FakeMoveAndIsKingChecked(board, CURX, CURY+y+y, CURZ))
-		            	  threeD_Chess.StackPush(moves, move);
+//		            	  threeD_Chess.StackPush(moves, move);
+		            	  moves.push(move);
 		            }
 		        } /* End x loop */
 		    } /* End pawn */
@@ -301,7 +307,8 @@ public class Piece {
 		                 /* Check for putting own king in check */
 		                 if (!this.FakeMoveAndIsKingChecked(board,
 		                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
-		                	 threeD_Chess.StackPush(moves, move);
+//		                	 threeD_Chess.StackPush(moves, move);
+		                	 moves.push(move);
 		               }
 
 		             if (pEncountered != board.getSQUARE_EMPTY())
