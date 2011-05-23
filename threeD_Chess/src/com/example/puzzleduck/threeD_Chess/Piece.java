@@ -111,98 +111,96 @@ public class Piece {
 	}
 
 	public Stack FindAllMoves(Board board) {
-		// TODO Auto-generated method stub
-		
+
 //		/* Creates a stack of legal moves that this piece can take in this go */
-		//This is where i need to update interface to shade/highlight possible moves to improve UI
-//		Stack FindAllMoves(Piece piece)
-//		{
+		//This is where i will flag to shade/highlight possible moves during draw
 
-		Stack moves;
-		  Move move = new Move();
-		  int bwEnemy;
-		  int x, y, z;
+		Stack<Move> allPossibleMoves = new Stack<Move>();
+		  Move currentMove = new Move();
+		  int enemyColor;
+		  int currentZ_Level, currentY_Rank, currentX_File = 0;
 
-			int CURX = (this.xyzPos.xFile);
-			int CURY = (this.xyzPos.yRank);
-			int CURZ = (this.xyzPos.zLevel);
-
-//			  moves = threeD_Chess.StackNew();
-			  moves = new Stack<Move>();
-//		  if (moves == null)
-//		  {
-//		    return null;
-//		  }
-
-		  bwEnemy = ((this.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
-		  move.xyzBefore = this.xyzPos;
+			int originX_File = (this.xyzPos.xFile);
+			int originY_Rank = (this.xyzPos.yRank);
+			int originZ_Level = (this.xyzPos.zLevel);
+		  enemyColor = ((this.bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
 
 		  if (this.nName == Piece.knight)
 		    {
-		      for (y = threeD_Chess.MAX(0, CURY -2); y < threeD_Chess.MIN(threeD_Chess.RANKS, CURY +3); y++)
+		      for (currentX_File = 0; currentX_File < threeD_Chess.LEVELS; currentX_File++)
 		        {
-		          if (y == CURY)
+		          if (currentX_File == originZ_Level)
 		            continue;
-		          for (x = threeD_Chess.MAX(0, CURX -2); x < threeD_Chess.MIN(threeD_Chess.FILES, CURX +3); x++)
+
+		          for (currentY_Rank = threeD_Chess.MAX( 0, originY_Rank -3 ); currentY_Rank < threeD_Chess.MIN( threeD_Chess.RANKS, originY_Rank +4 ); currentY_Rank++)
 		            {
-		              if (x == CURX)
+		              if (currentY_Rank == originY_Rank)
 		                continue;
 
-		              if (threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURY-y))
-		                continue;
-		              if ((board.getBoard()[CURZ][y][x] == threeD_Chess.NULL) || (board.getBoard()[CURZ][y][x].bwSide == bwEnemy))
+		              for (currentZ_Level = threeD_Chess.MAX( 0, originX_File -3 ); currentZ_Level < threeD_Chess.MIN( threeD_Chess.FILES, originX_File +4 ); currentZ_Level++)
 		                {
-		                  move.xyzAfter.xFile = x;
-		                  move.xyzAfter.yRank = y;
-		                  move.xyzAfter.zLevel = CURZ;
-		                  move.pVictim = board.getBoard()[CURZ][y][x];
-		                  move.nHadMoved = this.bHasMoved;
+		                  if (currentZ_Level == originX_File)
+		                    continue;
+
+		              if (threeD_Chess.ABS(originX_File-currentZ_Level) == threeD_Chess.ABS(originY_Rank-currentY_Rank))
+		                continue;
+		              if ((board.getBoard()[originZ_Level][currentY_Rank][currentZ_Level] == null) || (board.getBoard()[originZ_Level][currentY_Rank][currentZ_Level].bwSide == enemyColor))
+		                {
+		                  currentMove.xyzAfter.setxFile(currentX_File);
+//		                  move.xyzAfter.xFile = x;
+		                  currentMove.xyzAfter.setyRank(currentY_Rank);
+//		                  move.xyzAfter.yRank = y;
+		                  currentMove.xyzAfter.setzLevel(originZ_Level);
+//		                  move.xyzAfter.zLevel = CURZ;
+		                  currentMove.pVictim = board.getBoard()[originZ_Level][currentY_Rank][currentZ_Level];
+		                  currentMove.nHadMoved = this.bHasMoved;
 
 //		                  if (!FakeMoveAndIsKingChecked( this, x, y, CURZ ))
-			              if (!this.FakeMoveAndIsKingChecked( board, x, y, CURZ ))
+			              if (!this.FakeMoveAndIsKingChecked( board, currentZ_Level, currentY_Rank, originZ_Level ))
 		                  {
 //			            	  threeD_Chess.StackPush(moves, move);
-			            	  moves.push(move);
+			            	  allPossibleMoves.push(currentMove);
 
 		                  }
 		                } /* End valid move */
-		            } /* End x loop */
-		        } /* End y loop */
+		                } /* End x loop */
+		            } /* End y loop */
+		        } /* End z loop */
 		    } /* End knight */
 		  else if (this.nName == Piece.cannon)
 		    {
-		      for (z = 0; z < threeD_Chess.LEVELS; z++)
+		      for (currentX_File = 0; currentX_File < threeD_Chess.LEVELS; currentX_File++)
 		        {
-		          if (z == CURZ)
+		          if (currentX_File == originZ_Level)
 		            continue;
 
-		          for (y = threeD_Chess.MAX( 0, CURY -3 ); y < threeD_Chess.MIN( threeD_Chess.RANKS, CURY +4 ); y++)
+		          for (currentY_Rank = threeD_Chess.MAX( 0, originY_Rank -3 ); currentY_Rank < threeD_Chess.MIN( threeD_Chess.RANKS, originY_Rank +4 ); currentY_Rank++)
 		            {
-		              if (y == CURY)
+		              if (currentY_Rank == originY_Rank)
 		                continue;
 
-		              for (x = threeD_Chess.MAX( 0, CURX -3 ); x < threeD_Chess.MIN( threeD_Chess.FILES, CURX +4 ); x++)
+		              for (currentZ_Level = threeD_Chess.MAX( 0, originX_File -3 ); currentZ_Level < threeD_Chess.MIN( threeD_Chess.FILES, originX_File +4 ); currentZ_Level++)
 		                {
-		                  if (x == CURX)
+		                  if (currentZ_Level == originX_File)
 		                    continue;
 
-		                  if ((threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURY-y)) ||
-		                      (threeD_Chess.ABS(CURX-x) == threeD_Chess.ABS(CURZ-z)) ||
-		                      (threeD_Chess.ABS(CURY-y) == threeD_Chess.ABS(CURZ-z)))
+		                  if ((threeD_Chess.ABS(originX_File-currentZ_Level) == threeD_Chess.ABS(originY_Rank-currentY_Rank)) ||
+		                      (threeD_Chess.ABS(originX_File-currentZ_Level) == threeD_Chess.ABS(originZ_Level-currentX_File)) ||
+		                      (threeD_Chess.ABS(originY_Rank-currentY_Rank) == threeD_Chess.ABS(originZ_Level-currentX_File)))
 		                    continue;
 
-		                  if ((board.getBoard()[z][y][x] == threeD_Chess.NULL) || (board.getBoard()[z][y][x].bwSide == bwEnemy))
+		                  if ((board.getBoard()[currentX_File][currentY_Rank][currentZ_Level] == threeD_Chess.NULL) || (board.getBoard()[currentX_File][currentY_Rank][currentZ_Level].bwSide == enemyColor))
 		                    {
-		                      move.xyzAfter.xFile = x;
-		                      move.xyzAfter.yRank = y;
-		                      move.xyzAfter.zLevel = z;
-		                      move.pVictim = board.getBoard()[z][y][x];
-		                      move.nHadMoved = this.bHasMoved;
+		                      currentMove.xyzAfter.xFile = currentZ_Level;
+		                      currentMove.xyzAfter.yRank = currentY_Rank;
+		                      currentMove.xyzAfter.zLevel = currentX_File;
+		                      currentMove.pVictim = board.getBoard()[currentX_File][currentY_Rank][currentZ_Level];
+		                      currentMove.nHadMoved = this.bHasMoved;
 
-		                      if (!this.FakeMoveAndIsKingChecked( board, x, y, z ))
+		                      if (!this.FakeMoveAndIsKingChecked( board, currentZ_Level, currentY_Rank, currentX_File ))
 		                      {
 //		                    	  threeD_Chess.StackPush(moves, move);
-		                    	  moves.push(move);
+		                    	  allPossibleMoves.push(currentMove);
 		                      }
 		                    } /* End valid move */
 		                } /* End x loop */
@@ -211,41 +209,51 @@ public class Piece {
 		    } /* End cannon */
 		  else if (this.nName == Piece.pawn) /* Don't bother searching for en passant */
 		    {
-		      y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
+//			  not sure what this was meant to do... removing
+//		      currentY_Rank = ((this.bwSide == Piece.WHITE) ? 1 : -1);
 
-		      for (x = threeD_Chess.MAX(0, CURX-1); x < threeD_Chess.MIN(threeD_Chess.FILES, CURX+2); ++x)
+			  //not sure why starting rank is origin - 3... because I cut and pasted from elsewhere...
+			  //
+//		      for (currentY_Rank = threeD_Chess.MAX( 0, originY_Rank -3 ); currentY_Rank < threeD_Chess.MIN( threeD_Chess.RANKS, originY_Rank +4 ); currentY_Rank++)
+			  
+//			    y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
+
+			  for (currentX_File = threeD_Chess.MAX(0, originX_File-1); currentX_File < threeD_Chess.MIN(threeD_Chess.FILES, originX_File+2); ++currentX_File)
+			    
+			  
 		        {
 		          /* Due to the complexity of the conditional this time,
 		           * I've opted for aborting when illegal instead of
 		           * proceeding when legal. */
-		          if ((x == CURX) && (board.getBoard()[CURZ][CURY+y][CURX] != threeD_Chess.NULL))
+		          if ((currentX_File == originX_File) && (board.getBoard()[originZ_Level][originY_Rank][currentX_File] != threeD_Chess.NULL))
 		            continue;
 
-		          if ( (x != CURX) && 
-		        		  ((board.getBoard()[CURZ][CURY + y][x] == threeD_Chess.NULL) || ((board.getBoard()[CURZ][CURY + y][x]).bwSide != bwEnemy)) )
+		          if ( (currentX_File != originX_File) && 
+		        		  ((board.getBoard()[originZ_Level][originY_Rank][currentX_File] == threeD_Chess.NULL) || ((board.getBoard()[originZ_Level][originY_Rank][currentX_File]).bwSide != enemyColor)) )
 		          {
 		            continue;
 		          }
-		          move.xyzAfter.xFile = x;
-		          move.xyzAfter.yRank = CURY + y;
-		          move.xyzAfter.zLevel = CURZ;
-		          move.pVictim = board.getBoard()[CURZ][CURY + y][x];
-		          move.nHadMoved = this.bHasMoved;
+		          currentMove.xyzAfter.xFile = currentX_File;
+		          currentMove.xyzAfter.yRank = originY_Rank;
+		          currentMove.xyzAfter.zLevel = originZ_Level;
+		          currentMove.pVictim = board.getBoard()[originZ_Level][originY_Rank][currentX_File];
+		          currentMove.nHadMoved = this.bHasMoved;
 
-		          if (!this.FakeMoveAndIsKingChecked(board, x, CURY+y, CURZ))
+		          if (!this.FakeMoveAndIsKingChecked(board, currentX_File, originY_Rank, originZ_Level))
 		          {
 //		        	  threeD_Chess.StackPush(moves, move);
-		        	  moves.push(move);
+		        	  allPossibleMoves.push(currentMove);
 		          }
 //		          /* This next conditional is for the two-forward move:
 //		           * it only happens when the previous attempt was the one-forward
 //		           * move and makes assumptions based on that fact. */
-		          if ( (x==CURX) && (this.bHasMoved == threeD_Chess.FALSE) && (board.getBoard()[CURZ][CURY + y+y][CURX] == threeD_Chess.NULL) )
+		          if ( (currentX_File==originX_File) && (this.bHasMoved == threeD_Chess.FALSE) && (board.getBoard()[originZ_Level][originY_Rank][currentX_File] == threeD_Chess.NULL) )
 		            {
-		              move.xyzAfter.yRank += y;
-		              if (!this.FakeMoveAndIsKingChecked(board, CURX, CURY+y+y, CURZ))
+//		              currentMove.xyzAfter.yRank += currentY_Rank;
+		              currentMove.xyzAfter.yRank += 1; //should be color dependant... + for player - for enemy
+		              if (!this.FakeMoveAndIsKingChecked(board, currentX_File, originY_Rank, originZ_Level))
 //		            	  threeD_Chess.StackPush(moves, move);
-		            	  moves.push(move);
+		            	  allPossibleMoves.push(currentMove);
 		            }
 		        } /* End x loop */
 		    } /* End pawn */
@@ -265,50 +273,50 @@ public class Piece {
 		      else
 		        dist = threeD_Chess.MAX(threeD_Chess.FILES, threeD_Chess.RANKS) -1;
 
-		      for (z = -1; z <= 1; ++z)
+		      for (currentX_File = -1; currentX_File <= 1; ++currentX_File)
 		      {
 		       /*
 		        * Cater for pieces that can't change level.
 		        */
 			       if (((this.nName == Piece.prince) || (this.nName == Piece.princess) || (this.nName == Piece.abbey)
-			    		   || (this.nName == Piece.galley)) && (z != 0))
+			    		   || (this.nName == Piece.galley)) && (currentX_File != 0))
 		         continue;
 
-		       for (y = -1; y <= 1; ++y)
+		       for (currentY_Rank = -1; currentY_Rank <= 1; ++currentY_Rank)
 		       {
-		         for (x = -1; x <= 1; ++x)
+		         for (currentZ_Level = -1; currentZ_Level <= 1; ++currentZ_Level)
 		         {
-		           if ((x==0) && (y==0) && (z==0))
+		           if ((currentZ_Level==0) && (currentY_Rank==0) && (currentX_File==0))
 		             continue;
 
 		           /*
 		            * Cater for the pieces that can only move
 		            * horizontally/vertically.
 		            */
-		           if (((this.nName == Piece.rook) || (this.nName == Piece.galley)) && !threeD_Chess.HORZ(x, y))
+		           if (((this.nName == Piece.rook) || (this.nName == Piece.galley)) && !threeD_Chess.HORZ(currentZ_Level, currentY_Rank))
 		             continue;
 //		           /*
 //		            * Cater for the pieces that can only move
 //		            * diagonally.
 //		            */
-		           else if (((this.nName == Piece.bishop) || (this.nName == Piece.abbey)) && !threeD_Chess.DIAG(x, y))
+		           else if (((this.nName == Piece.bishop) || (this.nName == Piece.abbey)) && !threeD_Chess.DIAG(currentZ_Level, currentY_Rank))
 		             continue;
 
 		           for (d = 1; d <= dist; ++d)
 		           {
 //			             pEncountered = TraverseDir(this, x, y, z, d);
-			             pEncountered = this.TraverseDir(board, x, y, z, d);
+			             pEncountered = this.TraverseDir(board, currentZ_Level, currentY_Rank, currentX_File, d);
 		             if (this.IsMoveLegal(board, pEncountered))
 		               {
-		                 move.xyzAfter = pEncountered.xyzPos;
-		                 move.pVictim = pEncountered;
-		                 move.nHadMoved = this.bHasMoved;
+		                 currentMove.xyzAfter = pEncountered.xyzPos;
+		                 currentMove.pVictim = pEncountered;
+		                 currentMove.nHadMoved = this.bHasMoved;
 
 		                 /* Check for putting own king in check */
 		                 if (!this.FakeMoveAndIsKingChecked(board,
 		                		 pEncountered.xyzPos.xFile, pEncountered.xyzPos.yRank, pEncountered.xyzPos.zLevel))
 //		                	 threeD_Chess.StackPush(moves, move);
-		                	 moves.push(move);
+		                	 allPossibleMoves.push(currentMove);
 		               }
 
 		             if (pEncountered != board.getSQUARE_EMPTY())
@@ -320,7 +328,7 @@ public class Piece {
 		     } /* End z loop */
 		    }
 
-		  return moves;
+		  return allPossibleMoves;
 //		}
 
 		
@@ -538,14 +546,18 @@ Boolean IsKingChecked(Board board, int bwSide) {
 
 	  for (pieceIdx = 0; pieceIdx < threeD_Chess.PIECES; ++pieceIdx)
 	    {
-	      if (board.getMuster()[bwSide][pieceIdx].bVisible && board.getMuster()[bwSide][pieceIdx].PieceMayMove( board, xFile, yRank, zLevel ))
+		  
+		  boolean isVisible = board.getMuster()[bwSide][pieceIdx].bVisible;
+//		  boolean canMove   = board.getMuster()[bwSide][pieceIdx].PieceMayMove( board, xFile, yRank, zLevel );
+		  boolean canMove   = board.getMuster()[bwSide][pieceIdx].PieceMayMove( board, xFile, yRank, zLevel );
+	      if ( isVisible && canMove )
 	        return board.getMuster()[bwSide][pieceIdx];
 	    }
 
 	  return null;
 	}
 
-	boolean PieceMayMove(Board board, int xNew, int yNew, int zNew) {
+	boolean PieceMayMove(Board board, int xNewFile, int yNewRank, int zNewLevel) {
 
 		
 //		
@@ -555,24 +567,32 @@ Boolean IsKingChecked(Board board, int bwSide) {
 
 			  if (!this.bVisible)
 		    {
-				  threeD_Chess.n3DcErr = threeD_Chess.E3DcINVIS;
+//				  threeD_Chess.n3DcErr = threeD_Chess.E3DcINVIS;
 		      return threeD_Chess.FALSE;
 		    }
 
 //		  /* Do bits which are the same for all pieces first */
-		  if (xNew == this.xyzPos.xFile &&
-		      yNew == this.xyzPos.yRank &&
-		      zNew == this.xyzPos.zLevel)
+		  if (xNewFile == this.xyzPos.xFile &&
+		      yNewRank == this.xyzPos.yRank &&
+		      zNewLevel == this.xyzPos.zLevel)
 		    {
-			  threeD_Chess.n3DcErr = threeD_Chess.E3DcSIMPLE;
+//			  threeD_Chess.n3DcErr = threeD_Chess.E3DcSIMPLE;
 		      return threeD_Chess.FALSE;//can't move to same spot
 		    }
 
-		  if ((board.getBoard()[zNew][yNew][xNew] != threeD_Chess.NULL) &&
-		      (board.getBoard()[zNew][yNew][xNew].bVisible == threeD_Chess.TRUE) &&
-		      (board.getBoard()[zNew][yNew][xNew].bwSide == this.bwSide))
+//		  Piece targetPiece = board.getBoard()[zNew][yNew][xNew];
+		  Piece targetPiece = board.getPieceAt( xNewFile, yNewRank, zNewLevel );
+		  boolean thisb = true;
+		  boolean notNull = targetPiece != null;
+//		  boolean isVisible = board.getBoard()[zNewLevel][yNewRank][xNewFile].bVisible == true;
+//		  boolean isSameSide = board.getBoard()[zNewLevel][yNewRank][xNewFile].bwSide == this.bwSide;
+		  boolean isVisible = board.getPieceAt( zNewLevel, yNewRank, xNewFile ).bVisible == true;
+		  boolean isSameSide = board.getPieceAt( zNewLevel, yNewRank, xNewFile ).bwSide == this.bwSide;//[Level][Rank][File]
+		  if ( notNull &&
+		       isVisible &&
+		       isSameSide)
 		    {
-			  threeD_Chess.n3DcErr = threeD_Chess.E3DcBLOCK;
+//			  threeD_Chess.n3DcErr = threeD_Chess.E3DcBLOCK;
 		      return threeD_Chess.FALSE;  /* Can't take a piece on your team */
 		    }
 	      	return threeD_Chess.FALSE;  /* if all else fails... Fail!*/
