@@ -4,14 +4,14 @@ import java.util.Stack;
 
 public class Board {
 	private Stack MoveStack;
-	private Piece[][][] Board;
+	private Piece[][][] Board; //[Level][Rank][File]
 	private Piece[][] Muster;
 	private int bwToMove;
 	private Piece SQUARE_EMPTY;
 	private static Piece SQUARE_INVALID;
 	private int[] TitleCount;
 
-	public Board(Piece[][][] board, Piece[][] muster, int[] titleCount) {
+	public Board(Piece[][][] board, Piece[][] muster, int[] titleCount) {//[Level][Rank][File]
 		Board = board;
 		Muster = muster;
 		TitleCount = titleCount;
@@ -73,8 +73,9 @@ public class Board {
 		TitleCount = titleCount;
 	}
 
-	public Piece getPieceAt(int i, int j, int k) {
-		// TODO Auto-generated method stub
-		return Board[i][j][k];
+	public Piece getPieceAt(int newLevel, int newRank, int newFile) {
+		// from renderer: [thisLevel][thisRank][thisFile]... forget the rest of this crap:
+					//[level][left-right][fwd-bk] -- zNewLevel, yNewRank, xNewFile    //[level][left-right_file][fwd-bk_rank]
+		return Board[newLevel][newRank][newFile];
 	}
 }

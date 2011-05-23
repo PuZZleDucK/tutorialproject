@@ -18,7 +18,8 @@ public class Move {
 	
 	public Move()
 	{
-		
+		xyzBefore = new Coord();
+		xyzAfter = new Coord();
 		
 	}
 
