@@ -1,19 +1,15 @@
 package com.example.puzzleduck.threeD_Chess;
 
-//typedef struct
-//{
-//  unsigned
-//    xFile  :3,
-//    yRank  :3,
-//    zLevel :2;
-//} Coord;
-
-
 public class Coord {
+	//typedef struct
+	//{
+	//  unsigned
+//	    xFile  :3,
+//	    yRank  :3,
+//	    zLevel :2;
+	//} Coord;
 
 	public int thisFile, thisRank, thisLevel;
-	
-	
 	
 	public Coord()
 	{
@@ -22,14 +18,12 @@ public class Coord {
 		thisLevel = 0;
 	}
 	
-	public Coord(int newLevel, int newRank, int newFile)//[thisLevel][thisRank][thisFile]
+	public Coord(int newLevel, int newRank, int newFile)//[Level][Rank][File]
 	{
 		thisFile = newFile;
 		thisRank = newRank;
 		thisLevel = newLevel;
 	}
-	
-	
 	
 	
 	public int getFile() {
@@ -56,6 +50,4 @@ public class Coord {
 		this.thisLevel = newLevel;
 	}
 
-	
-	
 }

@@ -20,7 +20,6 @@ public class Move {
 	{
 		xyzBefore = new Coord();
 		xyzAfter = new Coord();
-		
 	}
 
 	
