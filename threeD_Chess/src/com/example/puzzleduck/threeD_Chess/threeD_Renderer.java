@@ -381,9 +381,9 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					        			break;
 					        			case(KeyEvent.KEYCODE_DPAD_CENTER): // 22 right....
 					        				Piece thisPiece = threeD_Chess.Board.getPieceAt(
-					        						threeD_Chess.selectedSquare.xyzPos.xFile,
-					        						threeD_Chess.selectedSquare.xyzPos.yRank,
-					        						threeD_Chess.selectedSquare.xyzPos.zLevel
+					        						threeD_Chess.selectedSquare.xyzPos.thisFile,
+					        						threeD_Chess.selectedSquare.xyzPos.thisRank,
+					        						threeD_Chess.selectedSquare.xyzPos.thisLevel
 					        				);
 					        				if(thisPiece != null)
 					        				{
@@ -488,19 +488,19 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							//selection
 							//check for selected square and highlight "green"
-							if(thisLevel == threeD_Chess.selectedSquare.xyzPos.zLevel && 
-									thisRank == threeD_Chess.selectedSquare.xyzPos.yRank &&
-									thisFile == threeD_Chess.selectedSquare.xyzPos.xFile)
+							if(thisLevel == threeD_Chess.selectedSquare.xyzPos.thisLevel && 
+									thisRank == threeD_Chess.selectedSquare.xyzPos.thisRank &&
+									thisFile == threeD_Chess.selectedSquare.xyzPos.thisFile)
 							{
 								noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
 							}
 							
 						noneImage.draw(canvas);
 
-						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)
+						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)//[Level][Rank][File]
 						{
 																			
-							switch(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].nName)
+							switch(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).thisType)
 							{
 							case(Piece.c_pawn):
 								pawnImage.setBounds(
@@ -530,7 +530,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalXOffset,
 										totalYOffset, 
 										x+totalXOffset, 
-										y+totalYOffset);
+										y+totalYOffset);//[Level][Rank][File]
 								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
@@ -576,7 +576,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalXOffset,
 										totalYOffset, 
 										x+totalXOffset, 
-										y+totalYOffset);
+										y+totalYOffset);//[Level][Rank][File]
 								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
 							{
 								abbeyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));

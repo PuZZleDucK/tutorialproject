@@ -73,7 +73,7 @@ public class Board {
 		TitleCount = titleCount;
 	}
 
-	public Piece getPieceAt(int newLevel, int newRank, int newFile) {
+	public Piece getPieceAt(int newLevel, int newRank, int newFile) {//[Level][Rank][File]
 		// from renderer: [thisLevel][thisRank][thisFile]... forget the rest of this crap:
 					//[level][left-right][fwd-bk] -- zNewLevel, yNewRank, xNewFile    //[level][left-right_file][fwd-bk_rank]
 		return Board[newLevel][newRank][newFile];
