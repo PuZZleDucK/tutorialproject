@@ -3429,9 +3429,9 @@ public boolean IsGamePaused()
 //	 resizeCallback	     Callback		Pointer		NULL
 //	*/
 
-public static void setTITLES(int tITLES) {
-		TITLES = tITLES;
-	}
+//public static void setTITLES(int tITLES) {
+//		TITLES = tITLES;
+//	}
 
 
 
