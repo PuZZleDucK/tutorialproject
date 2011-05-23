@@ -442,8 +442,6 @@ public class Piece {
 		
 		
 		
-		
-		
 //		return null;
 	}
 
@@ -486,12 +484,9 @@ public class Piece {
 		  return retVal;
 //		}	
 		
-		
 		//return false;
 	}
 
-	
-	
 	
 	
 Boolean IsKingChecked(Board board, int bwSide) {
@@ -535,8 +530,6 @@ Boolean IsKingChecked(Board board, int bwSide) {
 			  /* else */
 			  return 47;
 //		}
-//		
-//		
 //		
 //	return 0;
 }

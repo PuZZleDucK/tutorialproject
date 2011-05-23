@@ -1,6 +1,5 @@
 package com.example.puzzleduck.threeD_Chess;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -105,15 +104,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			};
 
 
-		//	        /** Used to figure out elapsed time between frames */
-		//	        private long mLastTime;
-		//
-		//	        /** Paint to draw the lines on screen. */
-		//	        private Paint mLinePaint;
-		//
-		//	        /** "Bad" speed-too-high variant of the line color. */
-		//	        private Paint mLinePaintBad;
-		//
 		//	        /** The state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
 		private int mMode;
 
@@ -132,9 +122,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			mHandler = handler;
 			mContext = context;
 			
-
 			Resources res = context.getResources();
-			// cache handles to our key sprites & other drawables
+			// cache handles to our drawables
 			kingImage = context.getResources().getDrawable( R.drawable.k_king);
 			queenImage = context.getResources().getDrawable( R.drawable.k_queen);
 			bishopImage = context.getResources().getDrawable( R.drawable.k_bishop);
@@ -148,14 +137,9 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
 			noneImage = context.getResources().getDrawable( R.drawable.k_none);
 			
-
 			//	            // load background image as a Bitmap instead of a Drawable b/c
 			//	            // we don't need to transform it and it's faster to draw this way
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.k_none);
-			//
-			//	            // Use the blank image as the model size for all sprites
-//			int width = noneImage.getIntrinsicWidth();
-//			int height = noneImage.getIntrinsicHeight();
 
 			mScratchRect = new RectF(0, 0, 0, 0);
 		}
@@ -201,10 +185,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //						if (mMode == STATE_RUNNING) updatePhysics();
 						//if running do main game loop
 						doDraw(c);
-						
-						
-						
-						
 					}
 				} finally {
 					//	                    // do this in a finally so that if an exception is thrown
@@ -227,8 +207,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			}
 			return map;
 		}
-
-
 
 		//	         * Used to signal the thread whether it should be running or not.
 		//	         * Passing true allows the thread to run; passing false will shut it
@@ -290,7 +268,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		}
-		//
+
 		//	        /* Callback invoked when the surface dimensions change. */
 		public void setSurfaceSize(int width, int height) {
 			// synchronized to make sure these all change atomically
@@ -312,56 +290,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			setState(STATE_RUNNING);
 		}
 
-		
-		
-		
-		
-		
-		
-		//	         * Handles a key-down event.
 		boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
-				
-				//	                boolean okStart = false;
-				//	                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) okStart = true;
-				//	                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) okStart = true;
-				//	                if (keyCode == KeyEvent.KEYCODE_S) okStart = true;
-				//
-				//	                boolean center = (keyCode == KeyEvent.KEYCODE_DPAD_UP);
-				//
-//					                if (okStart
-//					                        && (mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN)) {
-//					                    // ready-to-start -> start
-//					                    doStart();
-//					                    return true;
-//					                } else if (mMode == STATE_PAUSE && okStart) {
-//					                    // paused -> running
-//					                    unpause();
-//					                    return true;
-//					                } else if (mMode == STATE_RUNNING) {
-//					                    // center/space -> fire
-//					                    if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-//					                            || keyCode == KeyEvent.KEYCODE_SPACE) {
-//					                        setFiring(true);
-//					                        return true;
-//					                        // left/q -> left
-//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-//					                            || keyCode == KeyEvent.KEYCODE_Q) {
-//					                        mRotating = -1;
-//					                        return true;
-//					                        // right/w -> right
-//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-//					                            || keyCode == KeyEvent.KEYCODE_W) {
-//					                        mRotating = 1;
-//					                        return true;
-//					                        // up -> pause
-//					                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-//					                        pause();
-//					                        return true;
-//					                    }
-//					                }
-				
-
 					                switch(keyCode)
 					        		{
 					        			case(KeyEvent.KEYCODE_DPAD_DOWN): // 20 down...
@@ -397,36 +327,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //					        			break;
 					        			
 					        			
-					        			
-					        		}
-					        		
-					        //
-//					        		this.LEVEL_OFFSETx += 0;
-//					        		this.LEVEL_OFFSETy += 2*8;
-////					        		this.LEVEL_SPLIT += 2;
-//					        		this.RANK_OFFSETx += 0;
-//					        		this.RANK_OFFSETy += 2;
-//					        		this.FILE_OFFSETx += 0;
-//					        		this.FILE_OFFSETy += 2;		
-					        		
-
-					        		
-					        		
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+					        		}				
 				
 				return false;
 			}
@@ -435,23 +336,22 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Handles a key-up event.
 		boolean doKeyUp(int keyCode, KeyEvent msg) {
 			boolean handled = false;
-
-			synchronized (mSurfaceHolder) {
-				if (mMode == STATE_RUNNING) {
-					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-							|| keyCode == KeyEvent.KEYCODE_SPACE) {
-						//	                        setFiring(false);
-						handled = true;
-					} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-							|| keyCode == KeyEvent.KEYCODE_Q
-							|| keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-							|| keyCode == KeyEvent.KEYCODE_W) {
-						//	                        mRotating = 0;
-						handled = true;
-					}
-				}
-			}
-			//
+//
+//			synchronized (mSurfaceHolder) {
+//				if (mMode == STATE_RUNNING) {
+//					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+//							|| keyCode == KeyEvent.KEYCODE_SPACE) {
+//						//	                        setFiring(false);
+//						handled = true;
+//					} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+//							|| keyCode == KeyEvent.KEYCODE_Q
+//							|| keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+//							|| keyCode == KeyEvent.KEYCODE_W) {
+//						//	                        mRotating = 0;
+//						handled = true;
+//					}
+//				}
+//			}
 			return handled;
 		}
 
@@ -464,14 +364,14 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			int totalXOffset = 0;
 			int totalYOffset = 0; 
 			//	            canvas.restore();
-			for (int thisLevel = 0; thisLevel < threeD_Chess.LEVELS; ++thisLevel)
+			for (int thisLevel = 0; thisLevel < threeD_Chess.LEVELS; ++thisLevel)//[Level][Rank][File]
 			{
 				for (int thisRank = 0; thisRank < threeD_Chess.RANKS; ++thisRank)
 				{
 					for (int thisFile = 0; thisFile < threeD_Chess.FILES; ++thisFile)
 					{
-						totalXOffset = thisFile*FILE_OFFSETx + thisLevel*LEVEL_OFFSETx;
-						totalYOffset = thisRank*RANK_OFFSETx + thisLevel*LEVEL_OFFSETy + thisLevel*LEVEL_SPLIT;
+						totalXOffset = thisFile*fileOffsetX + thisLevel*levelOffsetX;
+						totalYOffset = thisRank*rankOffsetX + thisLevel*levelOffsetY + thisLevel*levelSplit;
 						noneImage.setBounds(
 								totalXOffset,
 								totalYOffset, 
@@ -508,21 +408,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-							if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+							if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								pawnImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								pawnImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}								
-//							if( (thisRank + thisFile) % 2 == 0 )
-//							{
-//								noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//							}else
-//							{
-//								noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//							}
-//								noneImage.draw(canvas);
 								pawnImage.draw(canvas);
 								break;
 							case(Piece.c_galley):
@@ -531,21 +423,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);//[Level][Rank][File]
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								galleyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 									galleyImage.draw(canvas);
 								break;
 							case(Piece.c_cannon):
@@ -554,21 +438,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								cannonImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								cannonImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								cannonImage.draw(canvas);
 								break;
 							case(Piece.c_abbey):
@@ -577,21 +453,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);//[Level][Rank][File]
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								abbeyImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								abbeyImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								abbeyImage.draw(canvas);
 								break;
 							case(Piece.c_princess):
@@ -600,21 +468,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								princessImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								princessImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								princessImage.draw(canvas);
 								break;
 							case(Piece.c_prince):
@@ -623,21 +483,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								princeImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								princeImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								princeImage.draw(canvas);
 								break;
 							case(Piece.c_rook):
@@ -646,21 +498,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								rookImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								rookImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								rookImage.draw(canvas);
 								break;
 							case(Piece.c_knight):
@@ -669,21 +513,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								knightImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								knightImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								knightImage.draw(canvas);
 								break;
 							case(Piece.c_bishop):
@@ -692,21 +528,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								bishopImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								bishopImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								bishopImage.draw(canvas);
 								break;
 							case(Piece.c_queen):
@@ -715,21 +543,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								queenImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								queenImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								queenImage.draw(canvas);
 								break;
 							case(Piece.c_king):
@@ -738,32 +558,17 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										totalYOffset, 
 										x+totalXOffset, 
 										y+totalYOffset);
-								if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile].getColor() == Piece.BLACK)
+								if(threeD_Chess.Board.getPieceAt(thisLevel, thisRank, thisFile).getColor() == Piece.BLACK)
 							{
 								kingImage.setColorFilter(new ColorMatrixColorFilter(redMatrix));
 							}else
 							{
 								kingImage.setColorFilter(new ColorMatrixColorFilter(blueMatrix));
 							}
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
 								kingImage.draw(canvas);
 								break;
 							default:
-//								if( (thisRank + thisFile) % 2 == 0 )
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
-//								}else
-//								{
-//									noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
-//								}
-//									noneImage.draw(canvas);
+//									noneImage.draw(canvas);//hope it don't happen
 									break;
 									}
 						}else{
@@ -775,68 +580,6 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			
 		}
 
-		//	         * Figures the lander state (x, y, fuel, ...) based on the passage of
-		//	         * realtime. Does not invalidate(). Called at the start of draw().
-		//	         * Detects the end-of-game and sets the UI to the next state.
-//		private void updatePhysics() {
-			//	            long now = System.currentTimeMillis();
-
-			//	            // Do nothing if mLastTime is in the future.
-			//	            // This allows the game-start to delay the start of the physics
-			//	            // by 100ms or whatever.
-			//	            if (mLastTime > now) return;
-			//
-			//	            double elapsed = (now - mLastTime) / 1000.0;
-			//
-			//	            // mRotating -- update heading
-			//	            // Base accelerations -- 0 for x, gravity for y
-			//	            // figure speeds for the end of the period
-			//	            mDX += ddx;
-			//	            mDY += ddy;
-			//	            // figure position based on average speed during the period
-			//	            mX += elapsed * (mDX + dxOld) / 2;
-			//	            mY += elapsed * (mDY + dyOld) / 2;
-			//
-			//	            mLastTime = now;
-
-			//	            // Evaluate if we have landed ... stop the game
-			//	            double yLowerBound = TARGET_PAD_HEIGHT + mLanderHeight / 2
-			//	                    - TARGET_BOTTOM_PADDING;
-			//	            if (mY <= yLowerBound) {
-			//	                mY = yLowerBound;
-			//
-			//	                int result = STATE_LOSE;
-			//	                CharSequence message = "";
-			//	                Resources res = mContext.getResources();
-			//	                double speed = Math.sqrt(mDX * mDX + mDY * mDY);
-			//	                boolean onGoal = (mGoalX <= mX - mLanderWidth / 2 && mX
-			//	                        + mLanderWidth / 2 <= mGoalX + mGoalWidth);
-			//
-			//	                // "Hyperspace" win -- upside down, going fast,
-			//	                // puts you back at the top.
-			//	                if (onGoal && Math.abs(mHeading - 180) < mGoalAngle
-			//	                        && speed > PHYS_SPEED_HYPERSPACE) {
-			//	                    result = STATE_WIN;
-			//	                    mWinsInARow++;
-			//	                    doStart();
-			//
-			//	                    return;
-			//	                    // Oddball case: this case does a return, all other cases
-			//	                    // fall through to setMode() below.
-			//	                } else if (!onGoal) {
-			//	                    message = res.getText(R.string.message_off_pad);
-			//	                } else if (!(mHeading <= mGoalAngle || mHeading >= 360 - mGoalAngle)) {
-			//	                    message = res.getText(R.string.message_bad_angle);
-			//	                } else if (speed > mGoalSpeed) {
-			//	                    message = res.getText(R.string.message_too_fast);
-			//	                } else {
-			//	                    result = STATE_WIN;
-			//	                    mWinsInARow++;
-			//	                }
-			//
-			//	                setState(result, message);
-			//	            }
-//		}
 	}
 
 	//	    /** Handle to the application context, used to e.g. fetch Drawables. */
@@ -848,13 +591,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	//	    /** The thread that actually draws the animation */
 	private threeD_Thread thread;
 
-	private int LEVEL_OFFSETx = 0;
-	private int LEVEL_OFFSETy = 16*8;
-	private int LEVEL_SPLIT = 16;
-	private int RANK_OFFSETx = 16;
-	private int RANK_OFFSETy = 16;
-	private int FILE_OFFSETx = 16;
-	private int FILE_OFFSETy = 16;
+	private int levelOffsetX = 0;
+	private int levelOffsetY = 16*8;
+	private int levelSplit = 16;
+	private int rankOffsetX = 16;
+	private int rankOffsetY = 16;
+	private int fileOffsetX = 16;
+	private int fileOffsetY = 16;
 
 	public threeD_Renderer(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -873,29 +616,11 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true); // make sure we get key events
 	}
 
-	//	     * Fetches the animation thread corresponding to this LunarView.
+	//	     * Fetches the animation thread 
 	public threeD_Thread getThread() {
 		return thread;
 	}
 
-	//	     * Standard override to get key-press events.
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent msg) {
-		//moving to new key handler above.
-//        Context context = getApplicationContext();
-
-		return thread.doKeyDown(keyCode, msg);
-	}
-
-
-	//	     * Standard override for key-up. We actually care about these, so we can
-	//	     * turn off the engine or stop rotating.
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent msg) {
-		return thread.doKeyUp(keyCode, msg);
-	}
-	
-//
 //	public boolean onTouch(View v, MotionEvent event) {
 /////does not seem to be attached
 //
@@ -903,8 +628,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 //	}
 
 
-
 	//threeD_Chess.DoMain3DcLoop();
+
 	//	     * Standard window-focus override. Notice focus lost so we can pause on
 	//	     * focus lost. e.g. user switches to take a call.
 	@Override

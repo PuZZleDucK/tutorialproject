@@ -31,7 +31,6 @@ import com.example.puzzleduck.threeD_Chess.threeD_Renderer.threeD_Thread;
 public class threeD_Chess extends Activity {
 
 //	stackList bestMoves = new stackList();
-//	private static Stack aiBestMoves = new Stack();//might use stack list on second thoughts.
 	private static Stack currentPossibleMoves = new Stack();
 	private static Stack aiMoves = new Stack();
 
@@ -199,26 +198,26 @@ public class threeD_Chess extends Activity {
 	
 
 //	/* Returns from pieceMayMove */
-	private static int CASTLE = 2;
-	private static int EnPASSANT = 3;
-	private static int PROMOTE = 4;
+	private static final int CASTLE = 2;
+	private static final int EnPASSANT = 3;
+	private static final int PROMOTE = 4;
 	
-	private static int TITLES = 11;
-	static int PIECES = 48;
-	private static int COLOURS = 2;
+	private static final int TITLES = 11;
+	static final int PIECES = 48;
+	private static final int COLOURS = 2;
 	
-	public static int FILES = 8;
-	public static int RANKS = 8;
-	public  static int LEVELS = 3;
+	public static final int FILES = 8;//[Level][Rank][File]
+	public static final int RANKS = 8;
+	public static final int LEVELS = 3;
 	
 	//	/* Directions */
-	private static int LEFT  = -1;
-	private static int RIGHT  = 1;
-	private static int FORW   = 1;  /* if colour is black => -1 */
-	private static int BACK  = -1;  /* if colour is black => +1 */
-	private static int UP    = 1;
-	private static int DOWN  = -1;
-	private static int NODIR  = 0;
+	private static final int LEFT  = -1;
+	private static final int RIGHT  = 1;
+	private static final int FORW   = 1;  /* if colour is black => -1 */
+	private static final int BACK  = -1;  /* if colour is black => +1 */
+	private static final int UP    = 1;
+	private static final int DOWN  = -1;
+	private static final int NODIR  = 0;
 	
 	private String winString = "";
 	private Random rng = new Random();
@@ -265,7 +264,7 @@ public class threeD_Chess extends Activity {
 	}
 
 //	/* This function interprets the result of TraverseDir(piece...) */
-
+//lost?
 
 	/* This function sets up the board*/
 	private void Init3Dc()
@@ -279,7 +278,7 @@ public class threeD_Chess extends Activity {
 
 		/* This structure is mainly for "obviousness"; it is entirely trivial */
 		int StartBoard[][][] =
-		{ /* The boards */
+		{ /* The boards */   //[Level][Rank][File]
 				{ /* Bottom board */
 					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
 					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
@@ -312,7 +311,7 @@ public class threeD_Chess extends Activity {
 				}
 		}; /* StartBoard */
 
-		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)
+		for (thisLevel = 0; thisLevel < LEVELS; ++thisLevel)//[Level][Rank][File]
 		{
 			thisColor = Piece.WHITE;
 			for (thisRank = 0; thisRank < RANKS; ++thisRank)
@@ -326,7 +325,6 @@ public class threeD_Chess extends Activity {
 					thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 					if(thisTitle != Piece.none)
 					{
-						//Create holding var for piece... can't pull this stunt in Java afaik.
 						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
 						Context context = getApplicationContext();
 
@@ -338,7 +336,6 @@ public class threeD_Chess extends Activity {
 				}
 			}
 		}
-//		StackNew();
 		n3DcErr = 0;
 
 		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
@@ -550,17 +547,8 @@ public boolean IsGamePaused()
              });
       AlertDialog alert = builder.create();
 
-  	//  XtSetSensitive(firstGFX->undo, FALSE);
-	//  Err3Dc(firstGFX, =;winString, TRUE);
-	
-	//  if (secondGFX != NULL)
-	//    {
-	//      XtSetSensitive(secondGFX->undo, FALSE);
-	//      Err3Dc(secondGFX, winString, TRUE);
-	//    }
 	}
 
-//
 //	public void PrintMove( Move move )
 //{
 //	  String moveString = null;
@@ -652,17 +640,14 @@ public boolean IsGamePaused()
 	}
 
 
-
 	public void PieceDelete(Piece piece)
 	{
-		if(Board.getBoard()[piece.xyzPos.thisLevel][piece.xyzPos.thisRank][piece.xyzPos.thisFile] == piece)
-		{
-			Board.getBoard()[piece.xyzPos.thisLevel][piece.xyzPos.thisRank][piece.xyzPos.thisFile] = null;
+		if(Board.getPieceAt(piece.xyzPos.thisLevel, piece.xyzPos.thisRank, piece.xyzPos.thisFile) == piece)
+		{//need to do setpieceas too
+			Board.getBoard()[piece.xyzPos.thisLevel][piece.xyzPos.thisRank][piece.xyzPos.thisFile] = null;//[Level][Rank][File]
 		}
 		piece = null;
 	}
-	
-
 	  
 //		/*
 //		 * Here down are the specific piece-movement functions
@@ -672,24 +657,27 @@ public boolean IsGamePaused()
 //		 * is contradicted, so be careful.
 //		 */
 
-
-		private boolean KingMayMove(Piece piece, int xNew, int yNew, int zNew)
+		private boolean KingMayMove(Piece piece, int newLevel, int newRank, int newFile)//[Level][Rank][File]
 		{
-			  int xDiff, xCur, xInc;
-			  int yDiff;
-			  int zDiff;
+			  int fileDiff, xCur, xInc;
+			  int rankDiff;
+			  int levelDiff;
 			  
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
-			  zDiff = zNew - piece.xyzPos.thisLevel;
+//			  xDiff = newLevel - piece.xyzPos.thisFile;
+//			  yDiff = newRank - piece.xyzPos.thisRank;
+//			  zDiff = newFile - piece.xyzPos.thisLevel;
+			  
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
+			  levelDiff = newLevel - piece.xyzPos.thisLevel;
 
-			  xDiff = ABS(xDiff);
-			  yDiff = ABS(yDiff);
-			  zDiff = ABS(zDiff);
+			  fileDiff = ABS(fileDiff);
+			  rankDiff = ABS(rankDiff);
+			  levelDiff = ABS(levelDiff);
 	
 		  /* Not allowed move more than 1 except when castling */
-		  if ( (piece.bHasMoved && (xDiff > 2)) ||
-		       (yDiff > 1) || (zDiff > 1) )
+		  if ( (piece.bHasMoved && (fileDiff > 2)) ||
+		       (rankDiff > 1) || (levelDiff > 1) )
 		    {
 		      n3DcErr = E3DcDIST;
 		      return FALSE;
@@ -698,21 +686,21 @@ public boolean IsGamePaused()
 //		  /*
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
-//		   */
-		  if (piece.FakeMoveAndIsKingChecked( Board, xNew, yNew, zNew) ||
-		      ( (xDiff == 2) &&
-		    	piece.FakeMoveAndIsKingChecked( Board, (xNew + piece.xyzPos.thisFile)/2,
-		                                yNew, zNew ) ))
+//		   *///[Level][Rank][File]
+		  if (piece.FakeMoveAndIsKingChecked( Board, newLevel, newRank, newFile) ||
+		      ( (fileDiff == 2) &&
+		    	piece.FakeMoveAndIsKingChecked( Board, (newLevel + piece.xyzPos.thisFile)/2,
+		                                newRank, newFile ) ))
 		    {
 		      n3DcErr = E3DcCHECK;
 		      return FALSE;
 		    }
 	
-		  if (xDiff == 2)
+		  if (fileDiff == 2)
 		  { /* Castling */
 		      int xRook;
 	
-		      if (yDiff > 0 || zDiff > 0)
+		      if (rankDiff > 0 || levelDiff > 0)
 		        {
 		          n3DcErr = E3DcSIMPLE;
 		          return FALSE;
@@ -721,12 +709,12 @@ public boolean IsGamePaused()
 		      /*
 		       * Determine x-pos of castling rook
 		       */
-		      if (xNew > piece.xyzPos.thisFile)
+		      if (newLevel > piece.xyzPos.thisFile)
 		        xRook = FILES-1;//right edge
 		      else
 		        xRook = 0;//left edge
 	
-		      if (piece.bHasMoved || Board.getBoard()[1][yNew][xRook].bHasMoved)
+		      if (piece.bHasMoved || Board.getPieceAt(1, newRank, xRook).bHasMoved)
 		        {
 		          n3DcErr = E3DcMOVED;
 		          return FALSE;
@@ -743,7 +731,7 @@ public boolean IsGamePaused()
 		      for (xCur = piece.xyzPos.thisFile + xInc; xCur != xRook; xCur += xInc)
 		      {  /* Is the castle blocked? */
 //		          if (Board[1][yNew][xCur])
-			        if (Board.getBoard()[1][yNew][xCur] != null)
+			        if (Board.getBoard()[1][newRank][xCur] != null)
 		            {
 		              n3DcErr = E3DcBLOCK;
 		              return FALSE;
@@ -756,8 +744,8 @@ public boolean IsGamePaused()
 	//
 		  return TRUE;
 		}
-		
-		  private boolean QueenMayMove(Piece piece, int xNew, int yNew, int zNew)
+										//int newLevel, int newRank, int newFile
+		  private boolean QueenMayMove(Piece piece, int xNew, int yNew, int zNew)//[Level][Rank][File]
 	{	
 //		{
 			  int xDiff;
@@ -787,6 +775,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+		  							//int newLevel, int newRank, int newFile
 		  private boolean BishopMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -813,6 +802,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean KnightMayMove(Piece piece, int xNew, int yNew, int zNew)
 			{	
 
@@ -837,6 +827,7 @@ public boolean IsGamePaused()
 		  return TRUE;
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean RookMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -864,6 +855,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean PrinceMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -891,6 +883,7 @@ public boolean IsGamePaused()
 		  return TRUE;
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean PrincessMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -922,6 +915,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean AbbeyMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -952,6 +946,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean CannonMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -976,6 +971,7 @@ public boolean IsGamePaused()
 		  return TRUE;
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean GalleyMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -1006,6 +1002,7 @@ public boolean IsGamePaused()
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
+			//int newLevel, int newRank, int newFile
 		  private boolean PawnMayMove(Piece piece, int xNew, int yNew, int zNew)
 		{
 
@@ -1165,6 +1162,7 @@ public boolean IsGamePaused()
 	
 	
 //	 * Execute the move
+			//int newLevel, int newRank, int newFile
 		  private boolean PieceMove(Piece piece, int xNew, int yNew, int zNew)
 	{
 	  Move thisMove = new Move();
