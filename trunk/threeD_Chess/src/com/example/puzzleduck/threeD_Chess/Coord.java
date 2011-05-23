@@ -11,38 +11,51 @@ package com.example.puzzleduck.threeD_Chess;
 
 public class Coord {
 
-	public int xFile, yRank, zLevel;
+	public int thisFile, thisRank, thisLevel;
 	
-	public int getxFile() {
-		return xFile;
-	}
-
-	public void setxFile(int xFile) {
-		this.xFile = xFile;
-	}
-
-	public int getyRank() {
-		return yRank;
-	}
-
-	public void setyRank(int yRank) {
-		this.yRank = yRank;
-	}
-
-	public int getzLevel() {
-		return zLevel;
-	}
-
-	public void setzLevel(int zLevel) {
-		this.zLevel = zLevel;
-	}
-
+	
+	
 	public Coord()
 	{
-		xFile = 0;
-		yRank = 0;
-		zLevel = 0;
+		thisFile = 0;
+		thisRank = 0;
+		thisLevel = 0;
 	}
+	
+	public Coord(int newLevel, int newRank, int newFile)//[thisLevel][thisRank][thisFile]
+	{
+		thisFile = newFile;
+		thisRank = newRank;
+		thisLevel = newLevel;
+	}
+	
+	
+	
+	
+	public int getFile() {
+		return thisFile;
+	}
+
+	public void setFile(int newFile) {
+		this.thisFile = newFile;
+	}
+
+	public int getRank() {
+		return thisRank;
+	}
+
+	public void setRank(int newRank) {
+		this.thisRank = newRank;
+	}
+
+	public int getLevel() {
+		return thisLevel;
+	}
+
+	public void setLevel(int newLevel) {
+		this.thisLevel = newLevel;
+	}
+
 	
 	
 }

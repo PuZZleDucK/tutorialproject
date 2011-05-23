@@ -414,15 +414,15 @@ public class threeD_Chess extends Activity {
 			//                        automove->xyzAfter.xFile,
 			//                        automove->xyzAfter.yRank,
 			//                        automove->xyzAfter.zLevel ) )) )
-            else if ( (Board.getBoard()[ automove.xyzBefore.zLevel ]
-            [ automove.xyzBefore.yRank ]
-            [ automove.xyzBefore.xFile ] == NULL ) ||
-            ( PieceMove( Board.getBoard()[ automove.xyzBefore.zLevel ]
-                              [ automove.xyzBefore.yRank ]
-                              [ automove.xyzBefore.xFile ],
-                        automove.xyzAfter.xFile,
-                        automove.xyzAfter.yRank,
-                        automove.xyzAfter.zLevel ) ) )
+            else if ( (Board.getBoard()[ automove.xyzBefore.thisLevel ]
+            [ automove.xyzBefore.thisRank ]
+            [ automove.xyzBefore.thisFile ] == NULL ) ||
+            ( PieceMove( Board.getBoard()[ automove.xyzBefore.thisLevel ]
+                              [ automove.xyzBefore.thisRank ]
+                              [ automove.xyzBefore.thisFile ],
+                        automove.xyzAfter.thisFile,
+                        automove.xyzAfter.thisRank,
+                        automove.xyzAfter.thisLevel ) ) )
                 {
                   /* The move was illegal for some reason
                    * (in the future I plan to eliminate all
@@ -477,7 +477,7 @@ public String Piece2String( Piece piece )
       "Prince", "Princess", "Abbey",  "Cannon", "Galley",
       "Pawn", ""
     };
-return names[piece.nName];
+return names[piece.thisType];
 }
 
 public int Computer()
@@ -655,9 +655,9 @@ public boolean IsGamePaused()
 
 	public void PieceDelete(Piece piece)
 	{
-		if(Board.getBoard()[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] == piece)
+		if(Board.getBoard()[piece.xyzPos.thisLevel][piece.xyzPos.thisRank][piece.xyzPos.thisFile] == piece)
 		{
-			Board.getBoard()[piece.xyzPos.zLevel][piece.xyzPos.yRank][piece.xyzPos.xFile] = null;
+			Board.getBoard()[piece.xyzPos.thisLevel][piece.xyzPos.thisRank][piece.xyzPos.thisFile] = null;
 		}
 		piece = null;
 	}
@@ -679,9 +679,9 @@ public boolean IsGamePaused()
 			  int yDiff;
 			  int zDiff;
 			  
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
-			  zDiff = zNew - piece.xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
+			  zDiff = zNew - piece.xyzPos.thisLevel;
 
 			  xDiff = ABS(xDiff);
 			  yDiff = ABS(yDiff);
@@ -701,7 +701,7 @@ public boolean IsGamePaused()
 //		   */
 		  if (piece.FakeMoveAndIsKingChecked( Board, xNew, yNew, zNew) ||
 		      ( (xDiff == 2) &&
-		    	piece.FakeMoveAndIsKingChecked( Board, (xNew + piece.xyzPos.xFile)/2,
+		    	piece.FakeMoveAndIsKingChecked( Board, (xNew + piece.xyzPos.thisFile)/2,
 		                                yNew, zNew ) ))
 		    {
 		      n3DcErr = E3DcCHECK;
@@ -721,7 +721,7 @@ public boolean IsGamePaused()
 		      /*
 		       * Determine x-pos of castling rook
 		       */
-		      if (xNew > piece.xyzPos.xFile)
+		      if (xNew > piece.xyzPos.thisFile)
 		        xRook = FILES-1;//right edge
 		      else
 		        xRook = 0;//left edge
@@ -740,7 +740,7 @@ public boolean IsGamePaused()
 	
 		      xInc = ( xRook == 0 ) ? -1 : 1 ;
 	
-		      for (xCur = piece.xyzPos.xFile + xInc; xCur != xRook; xCur += xInc)
+		      for (xCur = piece.xyzPos.thisFile + xInc; xCur != xRook; xCur += xInc)
 		      {  /* Is the castle blocked? */
 //		          if (Board[1][yNew][xCur])
 			        if (Board.getBoard()[1][yNew][xCur] != null)
@@ -766,9 +766,9 @@ public boolean IsGamePaused()
 
 			  Piece pDestSquare;
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
-			  zDiff = zNew - piece.xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
+			  zDiff = zNew - piece.xyzPos.thisLevel;
 
 			  if ((xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff))) ||
 				      (xDiff > 0 && zDiff > 0 && (ABS(xDiff) != ABS(zDiff))) ||
@@ -795,9 +795,9 @@ public boolean IsGamePaused()
 		  int zDiff;
 		  Piece pDestSquare;
 
-		  xDiff = xNew - piece.xyzPos.xFile;
-		  yDiff = yNew - piece.xyzPos.yRank;
-		  zDiff = zNew - piece.xyzPos.zLevel;
+		  xDiff = xNew - piece.xyzPos.thisFile;
+		  yDiff = yNew - piece.xyzPos.thisRank;
+		  zDiff = zNew - piece.xyzPos.thisLevel;
 	
 		  if (!DIAG3D(xDiff, yDiff, zDiff))
 		    {
@@ -819,14 +819,14 @@ public boolean IsGamePaused()
 			  int xDiff;
 			  int yDiff;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Knights may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
 
 			  xDiff = ABS(xDiff);
 			  yDiff = ABS(yDiff);
@@ -845,9 +845,9 @@ public boolean IsGamePaused()
 			  int zDiff;
 			  Piece pDestSquare;
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
-			  zDiff = zNew - piece.xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
+			  zDiff = zNew - piece.xyzPos.thisLevel;
 	
 		  if (!HORZ3D(xDiff, yDiff, zDiff))
 		    {
@@ -870,14 +870,14 @@ public boolean IsGamePaused()
 			  int xDiff;
 			  int yDiff;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princes may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
 	
 		  xDiff = ABS(xDiff);
 		  yDiff = ABS(yDiff);
@@ -898,14 +898,14 @@ public boolean IsGamePaused()
 			  int yDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princesses may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
 
 			  if (xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff)))
 		    {
@@ -929,14 +929,14 @@ public boolean IsGamePaused()
 			  int yDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Abbies may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
 		
 			  if (!DIAG(xDiff, yDiff))
 		    {
@@ -959,9 +959,9 @@ public boolean IsGamePaused()
 			  int yDiff;
 			  int zDiff;
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
-			  zDiff = zNew - piece.xyzPos.zLevel;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
+			  zDiff = zNew - piece.xyzPos.thisLevel;
 	
 		  xDiff = ABS(xDiff);
 		  yDiff = ABS(yDiff);
@@ -983,14 +983,14 @@ public boolean IsGamePaused()
 			  int yDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Gallies may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yDiff = yNew - piece.xyzPos.thisRank;
 	
 		  if (!HORZ(xDiff, yDiff))
 		    {
@@ -1012,14 +1012,14 @@ public boolean IsGamePaused()
 			  int xDiff;
 			  int yDiff, yInc;
 
-			  if (zNew != piece.xyzPos.zLevel)
+			  if (zNew != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Pawns may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.xFile;
-			  yInc = yDiff = yNew - piece.xyzPos.yRank;
+			  xDiff = xNew - piece.xyzPos.thisFile;
+			  yInc = yDiff = yNew - piece.xyzPos.thisRank;
 	
 		  xDiff = ABS(xDiff);
 		  yDiff = ABS(yDiff);
@@ -1027,7 +1027,7 @@ public boolean IsGamePaused()
 //		  /*
 //		   * Pawns must move at least 1 forward
 //		   */
-		  if ((yDiff == 0) || ((yInc < 0) && (piece.bwSide == Piece.WHITE)) || ((yInc > 0) && (piece.bwSide == Piece.BLACK))) /* Moving backwards */
+		  if ((yDiff == 0) || ((yInc < 0) && (piece.thisSide == Piece.WHITE)) || ((yInc > 0) && (piece.thisSide == Piece.BLACK))) /* Moving backwards */
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1056,8 +1056,8 @@ public boolean IsGamePaused()
 //		            1) /* Dummy line to reduce no. of changes */
 
 		        if (Board.getBoard()[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
-	            (Board.getBoard()[zNew][yNew - yInc][xNew].nName == Piece.pawn) && /* Is pawn */
-	            (Board.getBoard()[zNew][yNew - yInc][xNew].bwSide != piece.bwSide) ) /* Dummy line to reduce no. of changes */
+	            (Board.getBoard()[zNew][yNew - yInc][xNew].thisType == Piece.pawn) && /* Is pawn */
+	            (Board.getBoard()[zNew][yNew - yInc][xNew].thisSide != piece.thisSide) ) /* Dummy line to reduce no. of changes */
 		          {
 //		            return EnPASSANT;
 		            return true;
@@ -1089,7 +1089,7 @@ public boolean IsGamePaused()
 //		   */
 			  if (Board.getBoard()[zNew][yNew][xNew] != null  && /* Taking something */
 		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
-		       Board.getBoard()[zNew][yNew][xNew].bwSide == piece.bwSide))
+		       Board.getBoard()[zNew][yNew][xNew].thisSide == piece.thisSide))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1099,8 +1099,8 @@ public boolean IsGamePaused()
 //		  if ((yNew == FILES-1 && piece->bwSide == WHITE) ||
 //		      (yNew == 0 && piece->bwSide == BLACK))
 //		    return PROMOTE;
-			  if ((yNew == FILES-1 && piece.bwSide == Piece.WHITE) ||
-		      (yNew == 0 && piece.bwSide == Piece.BLACK))
+			  if ((yNew == FILES-1 && piece.thisSide == Piece.WHITE) ||
+		      (yNew == 0 && piece.thisSide == Piece.BLACK))
 		    return true;
 
 			  //
@@ -1175,13 +1175,13 @@ public boolean IsGamePaused()
 	    return FALSE;
 
 //	   * Keep record of move
-	  thisMove.xyzBefore.xFile = piece.xyzPos.xFile;
-	  thisMove.xyzBefore.yRank = piece.xyzPos.yRank;
-	  thisMove.xyzBefore.zLevel = piece.xyzPos.zLevel;
+	  thisMove.xyzBefore.thisFile = piece.xyzPos.thisFile;
+	  thisMove.xyzBefore.thisRank = piece.xyzPos.thisRank;
+	  thisMove.xyzBefore.thisLevel = piece.xyzPos.thisLevel;
 	  
-	  thisMove.xyzAfter.xFile = xNew;
-	  thisMove.xyzAfter.yRank = yNew;
-	  thisMove.xyzAfter.zLevel = zNew;
+	  thisMove.xyzAfter.thisFile = xNew;
+	  thisMove.xyzAfter.thisRank = yNew;
+	  thisMove.xyzAfter.thisLevel = zNew;
 
 	  //TODO: EnPassant handling
 //	  if (moveType == EnPASSANT)
@@ -3228,8 +3228,8 @@ public boolean IsGamePaused()
 	    return INT_MAX;
 
 //	  /* Fake the move for simple lookahead */
-	  moving  = Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ];
-	  storing = Board.getBoard()[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ];
+	  moving  = Board.getBoard()[ move.xyzBefore.thisLevel ] [ move.xyzBefore.thisRank ] [ move.xyzBefore.thisFile ];
+	  storing = Board.getBoard()[ move.xyzAfter.thisLevel ] [ move.xyzAfter.thisRank ] [ move.xyzAfter.thisFile ];
 
 //realy hope this CHECK thing isn't CHECKing anything impotant
 	  //	  if (!CHECK( moving != NULL ))
@@ -3241,38 +3241,38 @@ public boolean IsGamePaused()
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
 	  if ( Board.getMuster()[ bwSide ][ Piece.MusterIdx(Board, Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
-		      move.xyzAfter.xFile,
-		      move.xyzAfter.yRank,
-		      move.xyzAfter.zLevel ))
+		      move.xyzAfter.thisFile,
+		      move.xyzAfter.thisRank,
+		      move.xyzAfter.thisLevel ))
 		  return INT_MIN;
 
 	  /* Fake the move */
-	  Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = null;
-	  Board.getBoard()[ move.xyzAfter.zLevel ][ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = moving;
+	  Board.getBoard()[ move.xyzBefore.thisLevel ] [ move.xyzBefore.thisRank ] [ move.xyzBefore.thisFile ] = null;
+	  Board.getBoard()[ move.xyzAfter.thisLevel ][ move.xyzAfter.thisRank ] [ move.xyzAfter.thisFile ] = moving;
 	  if ( storing != null )
 	    storing.bVisible = FALSE;
 
 	  /* Rate check */
 	  xyzPos = (Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )]).xyzPos;
-	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
+	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.thisFile, xyzPos.thisRank, xyzPos.thisLevel) != null )
 		  rating += values[ Piece.king ];
 
 	  /* Rate danger: if there's a chance of being captured in the new pos. */
 	  xyzPos = move.xyzAfter;
-	  if ( move.pVictim.SquareThreatened(Board, bwEnemy, xyzPos.xFile, xyzPos.yRank, xyzPos.zLevel) != null )
-		  rating -= (values[ moving.nName ] /2);
+	  if ( move.pVictim.SquareThreatened(Board, bwEnemy, xyzPos.thisFile, xyzPos.thisRank, xyzPos.thisLevel) != null )
+		  rating -= (values[ moving.thisType ] /2);
 
 	  /* Undo the fake */
-	  Board.getBoard()[ move.xyzBefore.zLevel ] [ move.xyzBefore.yRank ] [ move.xyzBefore.xFile ] = moving;
- Board.getBoard()[ move.xyzAfter.zLevel ] [ move.xyzAfter.yRank ] [ move.xyzAfter.xFile ] = storing;
+	  Board.getBoard()[ move.xyzBefore.thisLevel ] [ move.xyzBefore.thisRank ] [ move.xyzBefore.thisFile ] = moving;
+ Board.getBoard()[ move.xyzAfter.thisLevel ] [ move.xyzAfter.thisRank ] [ move.xyzAfter.thisFile ] = storing;
  if ( storing != null )
    storing.bVisible = TRUE;
 
 	  /* Rate capture */
- if (( move.pVictim != NULL ) && ( move.pVictim.bwSide == bwEnemy ))
+ if (( move.pVictim != NULL ) && ( move.pVictim.thisSide == bwEnemy ))
 	    {
 	      int i;
-	      rating += values[ move.pVictim.nName ];
+	      rating += values[ move.pVictim.thisType ];
 
 	      /* Rate evasion: if there's a chance of any friendly piece
 	       * being captured in the old pos but not in the new (this isn't
@@ -3280,30 +3280,30 @@ public boolean IsGamePaused()
 	      for ( i = 0; i < PIECES; ++i )
 	        {
 	          if ( Board.getMuster()[ bwSide ][ i ].bVisible && move.pVictim.SquareThreatened(Board, bwEnemy,
-	        		  	Board.getMuster()[ bwSide ][ i ].xyzPos.xFile,
-                        Board.getMuster()[ bwSide ][ i ].xyzPos.yRank,
-                        Board.getMuster()[ bwSide ][ i ].xyzPos.zLevel ) ==  move.pVictim )
-	            rating += (values[ Board.getMuster()[ bwSide ][ i ].nName ] /2);
+	        		  	Board.getMuster()[ bwSide ][ i ].xyzPos.thisFile,
+                        Board.getMuster()[ bwSide ][ i ].xyzPos.thisRank,
+                        Board.getMuster()[ bwSide ][ i ].xyzPos.thisLevel ) ==  move.pVictim )
+	            rating += (values[ Board.getMuster()[ bwSide ][ i ].thisType ] /2);
 	        }
 	    }
 
 //	  /* Rate special moves */
 //	  /* En passant and castling not yet possible for computer */
- if (( move.pVictim != null ) && ( move.pVictim.bwSide == bwSide))
+ if (( move.pVictim != null ) && ( move.pVictim.thisSide == bwSide))
 	    rating += 10; /* Castling */
- if (( move.xyzAfter.yRank == (bwSide == Piece.WHITE ? RANKS-1 : 0) ) && ( moving.nName == Piece.pawn ))
+ if (( move.xyzAfter.thisRank == (bwSide == Piece.WHITE ? RANKS-1 : 0) ) && ( moving.thisType == Piece.pawn ))
 	    rating += values[Piece.queen]; /* Promotion */
 	  /* Note the horrible magic numbers below */
- if ( (ABS( move.xyzAfter.yRank - move.xyzBefore.yRank ) == 2) && ( moving.nName == Piece.pawn ))
+ if ( (ABS( move.xyzAfter.thisRank - move.xyzBefore.thisRank ) == 2) && ( moving.thisType == Piece.pawn ))
 	    rating += 1; /* Two-forward by pawn: the computer doesn't
 	                  * usually like opening its attack routes otherwise */
 
 	  /* Rate position; distance forward (should be proximity to
 	   * enemy king except for pawns */
 	  if ( bwSide == Piece.WHITE )
-		    rating += move.xyzAfter.yRank - move.xyzBefore.yRank;
+		    rating += move.xyzAfter.thisRank - move.xyzBefore.thisRank;
 	  else
-		    rating += 7 - move.xyzAfter.yRank + move.xyzBefore.yRank;
+		    rating += 7 - move.xyzAfter.thisRank + move.xyzBefore.thisRank;
 	  return rating;
 	}
 
