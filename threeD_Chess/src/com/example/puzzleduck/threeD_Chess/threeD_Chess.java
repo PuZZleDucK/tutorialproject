@@ -689,8 +689,8 @@ public boolean IsGamePaused()
 //		   *///[Level][Rank][File]
 		  if (piece.FakeMoveAndIsKingChecked( Board, newLevel, newRank, newFile) ||
 		      ( (fileDiff == 2) &&
-		    	piece.FakeMoveAndIsKingChecked( Board, (newLevel + piece.xyzPos.thisFile)/2,
-		                                newRank, newFile ) ))
+		    	piece.FakeMoveAndIsKingChecked( Board, (newFile + piece.xyzPos.thisFile)/2,
+		                                newRank, newLevel ) ))
 		    {
 		      n3DcErr = E3DcCHECK;
 		      return FALSE;
@@ -709,7 +709,7 @@ public boolean IsGamePaused()
 		      /*
 		       * Determine x-pos of castling rook
 		       */
-		      if (newLevel > piece.xyzPos.thisFile)
+		      if (newFile > piece.xyzPos.thisFile)
 		        xRook = FILES-1;//right edge
 		      else
 		        xRook = 0;//left edge
@@ -745,22 +745,22 @@ public boolean IsGamePaused()
 		  return TRUE;
 		}
 										//int newLevel, int newRank, int newFile
-		  private boolean QueenMayMove(Piece piece, int xNew, int yNew, int zNew)//[Level][Rank][File]
+		  private boolean QueenMayMove(Piece piece, int newLevel, int newRank, int newFile)//[Level][Rank][File]
 	{	
 //		{
-			  int xDiff;
-			  int yDiff;
-			  int zDiff;
+			  int fileDiff;
+			  int rankDiff;
+			  int levelDiff;
 
 			  Piece pDestSquare;
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
-			  zDiff = zNew - piece.xyzPos.thisLevel;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
+			  levelDiff = newLevel - piece.xyzPos.thisLevel;
 
-			  if ((xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff))) ||
-				      (xDiff > 0 && zDiff > 0 && (ABS(xDiff) != ABS(zDiff))) ||
-				      (yDiff > 0 && zDiff > 0 && (ABS(yDiff) != ABS(zDiff))))
+			  if ((fileDiff > 0 && rankDiff > 0 && (ABS(fileDiff) != ABS(rankDiff))) ||
+				      (fileDiff > 0 && levelDiff > 0 && (ABS(fileDiff) != ABS(levelDiff))) ||
+				      (rankDiff > 0 && levelDiff > 0 && (ABS(rankDiff) != ABS(levelDiff))))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return false;
@@ -770,25 +770,25 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
-		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
+		  pDestSquare = piece.TraverseDir(Board, fileDiff, rankDiff, levelDiff,
+		                            MAX(ABS(fileDiff), MAX(ABS(rankDiff), ABS(levelDiff))));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 		  							//int newLevel, int newRank, int newFile
-		  private boolean BishopMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean BishopMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-		  int xDiff;
-		  int yDiff;
-		  int zDiff;
+		  int fileDiff;
+		  int rankDiff;
+		  int levelDiff;
 		  Piece pDestSquare;
 
-		  xDiff = xNew - piece.xyzPos.thisFile;
-		  yDiff = yNew - piece.xyzPos.thisRank;
-		  zDiff = zNew - piece.xyzPos.thisLevel;
+		  fileDiff = 
+		  rankDiff = newRank - piece.xyzPos.thisRank;
+		  levelDiff = newLevel - piece.xyzPos.thisLevel;
 	
-		  if (!DIAG3D(xDiff, yDiff, zDiff))
+		  if (!DIAG3D(fileDiff, rankDiff, levelDiff))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -798,50 +798,50 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, fileDiff, rankDiff, levelDiff, MAX(ABS(fileDiff), ABS(rankDiff)));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean KnightMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean KnightMayMove(Piece piece, int newLevel, int newRank, int newFile)
 			{	
 
-			  int xDiff;
-			  int yDiff;
+			  int fileDiff;
+			  int rankDiff;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newLevel != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Knights may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
 
-			  xDiff = ABS(xDiff);
-			  yDiff = ABS(yDiff);
+			  fileDiff = ABS(fileDiff);
+			  rankDiff = ABS(rankDiff);
 
-			  if ((xDiff == 0) || (yDiff == 0) || ((xDiff + yDiff) != 3))
+			  if ((fileDiff == 0) || (rankDiff == 0) || ((fileDiff + rankDiff) != 3))
 				  return FALSE;
 	
 		  return TRUE;
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean RookMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean RookMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
-			  int zDiff;
+			  int fileDiff;
+			  int rankDiff;
+			  int levelDiff;
 			  Piece pDestSquare;
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
-			  zDiff = zNew - piece.xyzPos.thisLevel;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
+			  levelDiff = newLevel - piece.xyzPos.thisLevel;
 	
-		  if (!HORZ3D(xDiff, yDiff, zDiff))
-		    {
+		  if (!HORZ3D(fileDiff, rankDiff, levelDiff))
+		    {// leaving static helper methods in f-r-l format
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
 		    }
@@ -850,31 +850,31 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, zDiff,
-		                            MAX(ABS(xDiff), MAX(ABS(yDiff), ABS(zDiff))));
+		  pDestSquare = piece.TraverseDir(Board, levelDiff, rankDiff, fileDiff,
+		                            MAX(ABS(levelDiff), MAX(ABS(rankDiff), ABS(fileDiff))));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean PrinceMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean PrinceMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
+			  int fileDiff;
+			  int rankDiff;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newFile != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princes may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
 	
-		  xDiff = ABS(xDiff);
-		  yDiff = ABS(yDiff);
+		  fileDiff = ABS(fileDiff);
+		  rankDiff = ABS(rankDiff);
 	
-		  if (xDiff > 1 || yDiff > 1) /* Not allowed move more than 1 */
+		  if (fileDiff > 1 || rankDiff > 1) /* Not allowed move more than 1 */
 		    {
 		      n3DcErr = E3DcDIST;
 		      return FALSE;
@@ -884,23 +884,23 @@ public boolean IsGamePaused()
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean PrincessMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean PrincessMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
+			  int fileDiff;
+			  int rankDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newLevel != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Princesses may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
 
-			  if (xDiff > 0 && yDiff > 0 && (ABS(xDiff) != ABS(yDiff)))
+			  if (fileDiff > 0 && rankDiff > 0 && (ABS(fileDiff) != ABS(rankDiff)))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -910,29 +910,29 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0,
-		                            MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, fileDiff, rankDiff, 0,
+		                            MAX(ABS(fileDiff), ABS(rankDiff)));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean AbbeyMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean AbbeyMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
+			  int fileDiff;
+			  int rankDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newLevel != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Abbies may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
 		
-			  if (!DIAG(xDiff, yDiff))
+			  if (!DIAG(fileDiff, rankDiff))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -942,27 +942,27 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, fileDiff, rankDiff, 0, MAX(ABS(fileDiff), ABS(rankDiff)));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean CannonMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean CannonMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
-			  int zDiff;
+			  int fileDiff;
+			  int rankDiff;
+			  int levelDiff;
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
-			  zDiff = zNew - piece.xyzPos.thisLevel;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
+			  levelDiff = newLevel - piece.xyzPos.thisLevel;
 	
-		  xDiff = ABS(xDiff);
-		  yDiff = ABS(yDiff);
-		  zDiff = ABS(zDiff);
+		  fileDiff = ABS(fileDiff);
+		  rankDiff = ABS(rankDiff);
+		  levelDiff = ABS(levelDiff);
 
-		  if (((xDiff + yDiff + zDiff) != 6) || ((xDiff != 3) && (yDiff != 3)) || ((xDiff != 2) && (yDiff != 2) && (zDiff != 2)))
+		  if (((fileDiff + rankDiff + levelDiff) != 6) || ((fileDiff != 3) && (rankDiff != 3)) || ((fileDiff != 2) && (rankDiff != 2) && (levelDiff != 2)))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -972,23 +972,23 @@ public boolean IsGamePaused()
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean GalleyMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean GalleyMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff;
+			  int fileDiff;
+			  int rankDiff;
 			  Piece pDestSquare;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newLevel != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Gallies may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankDiff = newRank - piece.xyzPos.thisRank;
 	
-		  if (!HORZ(xDiff, yDiff))
+		  if (!HORZ(fileDiff, rankDiff))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -998,40 +998,40 @@ public boolean IsGamePaused()
 //		   * At this stage, we have determined that, given an empty board,
 //		   * the move is legal.  Now take other pieces into account.
 //		   */
-		  pDestSquare = piece.TraverseDir(Board, xDiff, yDiff, 0, MAX(ABS(xDiff), ABS(yDiff)));
+		  pDestSquare = piece.TraverseDir(Board, fileDiff, rankDiff, 0, MAX(ABS(fileDiff), ABS(rankDiff)));
 		  return piece.IsMoveLegal(Board, pDestSquare);
 		}
 
 			//int newLevel, int newRank, int newFile
-		  private boolean PawnMayMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean PawnMayMove(Piece piece, int newLevel, int newRank, int newFile)
 		{
 
-			  int xDiff;
-			  int yDiff, yInc;
+			  int fileDiff;
+			  int rankDiff, rankInc;
 
-			  if (zNew != piece.xyzPos.thisLevel)
+			  if (newLevel != piece.xyzPos.thisLevel)
 		    {
 		      n3DcErr = E3DcLEVEL;
 		      return FALSE; /* Pawns may not change level */
 		    }
 
-			  xDiff = xNew - piece.xyzPos.thisFile;
-			  yInc = yDiff = yNew - piece.xyzPos.thisRank;
+			  fileDiff = newFile - piece.xyzPos.thisFile;
+			  rankInc = rankDiff = newRank - piece.xyzPos.thisRank;
 	
-		  xDiff = ABS(xDiff);
-		  yDiff = ABS(yDiff);
+		  fileDiff = ABS(fileDiff);
+		  rankDiff = ABS(rankDiff);
 	
 //		  /*
 //		   * Pawns must move at least 1 forward
 //		   */
-		  if ((yDiff == 0) || ((yInc < 0) && (piece.thisSide == Piece.WHITE)) || ((yInc > 0) && (piece.thisSide == Piece.BLACK))) /* Moving backwards */
+		  if ((rankDiff == 0) || ((rankInc < 0) && (piece.thisSide == Piece.WHITE)) || ((rankInc > 0) && (piece.thisSide == Piece.BLACK))) /* Moving backwards */
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
 		    }
 	
 //		  /* Check the definitely-illegal moves first.. */
-		  if (xDiff > 1 || (xDiff == 1 && yDiff != 1))
+		  if (fileDiff > 1 || (fileDiff == 1 && rankDiff != 1))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1045,16 +1045,16 @@ public boolean IsGamePaused()
 //		   */
 //		#if 0
 //		#endif /* 0 */
-		    if (xDiff == 1 && yDiff == 1 && Board.getBoard()[zNew][yNew][xNew] != null)
+		    if (fileDiff == 1 && rankDiff == 1 && Board.getPieceAt(newFile,newRank,newLevel) != null)
 		      { /* En passant? */
 //		        if (Board[zNew][yNew - yInc][xNew] && /* 'Takable' piece */
 //		            Board[zNew][yNew - yInc][xNew]->nName == pawn && /* Is pawn */
 //		            Board[zNew][yNew - yInc][xNew]->bwSide != piece->bwSide && /* Is enemy */
 //		            1) /* Dummy line to reduce no. of changes */
 
-		        if (Board.getBoard()[zNew][yNew - yInc][xNew] != null && /* 'Takable' piece */
-	            (Board.getBoard()[zNew][yNew - yInc][xNew].thisType == Piece.pawn) && /* Is pawn */
-	            (Board.getBoard()[zNew][yNew - yInc][xNew].thisSide != piece.thisSide) ) /* Dummy line to reduce no. of changes */
+		        if (Board.getPieceAt(newLevel,newRank - rankInc,newFile) != null && /* 'Takable' piece */
+	            (Board.getPieceAt(newLevel,newRank - rankInc,newFile).thisType == Piece.pawn) && /* Is pawn */
+	            (Board.getPieceAt(newLevel,newRank - rankInc,newFile).thisSide != piece.thisSide) ) /* Dummy line to reduce no. of changes */
 		          {
 //		            return EnPASSANT;
 		            return true;
@@ -1072,8 +1072,8 @@ public boolean IsGamePaused()
 //		   *  They move more than 1 and they have already moved
 //		   *  They attempt to take any piece (catered for in next conditional)
 //		   */
-			  if (yDiff > 2 || /* Move too far */
-					  (piece.bHasMoved && yDiff == 2)) /* Move too far */
+			  if (rankDiff > 2 || /* Move too far */
+					  (piece.bHasMoved && rankDiff == 2)) /* Move too far */
 		    {
 		      n3DcErr = E3DcDIST;
 		      return FALSE;
@@ -1084,9 +1084,9 @@ public boolean IsGamePaused()
 //		   *  They do not move diagonally forward one space
 //		   *  The victim is an ally
 //		   */
-			  if (Board.getBoard()[zNew][yNew][xNew] != null  && /* Taking something */
-		      (!(xDiff == 1 && yDiff == 1) || /* Not moving diagonally */
-		       Board.getBoard()[zNew][yNew][xNew].thisSide == piece.thisSide))
+			  if (Board.getPieceAt(newLevel,newRank,newFile) != null  && /* Taking something */
+		      (!(fileDiff == 1 && rankDiff == 1) || /* Not moving diagonally */
+		       Board.getPieceAt(newLevel,newRank,newFile).thisSide == piece.thisSide))
 		    {
 		      n3DcErr = E3DcSIMPLE;
 		      return FALSE;
@@ -1096,8 +1096,8 @@ public boolean IsGamePaused()
 //		  if ((yNew == FILES-1 && piece->bwSide == WHITE) ||
 //		      (yNew == 0 && piece->bwSide == BLACK))
 //		    return PROMOTE;
-			  if ((yNew == FILES-1 && piece.thisSide == Piece.WHITE) ||
-		      (yNew == 0 && piece.thisSide == Piece.BLACK))
+			  if ((newRank == FILES-1 && piece.thisSide == Piece.WHITE) ||
+		      (newRank == 0 && piece.thisSide == Piece.BLACK))
 		    return true;
 
 			  //
@@ -1163,13 +1163,13 @@ public boolean IsGamePaused()
 	
 //	 * Execute the move
 			//int newLevel, int newRank, int newFile
-		  private boolean PieceMove(Piece piece, int xNew, int yNew, int zNew)
+		  private boolean PieceMove(Piece piece, int newLevel, int newRank, int newFile)
 	{
 	  Move thisMove = new Move();
 //	  Boolean moveType; /* Not quite Boolean... */
 	  boolean moveType; /* Not quite Boolean... */
 
-	  if (!(moveType = piece.PieceMayMove(Board, xNew, yNew, zNew)))
+	  if (!(moveType = piece.PieceMayMove(Board, newLevel, newRank, newFile)))
 	    return FALSE;
 
 //	   * Keep record of move
@@ -1177,9 +1177,9 @@ public boolean IsGamePaused()
 	  thisMove.xyzBefore.thisRank = piece.xyzPos.thisRank;
 	  thisMove.xyzBefore.thisLevel = piece.xyzPos.thisLevel;
 	  
-	  thisMove.xyzAfter.thisFile = xNew;
-	  thisMove.xyzAfter.thisRank = yNew;
-	  thisMove.xyzAfter.thisLevel = zNew;
+	  thisMove.xyzAfter.thisFile = newFile;
+	  thisMove.xyzAfter.thisRank = newRank;
+	  thisMove.xyzAfter.thisLevel = newLevel;
 
 	  //TODO: EnPassant handling
 //	  if (moveType == EnPASSANT)
@@ -3239,9 +3239,9 @@ public boolean IsGamePaused()
 //	   * duplication re: finding king coords and so on.  This code
 //	   * is easier to maintain. */
 	  if ( Board.getMuster()[ bwSide ][ Piece.MusterIdx(Board, Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
-		      move.xyzAfter.thisFile,
+		      move.xyzAfter.thisLevel,
 		      move.xyzAfter.thisRank,
-		      move.xyzAfter.thisLevel ))
+		      move.xyzAfter.thisFile ))
 		  return INT_MIN;
 
 	  /* Fake the move */
@@ -3252,12 +3252,12 @@ public boolean IsGamePaused()
 
 	  /* Rate check */
 	  xyzPos = (Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )]).xyzPos;
-	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.thisFile, xyzPos.thisRank, xyzPos.thisLevel) != null )
+	  if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.thisLevel, xyzPos.thisRank, xyzPos.thisFile) != null )
 		  rating += values[ Piece.king ];
 
 	  /* Rate danger: if there's a chance of being captured in the new pos. */
 	  xyzPos = move.xyzAfter;
-	  if ( move.pVictim.SquareThreatened(Board, bwEnemy, xyzPos.thisFile, xyzPos.thisRank, xyzPos.thisLevel) != null )
+	  if ( move.pVictim.SquareThreatened(Board, bwEnemy, xyzPos.thisLevel, xyzPos.thisRank, xyzPos.thisFile) != null )
 		  rating -= (values[ moving.thisType ] /2);
 
 	  /* Undo the fake */
