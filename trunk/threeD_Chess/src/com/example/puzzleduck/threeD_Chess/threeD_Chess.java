@@ -42,6 +42,43 @@ public class threeD_Chess extends Activity {
     private static final int MENU_SETTINGS = 6;
 //    private static final int MENU_STOP = 7;
 
+	public static final int UINT_MAX = 99;
+	public static final int INT_MAX = 99;
+	
+	
+	
+
+	public int values[] = { 26, 42, 22, 10, 25, /* Royalty */
+							45, 21, 12, 24, 15, /* Nobility */
+							6 /* Pawn */
+	};
+	
+	stackList bestMoves = new stackList();
+
+	public int BEST_STACKS = 5;
+	public int INT_MIN = -99;
+	
+	
+
+	//
+//		/* Reasons */
+	int XawCR_EXPOSE = 1;
+	int XawCR_INPUT  = 2;
+	int XawCR_MOTION = 3;
+	int XawCR_RESIZE = 4;
+
+	//extern int n3DcErr;
+
+	static int E3DcSIMPLE	= 0;
+	private int E3DcLEVEL	= 1;
+	private int E3DcCHECK	= 2;
+	private int E3DcDIST	= 3;
+	static int E3DcINVIS	= 4;
+	static int E3DcBLOCK	= 5;
+	private int E3DcMOVED	= 6;
+
+    
+    
 //    /** A handle to the thread that's actually running the animation. */
     private threeD_Thread mthreeD_Thread;
 //    /** A handle to the View in which the game is running. */
@@ -2161,9 +2198,7 @@ public boolean IsGamePaused()
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
 
-	public static final int UINT_MAX = 99;
-	public static final int INT_MAX = 99;
-	
+
 
 //	/* Go dist in given direction.  Direction is positive, negative, 0,
 //	 * with obvious meanings (think of the axes).
@@ -3023,15 +3058,6 @@ public boolean IsGamePaused()
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
 
-	public int values[] = { 26, 42, 22, 10, 25, /* Royalty */
-							45, 21, 12, 24, 15, /* Nobility */
-							6 /* Pawn */
-	};
-	
-	stackList bestMoves = new stackList();
-
-	public int BEST_STACKS = 5;
-	public int INT_MIN = -99;
 	
 	public void PushMove(Move move, int value)
 	{
@@ -3456,12 +3482,10 @@ public boolean IsGamePaused()
 //	  XEvent *event;
 //	  Window  window;
 //	} XawDrawingAreaCallbackStruct;
-//
-//	/* Reasons */
-int XawCR_EXPOSE = 1;
-int XawCR_INPUT  = 2;
-int XawCR_MOTION = 3;
-int XawCR_RESIZE = 4;
+
+
+
+
 
 //	 * This file defines everything to do with error-handling
 //	 * that is unique to 3Dc.
@@ -3472,15 +3496,6 @@ int XawCR_RESIZE = 4;
 //	    (at your option) any later version.
 //	    E-Mail: paulh@euristix.ie
 
-//	extern int n3DcErr;
-
-	static int E3DcSIMPLE	= 0;
-	private int E3DcLEVEL	= 1;
-	private int E3DcCHECK	= 2;
-	private int E3DcDIST	= 3;
-	static int E3DcINVIS	= 4;
-	static int E3DcBLOCK	= 5;
-	private int E3DcMOVED	= 6;
 
 //	 * All strings are designed to be printed thus:
 //	 *      printf("That piece %s.\n");
