@@ -33,6 +33,7 @@ public class threeD_Chess extends Activity {
 //	stackList bestMoves = new stackList();
 	private static Stack currentPossibleMoves = new Stack();
 	private static Stack aiMoves = new Stack();
+	private static Stack gameMoves = new Stack();
 
     private static final int MENU_HINT = 1;
     private static final int MENU_UNDO = 2;
@@ -1182,7 +1183,7 @@ public boolean IsGamePaused()
 //	      retval = FALSE;
 //	      n3DcErr = E3DcSIMPLE;
 //	    }
-//   //TODO: not sure what is happening here yet...
+//   //TODO: not sure what is happening here yet... check for check after promotion of pawn
 //	  if ( retval != FALSE )
 //	    {
 //	      if ( FakeMoveAndIsKingChecked(piece, xNew, yNew, zNew) == TRUE )
@@ -1219,115 +1220,127 @@ public boolean IsGamePaused()
 	  thisMove.xyzAfter.thisLevel = newLevel;
 
 	  //TODO: EnPassant handling
-	  if (moveType == EnPASSANT)
-	    {
-	      thisMove.nHadMoved = EnPASSANT;
-	      thisMove.pVictim = Board[zNew][yNew + (piece->bwSide == WHITE ?
-	                                             -1 : 1)][xNew];
-	    }
-	  else if (moveType == CASTLE)
-	    {
-	      thisMove.nHadMoved = CASTLE;
-	      thisMove.pVictim = Board[1][yNew][xNew < ((FILES-1)/2) ? 0 : FILES-1];
-	    }
-	  else if (moveType == PROMOTE)
-	    {
-	      thisMove.nHadMoved = PROMOTE;
-	      thisMove.pVictim = Board[zNew][yNew][xNew];
-	    }
-	  else
-	    {
-	      thisMove.nHadMoved = piece->bHasMoved;
-	      thisMove.pVictim = Board[zNew][yNew][xNew];
-	    }
+//	  if (moveType == EnPASSANT)
+//	    {
+//	      thisMove.nHadMoved = EnPASSANT;
+//	      thisMove.pVictim = Board[zNew][yNew + (piece->bwSide == WHITE ?
+//	                                             -1 : 1)][xNew];
+//	    }
+//	  else if (moveType == CASTLE)
+//	    {
+//	      thisMove.nHadMoved = CASTLE;
+//	      thisMove.pVictim = Board[1][yNew][xNew < ((FILES-1)/2) ? 0 : FILES-1];
+//	    }
+//	  else if (moveType == PROMOTE)
+//	    {
+//	      thisMove.nHadMoved = PROMOTE;
+//	      thisMove.pVictim = Board[zNew][yNew][xNew];
+//	    }
+//	  else
+//	    {
+//      thisMove.nHadMoved = piece->bHasMoved;
+//      thisMove.pVictim = Board[zNew][yNew][xNew];
+      thisMove.nHadMoved = piece.bHasMoved;
+      thisMove.pVictim = Board.getPieceAt(newLevel,newRank,newFile);
+//	    }
 
-	  StackPush(MoveStack, thisMove);
-	  StackPush(Board.getMoveStack(), thisMove); 
-	  currentPossibleMoves.push(thisMove);
+//	  StackPush(MoveStack, thisMove);
+      gameMoves.push(thisMove);
+//	  currentPossibleMoves.push(thisMove); .... oops wrong stack
 	  
-        ...O.k. time to impliment stack
-	  piece->bHasMoved = TRUE;
-	  PieceDisplay(piece, FALSE);
-	  Board[piece->xyzPos.zLevel][piece->xyzPos.yRank][piece->xyzPos.xFile] = NULL;
+//        ...O.k. time to impliment stack
+//	  piece->bHasMoved = TRUE;
+//	  PieceDisplay(piece, FALSE);
+//	  Board[piece->xyzPos.zLevel][piece->xyzPos.yRank][piece->xyzPos.xFile] = NULL;
 
-	  if (Board[zNew][yNew][xNew]) /* Kill victim */
+      piece.bHasMoved = TRUE;
+//	  PieceDisplay(piece, FALSE);
+	  Board.setPieceAt(thisMove.xyzBefore.thisLevel,thisMove.xyzBefore.thisRank,thisMove.xyzBefore.thisFile, null);
+
+//	  if (Board[zNew][yNew][xNew]) /* Kill victim */
+		  if (thisMove.pVictim != null) /* Kill victim */
 	    {
-	      PieceDisplay(Board[zNew][yNew][xNew], FALSE);
-	      Board[zNew][yNew][xNew]->bVisible = FALSE;
-	      Board[zNew][yNew][xNew] = NULL;
+			  Board.getPieceAt(newLevel,newRank,newFile).bVisible = FALSE;
+			  Board.setPieceAt(newLevel,newRank,newFile, null);
+//		      PieceDisplay(Board[zNew][yNew][xNew], FALSE);
+//		      Board[zNew][yNew][xNew]->bVisible = FALSE;
+//		      Board[zNew][yNew][xNew] = NULL;
 	    }
 
-	  Board[zNew][yNew][xNew] = piece;
-	  piece->xyzPos.xFile = xNew;
-	  piece->xyzPos.yRank = yNew;
-	  piece->xyzPos.zLevel = zNew;
-	  PieceDisplay(piece, TRUE);
-
-	  /* Now move any special pieces */
-	  if (moveType == CASTLE)
-	    {
-	      int xRookSrc, xRookDest;
-
-	      /* If xNew on right of board then move to left
-	       * else move to right */
-	      if (xNew > (FILES/2))
-	        {
-	          xRookSrc = FILES -1;
-	          xRookDest = xNew -1;
-	        }
-	      else
-	        {
-	          xRookSrc = 0;
-	          xRookDest = xNew +1;
-	        }
-
-	      PieceDisplay(Board[1][yNew][xRookSrc], FALSE);
-
-	      Board[1][yNew][xRookDest] = Board[1][yNew][xRookSrc];
-	      Board[1][yNew][xRookSrc] = NULL;
-
-	      (Board[1][yNew][xRookDest])->xyzPos.xFile = xRookDest;
-	      (Board[1][yNew][xRookDest])->bHasMoved = TRUE;
-
-	      PieceDisplay(Board[1][yNew][xRookDest], TRUE);
-	    }
-	  else if (moveType == EnPASSANT)
-	    {
-	      int yPawnSrc;
-
-	      /* If yNew is forward of half-way then victim is back one
-	       * else it is forward one */
-	      yPawnSrc = (yNew > (RANKS/2) ? yNew-1 : yNew+1);
-	      PieceDisplay(Board[zNew][yPawnSrc][xNew], FALSE);
-	      Board[zNew][yPawnSrc][xNew]->bVisible = FALSE;
-	      Board[zNew][yPawnSrc][xNew] = NULL;
-	    }
-
-	#if 0
-	  /* I think that this code is obsolete.. */
-	  /* Check that the king isn't in check */
-	  if (IsKingChecked( piece->bwSide ))
-	    {
-	      /* Oops, this move puts the king in check;
-	       * it's illegal, so undo it */
-	      PieceUndo();
-	      n3DcErr = E3DcCHECK;
-	      return FALSE;
-	    }
-	#endif
-
-	  /* If this bit is up with EnPASSANT and CASTLE, then the
-	   * promotion dialog pops up even though the promotion is
-	   * illegal.  A promotion doesn't affect whether or not
-	   * the opponent checks your king (even if you promote to
-	   * cannon or something, you're still in the same place as
-	   * the dissappearing pawn..) so it works out better all
-	   * around if we just do it here. */
-	  if (moveType == PROMOTE)
-	    {
-	      PieceDisplay(piece, FALSE);
-	      PiecePromote(piece); /* This function asks for promotion type, etc. */
-	    }
+//	  Board[zNew][yNew][xNew] = piece;
+//	  piece->xyzPos.xFile = xNew;
+//	  piece->xyzPos.yRank = yNew;
+//	  piece->xyzPos.zLevel = zNew;
+//	  PieceDisplay(piece, TRUE);
+	  Board.setPieceAt(newLevel,newRank,newFile, piece);
+	  piece.xyzPos = new Coord(newLevel,newRank,newFile);
+	  
+	  //still skipping special rules for now
+//	  /* Now move any special pieces */
+//	  if (moveType == CASTLE)
+//	    {
+//	      int xRookSrc, xRookDest;
+//
+//	      /* If xNew on right of board then move to left
+//	       * else move to right */
+//	      if (xNew > (FILES/2))
+//	        {
+//	          xRookSrc = FILES -1;
+//	          xRookDest = xNew -1;
+//	        }
+//	      else
+//	        {
+//	          xRookSrc = 0;
+//	          xRookDest = xNew +1;
+//	        }
+//
+//	      PieceDisplay(Board[1][yNew][xRookSrc], FALSE);
+//
+//	      Board[1][yNew][xRookDest] = Board[1][yNew][xRookSrc];
+//	      Board[1][yNew][xRookSrc] = NULL;
+//
+//	      (Board[1][yNew][xRookDest])->xyzPos.xFile = xRookDest;
+//	      (Board[1][yNew][xRookDest])->bHasMoved = TRUE;
+//
+//	      PieceDisplay(Board[1][yNew][xRookDest], TRUE);
+//	    }
+//	  else if (moveType == EnPASSANT)
+//	    {
+//	      int yPawnSrc;
+//
+//	      /* If yNew is forward of half-way then victim is back one
+//	       * else it is forward one */
+//	      yPawnSrc = (yNew > (RANKS/2) ? yNew-1 : yNew+1);
+//	      PieceDisplay(Board[zNew][yPawnSrc][xNew], FALSE);
+//	      Board[zNew][yPawnSrc][xNew]->bVisible = FALSE;
+//	      Board[zNew][yPawnSrc][xNew] = NULL;
+//	    }
+//
+//	#if 0
+//	  /* I think that this code is obsolete.. */
+//	  /* Check that the king isn't in check */
+//	  if (IsKingChecked( piece->bwSide ))
+//	    {
+//	      /* Oops, this move puts the king in check;
+//	       * it's illegal, so undo it */
+//	      PieceUndo();
+//	      n3DcErr = E3DcCHECK;
+//	      return FALSE;
+//	    }
+//	#endif
+//
+//	  /* If this bit is up with EnPASSANT and CASTLE, then the
+//	   * promotion dialog pops up even though the promotion is
+//	   * illegal.  A promotion doesn't affect whether or not
+//	   * the opponent checks your king (even if you promote to
+//	   * cannon or something, you're still in the same place as
+//	   * the dissappearing pawn..) so it works out better all
+//	   * around if we just do it here. */
+//	  if (moveType == PROMOTE)
+//	    {
+//	      PieceDisplay(piece, FALSE);
+//	      PiecePromote(piece); /* This function asks for promotion type, etc. */
+//	    }
 //
 	  return TRUE;
 	}
