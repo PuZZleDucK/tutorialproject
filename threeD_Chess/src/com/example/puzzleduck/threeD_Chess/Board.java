@@ -78,4 +78,9 @@ public class Board {
 					//[level][left-right][fwd-bk] -- zNewLevel, yNewRank, xNewFile    //[level][left-right_file][fwd-bk_rank]
 		return Board[newLevel][newRank][newFile];
 	}
+
+	public void setPieceAt(int newLevel, int newRank, int newFile, Piece object) {
+		Board[newLevel][newRank][newFile] = object;
+		
+	}
 }
