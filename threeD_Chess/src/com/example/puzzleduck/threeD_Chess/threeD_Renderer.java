@@ -290,7 +290,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			setState(STATE_RUNNING);
 		}
 
-		boolean doKeyDown(int keyCode, KeyEvent msg) {
+		public boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
 					                switch(keyCode)
 					        		{
@@ -336,22 +336,22 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Handles a key-up event.
 		boolean doKeyUp(int keyCode, KeyEvent msg) {
 			boolean handled = false;
-//
-//			synchronized (mSurfaceHolder) {
-//				if (mMode == STATE_RUNNING) {
-//					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
-//							|| keyCode == KeyEvent.KEYCODE_SPACE) {
-//						//	                        setFiring(false);
-//						handled = true;
-//					} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-//							|| keyCode == KeyEvent.KEYCODE_Q
-//							|| keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-//							|| keyCode == KeyEvent.KEYCODE_W) {
-//						//	                        mRotating = 0;
-//						handled = true;
-//					}
-//				}
-//			}
+
+			synchronized (mSurfaceHolder) {
+				if (mMode == STATE_RUNNING) {
+					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+							|| keyCode == KeyEvent.KEYCODE_SPACE) {
+						//	                        setFiring(false);
+						handled = true;
+					} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+							|| keyCode == KeyEvent.KEYCODE_Q
+							|| keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+							|| keyCode == KeyEvent.KEYCODE_W) {
+						//	                        mRotating = 0;
+						handled = true;
+					}
+				}
+			}
 			return handled;
 		}
 
@@ -678,4 +678,25 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	
+	//	     * Standard override to get key-press events.
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent msg) {
+		//moving to new key handler above.
+//        Context context = getApplicationContext();
+
+		return thread.doKeyDown(keyCode, msg);
+	}
+
+
+	//	     * Standard override for key-up. We actually care about these, so we can
+	//	     * turn off the engine or stop rotating.
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent msg) {
+		return thread.doKeyUp(keyCode, msg);
+	}
+	
+	
+	
+	
 }
