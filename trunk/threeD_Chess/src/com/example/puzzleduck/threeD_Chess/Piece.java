@@ -210,7 +210,7 @@ public class Piece {
 		    } /* End cannon */
 		  else if (this.thisType == Piece.pawn) /* Don't bother searching for en passant */
 		    {
-//			  not sure what this was meant to do... removing
+//			  not sure what this was meant to do... removing:   ohhh, got it now moving in positive dir for white and negative for black
 //		      currentY_Rank = ((this.bwSide == Piece.WHITE) ? 1 : -1);
 
 			  //not sure why starting rank is origin - 3... because I cut and pasted from elsewhere...
@@ -219,18 +219,19 @@ public class Piece {
 			  
 //			    y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
 
-			  for (currentFile = threeD_Chess.MAX(0, originFile-1); currentFile < threeD_Chess.MIN(threeD_Chess.FILES, originFile+2); ++currentFile)
+			  for (currentFile = threeD_Chess.MAX(0, originFile); currentFile < threeD_Chess.MIN(threeD_Chess.FILES, originFile+2); ++currentFile)
 			    
 			  
 		        {
 		          /* Due to the complexity of the conditional this time,
 		           * I've opted for aborting when illegal instead of
 		           * proceeding when legal. */
-		          if ((currentFile == originFile) && (board.getBoard()[originLevel][originRank][currentFile] != threeD_Chess.NULL))
+		          if ((currentFile == originFile) && (board.getBoard()[originLevel][originRank][currentFile] != null))
 		            continue;
 
+		          //something fishy here!!!
 		          if ( (currentFile != originFile) && 
-		        		  ((board.getBoard()[originLevel][originRank][currentFile] == threeD_Chess.NULL) || ((board.getBoard()[originLevel][originRank][currentFile]).thisSide != enemyColor)) )
+		        		  ((board.getBoard()[originLevel][originRank][currentFile] == null) || ((board.getBoard()[originLevel][originRank][currentFile]).thisSide != enemyColor)) )
 		          {
 		            continue;
 		          }
