@@ -317,7 +317,8 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					);
 				if(thisPiece != null)
 				{
-					thisPiece.FindAllMoves(threeD_Chess.Board);
+					threeD_Chess.Board.setPossibleMoveStack(thisPiece.FindAllMoves(threeD_Chess.Board));
+//					thisPiece.FindAllMoves(threeD_Chess.Board);
 					//then flag possible moves on display
 				}
 

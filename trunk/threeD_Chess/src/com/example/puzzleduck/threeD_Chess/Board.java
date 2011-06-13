@@ -3,7 +3,7 @@ package com.example.puzzleduck.threeD_Chess;
 import java.util.Stack;
 
 public class Board {
-	private Stack MoveStack;
+	private Stack<Move> possibleMoveStack;
 	private Piece[][][] Board; //[Level][Rank][File]
 	private Piece[][] Muster;
 	private int bwToMove;
@@ -17,12 +17,12 @@ public class Board {
 		TitleCount = titleCount;
 	}
 
-	public Stack getMoveStack() {
-		return MoveStack;
+	public Stack<Move> getPossibleMoveStack() {
+		return possibleMoveStack;
 	}
 
-	public void setMoveStack(Stack moveStack) {
-		MoveStack = moveStack;
+	public void setPossibleMoveStack(Stack<Move> moveStack) {
+		possibleMoveStack = moveStack;
 	}
 
 	public Piece[][][] getBoard() {

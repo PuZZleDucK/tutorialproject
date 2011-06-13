@@ -130,7 +130,8 @@ public class Piece {
 		{
 			for (currentFile = 0; currentFile < threeD_Chess.LEVELS; currentFile++)
 			{
-				if (currentFile == originLevel)
+//				if (currentFile == originLevel) // probably should be f or l not a mix of both
+				if (currentFile == originFile)
 					continue;
 
 				for (currentRank = threeD_Chess.MAX( 0, originRank -3 ); currentRank < threeD_Chess.MIN( threeD_Chess.RANKS, originRank +4 ); currentRank++)
@@ -140,7 +141,8 @@ public class Piece {
 
 					for (currentLevel = threeD_Chess.MAX( 0, originFile -3 ); currentLevel < threeD_Chess.MIN( threeD_Chess.FILES, originFile +4 ); currentLevel++)
 					{
-						if (currentLevel == originFile)
+//						if (currentLevel == originFile)
+						if (currentLevel == originLevel)
 							continue;
 
 						if (threeD_Chess.ABS(originFile-currentLevel) == threeD_Chess.ABS(originRank-currentRank))
@@ -172,7 +174,8 @@ public class Piece {
 		{
 			for (currentFile = 0; currentFile < threeD_Chess.LEVELS; currentFile++)
 			{
-				if (currentFile == originLevel)
+//				if (currentFile == originLevel)
+				if (currentFile == originFile)
 					continue;
 
 				for (currentRank = threeD_Chess.MAX( 0, originRank -3 ); currentRank < threeD_Chess.MIN( threeD_Chess.RANKS, originRank +4 ); currentRank++)
@@ -182,7 +185,8 @@ public class Piece {
 
 					for (currentLevel = threeD_Chess.MAX( 0, originFile -3 ); currentLevel < threeD_Chess.MIN( threeD_Chess.FILES, originFile +4 ); currentLevel++)
 					{
-						if (currentLevel == originFile)
+//						if (currentLevel == originFile)
+						if (currentLevel == originLevel)
 							continue;
 
 						if ((threeD_Chess.ABS(originFile-currentLevel) == threeD_Chess.ABS(originRank-currentRank)) ||
@@ -219,14 +223,13 @@ public class Piece {
 
 			//			    y = ((this.bwSide == Piece.WHITE) ? 1 : -1);
 
-			for (currentFile = threeD_Chess.MAX(0, originFile); currentFile < threeD_Chess.MIN(threeD_Chess.FILES, originFile+2); ++currentFile)
-
-
+			for (currentRank = threeD_Chess.MAX(0, originRank); currentRank < threeD_Chess.MIN(threeD_Chess.FILES, originRank+2); ++currentRank)
 			{
 				/* Due to the complexity of the conditional this time,
 				 * I've opted for aborting when illegal instead of
 				 * proceeding when legal. */
-				if ((currentFile == originFile) && (board.getBoard()[originLevel][originRank][currentFile] != null))
+				//abort: 
+				if ((currentRank == originRank) && (board.getBoard()[originLevel][originRank][currentFile] != null))
 					continue;
 
 				//something fishy here!!!
@@ -342,7 +345,7 @@ public class Piece {
 		//		{
 		if (defender == board.getSQUARE_EMPTY())
 			return threeD_Chess.TRUE;
-		if (defender == board.getSQUARE_INVALID())
+		if (defender == Board.getSQUARE_INVALID())
 		{
 			threeD_Chess.n3DcErr = threeD_Chess.E3DcSIMPLE;
 			return threeD_Chess.FALSE;
