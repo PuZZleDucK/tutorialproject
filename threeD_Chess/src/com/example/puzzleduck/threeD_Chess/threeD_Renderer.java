@@ -1,5 +1,8 @@
 package com.example.puzzleduck.threeD_Chess;
 
+import java.util.Iterator;
+import java.util.Stack;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -100,6 +103,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+		};
+		float[] altMatrix = new float[] {
+				//   R     G     B     A     X
+				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+				/* G */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
+				/* B */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
 		};
 
@@ -395,7 +405,25 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						{
 							noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
 						}
+						
+						//possible moves
+						// check and 	highlight altMatrix 
+						Stack<Move> possibleMoves = threeD_Chess.Board.getPossibleMoveStack();
+						
+						if (possibleMoves != null) 
+						{
+							Iterator<Move> movesIterator = possibleMoves.iterator();
+							while (movesIterator.hasNext()) {
+								Move currentMove = movesIterator.next();
+								if (thisLevel == currentMove.xyzAfter.getLevel()
+										&& thisRank == currentMove.xyzAfter.getRank()
+										&& thisFile == currentMove.xyzAfter.getFile()) 
+								{
+									noneImage.setColorFilter(new ColorMatrixColorFilter(altMatrix));
+								}
 
+							}
+						}
 						noneImage.draw(canvas);
 
 						if(threeD_Chess.Board.getBoard()[thisLevel][thisRank][thisFile] != null)//[Level][Rank][File]
