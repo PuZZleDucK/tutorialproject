@@ -75,12 +75,12 @@ public class Board {
 
 	public Piece getPieceAt(int newLevel, int newRank, int newFile) {//[Level][Rank][File]
 		// from renderer: [thisLevel][thisRank][thisFile]... forget the rest of this crap:
-					//[level][left-right][fwd-bk] -- zNewLevel, yNewRank, xNewFile    //[level][left-right_file][fwd-bk_rank]
+		//[level][left-right][fwd-bk] -- zNewLevel, yNewRank, xNewFile    //[level][left-right_file][fwd-bk_rank]
 		return Board[newLevel][newRank][newFile];
 	}
 
 	public void setPieceAt(int newLevel, int newRank, int newFile, Piece object) {
 		Board[newLevel][newRank][newFile] = object;
-		
+
 	}
 }

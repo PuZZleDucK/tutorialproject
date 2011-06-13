@@ -11,7 +11,7 @@ public class Star
 	private static final int BYTE_SIZE = 4;
 	public int r, g, b;
 	public float distance, angle;
-	
+
 	private FloatBuffer vertexBuffer, textureBuffer;
 
 	private float vertices[] = {
@@ -27,7 +27,7 @@ public class Star
 			0.0f, 1.0f, 
 			1.0f, 1.0f,
 	};
-	
+
 	public Star()
 	{
 		ByteBuffer bBuff = ByteBuffer.allocateDirect(vertices.length * BYTE_SIZE);
@@ -41,10 +41,10 @@ public class Star
 		textureBuffer = bBuff.asFloatBuffer();
 		textureBuffer.put(texture);
 		textureBuffer.position(0);
-		
-		
+
+
 	}
-	
+
 	public void draw(GL10 gl)
 	{
 		//enable buffers
@@ -54,7 +54,7 @@ public class Star
 		//point to buffers
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-		
+
 		//draw triangles
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length/3);
 
