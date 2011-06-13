@@ -15,21 +15,21 @@ public class Stars
 {
 	private int number = 1;
 	private Star[] stars;
-	
+
 	private Random rng = new Random();
-	
+
 	private float zoom = -15.0f;
 	private float tilt = 90.0f;
 	private float spin;
-	
+
 	private int[] textures = new int[1];
-	
+
 	public Stars(int number)
 	{
 		this.number = number;
-		
+
 		stars = new Star[number];
-		
+
 		for(int i = 0; i < number; i++)
 		{
 			stars[i] = new Star();
@@ -38,11 +38,11 @@ public class Stars
 			stars[i].r = rng.nextInt(256);
 			stars[i].g = rng.nextInt(256);
 			stars[i].b = rng.nextInt(256);
-			
+
 		}
 	}
-	
-	
+
+
 	public void draw(GL10 gl, boolean twinkle)
 	{
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
@@ -55,26 +55,26 @@ public class Stars
 			gl.glTranslatef(0.0f, 0.0f, zoom);
 			gl.glRotatef(tilt, 1.0f, 0.0f, 0.0f);
 			gl.glRotatef(thisStar.angle, 0.0f, 1.0f, 0.0f);
-			
+
 			gl.glTranslatef(thisStar.distance*3, 0.0f, 0.0f);
 			gl.glRotatef(-thisStar.angle, 0.0f, 1.0f, 0.0f);
 			gl.glRotatef(-tilt, 1.0f, 0.0f, 0.0f);
-			
+
 			if(twinkle)
 			{
 				gl.glColor4f( (float)stars[((number-i)-1)].r/255, 
-							  (float)stars[((number-i)-1)].g/255, 
-							  (float)stars[((number-i)-1)].b/255, 1.0f);
+						(float)stars[((number-i)-1)].g/255, 
+						(float)stars[((number-i)-1)].b/255, 1.0f);
 				thisStar.draw(gl);
-				
-							  
+
+
 			}
-			
+
 			gl.glRotatef(spin, 0.0f, 0.0f, 1.0f);
 			gl.glColor4f((float)thisStar.r/255, (float)thisStar.g/255, (float)thisStar.b/255, 0.5f);
-			
+
 			thisStar.draw(gl);
-			
+
 			spin += 0.001f;
 			thisStar.angle += (float) i/number;
 			thisStar.distance -= 0.005f;
@@ -85,22 +85,22 @@ public class Stars
 				thisStar.g = rng.nextInt(256);
 				thisStar.b = rng.nextInt(256);
 			}
-			
-			
+
+
 		}
-		
+
 	}
-	
-	
+
+
 	public void loadGLTexture(GL10 gl, Context context, int type) {
-//HERE....    need to do graphic selection
-		
-		
-		
-		
+		//HERE....    need to do graphic selection
+
+
+
+
 		InputStream inStream = context.getResources().openRawResource(R.drawable.k_abbey);
 		Bitmap bitmap = null;
-		
+
 		try
 		{
 			bitmap = BitmapFactory.decodeStream(inStream);
@@ -111,9 +111,9 @@ public class Stars
 				inStream.close();
 				inStream = null;
 			}catch(IOException e){}
-			
+
 		}
-		
+
 		//gen tex and bind to array
 		gl.glGenTextures(1, textures, 0);
 
@@ -122,10 +122,10 @@ public class Stars
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		
+
 		bitmap.recycle();
-		
+
 	}	
-	
+
 
 }

@@ -15,12 +15,12 @@ public class Move {
 	//  int nHadMoved;
 	public boolean nHadMoved;
 	//} Move;	
-	
+
 	public Move()
 	{
 		xyzBefore = new Coord();
 		xyzAfter = new Coord();
 	}
 
-	
+
 }
