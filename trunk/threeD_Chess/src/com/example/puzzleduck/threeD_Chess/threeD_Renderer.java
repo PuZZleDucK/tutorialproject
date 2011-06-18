@@ -70,47 +70,48 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 		float[] redMatrix = new float[] {
 				//   R     G     B     A     X
-				/* R */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* R */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 
 		float[] blueMatrix = new float[] {
 				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 
-		float[] blackMatrix = new float[] {
+		float[] blackishMatrix = new float[] {
 				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 0.5f, 0.0f,
 		};
 		float[] whiteMatrix = new float[] {
 				//   R     G     B     A     X
-				/* R */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-				/* G */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-				/* B */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* R */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 		float[] greenMatrix = new float[] {
 				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* G */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
-		float[] altMatrix = new float[] {
+		//this is cyan --v
+		float[] cyanMatrix = new float[] {
 				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				/* G */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
-				/* B */	0.0f, 0.0f, 0.0f, 4.0f, 0.0f,
-				/* A */	0.0f, 0.0f, 0.0f, 5.0f, 0.0f,
+				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 
 
@@ -370,8 +371,9 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
 			//	            canvas.save(); //before rotation/transform
-			int x = 16;
-			int y = 16;
+			int x = 18;//seems to be ignored
+			int y = 18;
+//			fail2
 			int totalXOffset = 0;
 			int totalYOffset = 0; 
 			//	            canvas.restore();
@@ -395,7 +397,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
 						}else
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(blackMatrix));
+							noneImage.setColorFilter(new ColorMatrixColorFilter(blackishMatrix));
 						}
 						//selection
 						//check for selected square and highlight "green"
@@ -419,7 +421,7 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										&& thisRank == currentMove.xyzAfter.getRank()
 										&& thisFile == currentMove.xyzAfter.getFile()) 
 								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(altMatrix));
+									noneImage.setColorFilter(new ColorMatrixColorFilter(cyanMatrix));
 								}
 
 							}
@@ -620,13 +622,13 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	//	    /** The thread that actually draws the animation */
 	private threeD_Thread thread;
 
-	private int levelOffsetX = 0;
-	private int levelOffsetY = 16*8;
-	private int levelSplit = 16;
-	private int rankOffsetX = 16;
-	private int rankOffsetY = 16;
-	private int fileOffsetX = 16;
-	private int fileOffsetY = 16;
+	private int levelOffsetX = 80;
+	private int levelOffsetY = 18*8;
+	private int levelSplit = 18;
+	private int rankOffsetX = 18;
+	private int rankOffsetY = 18;
+	private int fileOffsetX = 18;
+	private int fileOffsetY = 18;
 
 	public threeD_Renderer(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -650,11 +652,11 @@ class threeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		return thread;
 	}
 
-	//	public boolean onTouch(View v, MotionEvent event) {
-	/////does not seem to be attached
-	//
-	//	    return true;
-	//	}
+		public boolean onTouch(View v, MotionEvent event) {
+	///does not seem to be attached
+//			fail
+		    return true;
+		}
 
 
 	//threeD_Chess.DoMain3DcLoop();
