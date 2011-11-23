@@ -240,7 +240,6 @@ public class threeD_Chess extends Activity {
 	private static final int EnPASSANT = 3;
 	private static final int PROMOTE = 4;
 
-	private static final int TITLES = 11;
 	static final int PIECES = 48;
 	private static final int COLOURS = 2;
 
@@ -425,31 +424,14 @@ public class threeD_Chess extends Activity {
 		{    	  
 			//        if (((retry == FALSE) &&    GenMove(computer, &automove) == TRUE) ||
 			//        ((retry == TRUE)  && GenAltMove(computer, &automove) == TRUE))
-			if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
-					((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
+			//dropping alt move for now... this is plenty messy enough :p
+			// not sure i need retry, but i'll leave it for now
+//			if (((retry == FALSE) &&    GenMove(computer, automove) == TRUE) ||
+//					((retry == TRUE)  && GenAltMove(computer, automove) == TRUE))
+			automove = GenMove(computer);
+			if(automove != null)
 			{
-				if ( automove == NULL )
-				{
-					/*
-					 * Give up, it's too hard for me..
-					 */
-					//                  PauseGame();
-					/* Can we delay after this? */
-					//                  Err3Dc(firstGFX, "Gaah!  I give up.", TRUE);
-					//                  XFlush( XtDisplay( firstGFX->mainWindow ));
-					FinishGame((computer == Piece.BLACK) ? Piece.WHITE : Piece.BLACK);
-				}
-				///*** This assertion fails with stack size of 1---or at least it used to */
-				//            else if ( (Board[ automove->xyzBefore.zLevel ]
-				//            [ automove->xyzBefore.yRank ]
-				//            [ automove->xyzBefore.xFile ] == NULL ) ||
-				//     (!CHECK( PieceMove( Board[ automove->xyzBefore.zLevel ]
-				//                              [ automove->xyzBefore.yRank ]
-				//                              [ automove->xyzBefore.xFile ],
-				//                        automove->xyzAfter.xFile,
-				//                        automove->xyzAfter.yRank,
-				//                        automove->xyzAfter.zLevel ) )) )
-				else if ( (Board.getBoard()[ automove.xyzBefore.thisLevel ]
+				if ( (Board.getBoard()[ automove.xyzBefore.thisLevel ]
 				                             [ automove.xyzBefore.thisRank ]
 				                               [ automove.xyzBefore.thisFile ] == NULL ) ||
 				                               ( PieceMove( Board.getBoard()[ automove.xyzBefore.thisLevel ]
@@ -480,6 +462,10 @@ public class threeD_Chess extends Activity {
 					Board.setBwToMove(((computer == Piece.WHITE) ? Piece.BLACK : Piece.WHITE));
 				} /* End 'found computer move' */
 			} /* Still finding computer's move? */
+			else
+			{
+//			 * Give up, it's too hard for me..
+			}
 		} /* End computer's move */
 
 		//      if (XtAppPending(XtWidgetToApplicationContext(firstGFX->mainWindow)))
@@ -3248,15 +3234,16 @@ public class threeD_Chess extends Activity {
 		return rating;
 	}
 
-	public boolean GenMove( int bwSide, Move ret)
+	//time to java'ize
+	public Move GenMove( int bwSide)
 	{
 		Stack moves;
 		int pieceIdx = 0;
 		Move thisMove;
 
 		/* First clear out any old moves */
-		if (pieceIdx == 0)
-		{
+//		if (pieceIdx == 0)
+//		{
 			int i;
 
 			for ( i = 0; (bestMoves.stacks[i] != NULL) && (i < BEST_STACKS); ++i)
@@ -3265,7 +3252,8 @@ public class threeD_Chess extends Activity {
 				bestMoves.stacks[i] = null;
 				bestMoves.ratings[i] = INT_MIN;
 			}
-		}
+
+//		}
 
 		if ( Board.getMuster()[bwSide][pieceIdx].bVisible )
 		{
@@ -3273,10 +3261,6 @@ public class threeD_Chess extends Activity {
 			moves = Board.getMuster()[bwSide][pieceIdx].FindAllMoves(Board);
 			if (moves != null)
 			{
-				//	#         ifdef NOTDEF
-				//	          StackDump( moves );
-				//	#         endif /* DEBUG */
-
 				//	          while ( (thisMove = StackPop( )) != null )
 				while ( (thisMove = (Move)aiMoves.pop()) != null )
 				{
@@ -3289,134 +3273,77 @@ public class threeD_Chess extends Activity {
 		if (++pieceIdx == PIECES)
 		{
 			FixMoves();
-			ret = PopMove();
+//			ret = PopMove();
 			pieceIdx = 0;
-			return TRUE;
+			return PopMove();
 		}
-
-		ret = null;
-		return FALSE;
+		return null;
 	}
+//	public boolean GenMove( int bwSide, Move ret)
+//	{
+//		Stack moves;
+//		int pieceIdx = 0;
+//		Move thisMove;
+//
+//		/* First clear out any old moves */
+//		if (pieceIdx == 0)
+//		{
+//			int i;
+//
+//			for ( i = 0; (bestMoves.stacks[i] != NULL) && (i < BEST_STACKS); ++i)
+//			{
+//				StackDelete(bestMoves.stacks[i]);
+//				bestMoves.stacks[i] = null;
+//				bestMoves.ratings[i] = INT_MIN;
+//			}
+//		}
+//
+//		if ( Board.getMuster()[bwSide][pieceIdx].bVisible )
+//		{
+//			//	      moves = FindAllMoves( Board.getMuster()[bwSide][pieceIdx] );
+//			moves = Board.getMuster()[bwSide][pieceIdx].FindAllMoves(Board);
+//			if (moves != null)
+//			{
+//				//	#         ifdef NOTDEF
+//				//	          StackDump( moves );
+//				//	#         endif /* DEBUG */
+//
+//				//	          while ( (thisMove = StackPop( )) != null )
+//				while ( (thisMove = (Move)aiMoves.pop()) != null )
+//				{
+//					PushMove( thisMove, RateMove( thisMove, bwSide ) );
+//				}
+//				StackDelete(moves);
+//			}
+//		}
+//
+//		if (++pieceIdx == PIECES)
+//		{
+//			FixMoves();
+//			ret = PopMove();
+//			pieceIdx = 0;
+//			return TRUE;
+//		}
+//
+//		ret = null;
+//		return FALSE;
+//	}
 
 
 	//	/* This tries again for a move in case the last one failed for some reason */
-	boolean GenAltMove(int bwSide, Move ret)
-	{
-		ret = PopMove();
-		return TRUE;
-	}
-
-
-	//	 * This file is supposed to get over any machine-dependent
-	//	 * problems.  Some, like ulimit(2) are fixed in the kernel (usually);
-	//	 * the rest are up to us users to work out
-	//	    Copyright (C) 1995  Paul Hicks
-	//	#define random() rand()
-	//	#define srandom(a) srand(a)
-
-	//	#define XtSetLanguageProc(a,b,c) 
-
-	//	/* DrawingArea Private header file */
-	//	/* Copyright 1990, David Nedde
-
-	//	/* The drawing area's contribution to the class record */
-	//	typedef struct _DrawingAreaClassPart {
-	//	  int ignore;
-	//	} DrawingAreaClassPart;
-	//
-	//	/* Drawing area's full class record */
-	//	typedef struct _DrawingAreaClassRec {
-	//	    CoreClassPart	core_class;
-	//	    SimpleClassPart	simple_class;
-	//	    DrawingAreaClassPart drawing_area;
-	//	} DrawingAreaClassRec;
-	//
-	//	extern DrawingAreaClassRec drawingAreaClassRec;
-	//
-	//	/* Resources added and status of drawing area widget */
-	//	typedef struct _XsDrawingAreaPart {
-	//	  /* Resources */
-	//	  XtCallbackList	expose_callback;
-	//	  XtCallbackList	input_callback;
-	//	  XtCallbackList	motion_callback;
-	//	  XtCallbackList	resize_callback;
-	//	} DrawingAreaPart;
-	//
-	//
-	//	/* Drawing area's instance record */
-	//	typedef struct _DrawingAreaRec {
-	//	    CorePart         core;
-	//	    SimplePart	     simple;
-	//	    DrawingAreaPart  drawing_area;
-	//	} DrawingAreaRec;
-	//
-	//	#endif /* _XawDrawingAreaP_h */
-
-	//	/* DrawingA.h - Public Header file */
-	//	/* Copyright 1990, David Nedde
-	//	 * Permission to use, copy, modify, and distribute this
-	//	 * software and its documentation for any purpose and without fee
-	//	 * is granted provided that the above copyright notice appears in all copies.
-	//	 * It is provided "as is" without express or implied warranty.
-	//	 */
-	//	/* Define widget's class pointer and strings used to specify resources */
-
-	//	#define XADCS XawDrawingAreaCallbackStruct 
-	//
-	//	/* Resources ADDED to label widget:
-	//	 Name		     Class		RepType		Default Value
-	//	 ----		     -----		-------		-------------
-	//	 exposeCallback	     Callback		Pointer		NULL
-	//	 inputCallback	     Callback		Pointer		NULL
-	//	 motionCallback	     Callback		Pointer		NULL
-	//	 resizeCallback	     Callback		Pointer		NULL
-	//	*/
-
-	//public static void setTITLES(int tITLES) {
-	//		TITLES = tITLES;
-	//	}
-
-
-
-	public static int getTITLES() {
-		return TITLES;
-	}
-
-
-	//	extern WidgetClass drawingAreaWidgetClass;
-	//
-	//	typedef struct _DrawingAreaClassRec *DrawingAreaWidgetClass;
-	//	typedef struct _DrawingAreaRec	    *DrawingAreaWidget;
-	//
-	//	/* Resource strings */
-	//	#define XtNexposeCallback	"exposeCallback"
-	//	#define XtNinputCallback	"inputCallback"
-	//	#define XtNmotionCallback	"motionCallback"
-	//	#define XtNresizeCallback	"resizeCallback"
-	//
-	//	typedef struct _XawDrawingAreaCallbackStruct {
-	//	  int	  reason;
-	//	  XEvent *event;
-	//	  Window  window;
-	//	} XawDrawingAreaCallbackStruct;
+//	Move GenAltMove(int bwSide)
+//	{
+////		ret = PopMove();
+////		return TRUE;
+//		
+//		return PopMove();
+//	}
 
 
 
 
-
-	//	 * This file defines everything to do with error-handling
-	//	 * that is unique to 3Dc.
-	//	    Copyright (C) 1995  Paul Hicks
-	//	    This program is free software; you can redistribute it and/or modify
-	//	    it under the terms of the GNU General Public License as published by
-	//	    the Free Software Foundation; either version 2 of the License, or
-	//	    (at your option) any later version.
-	//	    E-Mail: paulh@euristix.ie
-
-
-	//	 * All strings are designed to be printed thus:
-	//	 *      printf("That piece %s.\n");
-	//	/* To be defined by interface */
-	//	extern int Err3Dc(const GfxInfo *, const char *, const Boolean);
+//	public static int getTITLES() {
+//		return TITLES;
+//	}
 
 }
