@@ -4,6 +4,8 @@ import java.util.Stack;
 
 public class Piece {
 
+	private static final int TITLES = 11;
+	
 	public static final int c_select = -1; //used for signaling selected square
 	public static final int c_king = 0;
 	public static final int c_queen = 1;
@@ -518,10 +520,10 @@ public class Piece {
 		//		{
 		int i, count = 0;
 		//		  for (i = 0; i != name && i < TITLES; ++i)
-		for (i = 0; i != title && i < threeD_Chess.getTITLES(); ++i)
+		for (i = 0; i != title && i < TITLES; ++i)
 			count += board.getTitleCount()[i];
 
-		if (i == threeD_Chess.getTITLES())
+		if (i == TITLES)
 			return 47; /* 47 is a hack; it is a legal array index that is only
 			 * valid for pawns */
 
