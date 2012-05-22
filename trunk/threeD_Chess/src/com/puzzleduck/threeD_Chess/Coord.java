@@ -1,4 +1,4 @@
-package com.example.puzzleduck.threeD_Chess;
+package com.puzzleduck.threeD_Chess;
 
 public class Coord {
 	//typedef struct
