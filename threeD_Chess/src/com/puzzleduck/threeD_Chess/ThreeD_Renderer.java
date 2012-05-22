@@ -408,17 +408,12 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			Log.d("chessDraw","chessDraw ::: v marg        = " + widthMargin);
 
 			int levelOffsetX = cellSize*8;
-//			int levelOffsetY = widthMargin;
-//			int levelSplit = widthMargin;
-//			int rankOffsetX = heightMargin;
-//			int rankOffsetY = widthMargin;
-//			int fileOffsetX = heightMargin;
-//			int fileOffsetY = widthMargin;
 
-			
 			//	            // so this is like clearing the screen.
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
-			//	            canvas.save(); //before rotation/transform
+			
+			
+			Drawable cellBackImage;
 			
 			
 			
@@ -433,35 +428,29 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				{
 					for (int thisFile = 0; thisFile < ThreeD_ChessActivity.FILES; ++thisFile)
 					{
-						totalXOffset = heightMargin + (thisFile*cellSize) + (thisLevel*levelOffsetX);
-						totalYOffset = widthMargin + (thisRank*cellSize) + (thisLevel*widthMargin);// + thisLevel*levelSplit;
-						noneImage.setBounds(
-								totalYOffset,
-								totalXOffset, 
-								cellSize+totalYOffset, 
-								cellSize+totalXOffset);								
+						
 
 						//background
 						if( (thisRank + thisFile) % 2 == 0 )
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
+							cellBackImage = getResources().getDrawable(R.drawable.metal_light);
+							//cellBackImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
 						}else
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(blackishMatrix));
+							cellBackImage = getResources().getDrawable(R.drawable.metal_dark);
+							//cellBackImage.setColorFilter(new ColorMatrixColorFilter(blackishMatrix));
 						}
-						//selection
 						//check for selected square and highlight "green"
 						if(thisLevel == ThreeD_ChessActivity.selectedSquare.xyzPos.thisLevel && 
 								thisRank == ThreeD_ChessActivity.selectedSquare.xyzPos.thisRank &&
 								thisFile == ThreeD_ChessActivity.selectedSquare.xyzPos.thisFile)
 						{
-							noneImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
+							//cellBackImage.setColorFilter(new ColorMatrixColorFilter(greenMatrix));
+							cellBackImage = getResources().getDrawable(R.drawable.metal_green);
+							
 						}
-						
-						//possible moves
-						// check and 	highlight altMatrix 
+						// check for possible moves and 	highlight altMatrix 
 						Stack<Move> possibleMoves = ThreeD_ChessActivity.Board.getPossibleMoveStack();
-						
 						if (possibleMoves != null) 
 						{
 							Iterator<Move> movesIterator = possibleMoves.iterator();
@@ -471,12 +460,31 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 										&& thisRank == currentMove.xyzAfter.getRank()
 										&& thisFile == currentMove.xyzAfter.getFile()) 
 								{
-									noneImage.setColorFilter(new ColorMatrixColorFilter(cyanMatrix));
+									//cellBackImage.setColorFilter(new ColorMatrixColorFilter(cyanMatrix));
+									cellBackImage = getResources().getDrawable(R.drawable.metal_blue);
+									
 								}
 
 							}
 						}
-						noneImage.draw(canvas);
+						
+						
+						
+						totalXOffset = heightMargin + (thisFile*cellSize) + (thisLevel*levelOffsetX);
+						totalYOffset = widthMargin + (thisRank*cellSize) + (thisLevel*widthMargin);// + thisLevel*levelSplit;
+						cellBackImage.setBounds(
+								totalYOffset,
+								totalXOffset, 
+								cellSize+totalYOffset, 
+								cellSize+totalXOffset);								
+
+
+						//cellBackImage.setColorFilter(null);
+
+						
+
+
+						cellBackImage.draw(canvas);
 
 						if(ThreeD_ChessActivity.Board.getBoard()[thisLevel][thisRank][thisFile] != null)//[Level][Rank][File]
 						{
