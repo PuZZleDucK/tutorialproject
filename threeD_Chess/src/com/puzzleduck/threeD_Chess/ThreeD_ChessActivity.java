@@ -1,4 +1,4 @@
-package com.example.puzzleduck.threeD_Chess;
+package com.puzzleduck.threeD_Chess;
 
 import java.util.Random;
 import java.util.Stack;
@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,10 @@ import android.widget.Toast;
 
 //import game renderer thread
 //import com.example.android.lunarlander.LunarView.LunarThread;
-import com.example.puzzleduck.threeD_Chess.threeD_Renderer.threeD_Thread;
+//import com.puzzleduck.threeD_Chess.R;
+import com.puzzleduck.threeD_Chess.ThreeD_Renderer.threeD_Thread;
 
-public class threeD_Chess extends Activity {
+public class ThreeD_ChessActivity extends Activity {
 
 	//	stackList bestMoves = new stackList();
 	private static Stack currentPossibleMoves = new Stack();
@@ -83,7 +86,7 @@ public class threeD_Chess extends Activity {
 	//    /** A handle to the thread that's actually running the animation. */
 	private threeD_Thread mthreeD_Thread;
 	//    /** A handle to the View in which the game is running. */
-	private threeD_Renderer mthreeD_Renderer;
+	private ThreeD_Renderer mthreeD_Renderer;
 
 	//     * Invoked during init to give the Activity a chance to set up its Menu.
 	@Override
@@ -176,12 +179,23 @@ public class threeD_Chess extends Activity {
 
 
 		//        // tell system to use the layout defined in our XML file
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//hide status
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//no full screen
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.threedc);
+		
+		 
+
 
 		//        // get handles to the LunarView from XML, and its LunarThread
-		mthreeD_Renderer = (threeD_Renderer) findViewById(R.layout.threedc);
+		mthreeD_Renderer = (ThreeD_Renderer) findViewById(R.layout.threedc);
 
-		mthreeD_Renderer = new threeD_Renderer(getApplicationContext(), null);
+		mthreeD_Renderer = new ThreeD_Renderer(getApplicationContext(), null);
 		mthreeD_Thread = mthreeD_Renderer.getThread();
 
 		//        // give the renderer a handle to the TextView used for messages
@@ -363,7 +377,7 @@ public class threeD_Chess extends Activity {
 					if(thisTitle != Piece.none)
 					{
 						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
-						Context context = getApplicationContext();
+//						Context context = getApplicationContext();
 
 						Board.getMuster()[thisColor][Piece.MusterIdx(Board, thisTitle, count[thisColor][thisTitle])] = temp;
 						Board.getBoard()[thisLevel][thisRank][thisFile] = temp;
