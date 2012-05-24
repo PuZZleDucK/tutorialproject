@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
-  <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/text"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:typeface="monospace"  
-  android:textSize="7sp"  
-  android:scrollHorizontally="true"
-  android:text=""/>
+  android:layout_height="fill_parent">
   <com.puzzleduck.threeD_Chess.ThreeD_Renderer
 	android:id="@+id/basicGraphics"
 	android:layout_width="fill_parent"
