@@ -3,6 +3,7 @@
       package="com.puzzleduck.threeD_Chess"
       android:versionCode="1"
       android:versionName="1.0">
+    <supports-screens android:anyDensity="true" android:resizeable="true"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name="com.puzzleduck.threeD_Chess.ThreeD_ChessActivity" android:label="@string/app_name">
             <intent-filter>
