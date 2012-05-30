@@ -33,6 +33,14 @@ import com.puzzleduck.threeD_Chess.ThreeD_Renderer.threeD_Thread;
 
 public class ThreeD_ChessActivity extends Activity {
 
+
+	//	         * State-tracking constants
+	public static final int STATE_LOSE = 1;
+	public static final int STATE_PAUSE = 2;
+	public static final int STATE_READY = 3;
+	public static final int STATE_RUNNING = 4;
+	public static final int STATE_WIN = 5;
+	
 	//	stackList bestMoves = new stackList();
 	private static Stack currentPossibleMoves = new Stack();
 	private static Stack aiMoves = new Stack();
@@ -206,7 +214,7 @@ public class ThreeD_ChessActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			// we were just launched: set up a new game
-			mthreeD_Thread.setState(mthreeD_Thread.STATE_READY);
+			mthreeD_Thread.setState(STATE_READY);
 			Log.w(this.getClass().getName(), "SIS is null");
 		} else {
 			// we are being restored: resume a previous game
@@ -670,12 +678,14 @@ public class ThreeD_ChessActivity extends Activity {
 	//}
 	//	
 
-	public Piece PieceNew(int nType,
-			int x, int y, int z,
-			int col)
-	{
-		return new Piece(nType, x, y, z, col);
-	}
+	
+	//i think this might be a duplicate class...
+//	public Piece PieceNew(int nType,
+//			int x, int y, int z,
+//			int col)
+//	{
+//		return new Piece(nType, x, y, z, col);
+//	}
 
 
 	public void PieceDelete(Piece piece)
@@ -1490,371 +1500,6 @@ public class ThreeD_ChessActivity extends Activity {
 	}
 
 
-	//leave debug for later... whaen I'm debugging?
-	//#ifdef DEBUG
-	//Global void
-	//StackDump( stack *s )
-	//{
-	//int i;
-	//struct stack_el *el;
-	//
-	//el = s->top;
-	//for (i=0; i<s->nSize; ++i)
-	//{
-	//  printf("%i: %s at (%i,%i,%i) to (%i,%i,%i)\n",i,
-	//         Piece2String( Board[el->mvt->xyzBefore.zLevel][el->mvt->xyzBefore.yRank][ el->mvt->xyzBefore.xFile] ),
-	//         el->mvt->xyzBefore.xFile,
-	//         el->mvt->xyzBefore.yRank,
-	//         el->mvt->xyzBefore.zLevel,
-	//         el->mvt->xyzAfter.xFile,
-	//         el->mvt->xyzAfter.yRank,
-	//         el->mvt->xyzAfter.zLevel);
-	//  el = el->below;
-	//}
-	//}
-	//#endif /* DEBUG */
-
-	//	 * The X interface for 3Dc
-	//	    Copyright (C) 1995  Paul Hicks
-	//	Local GfxInfo GFX1;
-	//	GfxInfo *firstGFX, *secondGFX;
-	//
-	//	Global Boolean
-	//	Init3DcGFX(int argc, char **argv)
-	//	{
-	//	  XtAppContext app;
-	//	  XColor col, dummy;
-	//
-	//	  XtSetLanguageProc(NULL, (XtLanguageProc)NULL, NULL);
-	//
-	//	  firstGFX = &GFX1;
-	//	#if XlibSpecificationRelease > 5
-	//	  firstGFX->mainWindow = XtOpenApplication(&app, "3Dc", NULL, 0,
-	//	                                           &argc, argv,
-	//	                                           NULL, topLevelShellWidgetClass,
-	//	                                           NULL, 0);
-	//	#else /* XlibSpecificationRelease <= 5 */
-	//	  firstGFX->mainWindow = XtAppInitialize(&app, "3Dc", NULL, 0,
-	//	                                           &argc, argv,
-	//	                                           NULL, NULL, 0);
-	//	#endif /* XlibSpecificationRelease */
-	//
-	//	#ifdef FONTCURSOR
-	//	  firstGFX->monoGC = NULL;
-	//	#endif /* FONTCURSOR */
-	//	  firstGFX->gc = XDefaultGCOfScreen(XtScreen(firstGFX->mainWindow));
-	//	  XSetFunction(XtDisplay(firstGFX->mainWindow), firstGFX->gc, GXcopy);
-	//
-	//	  firstGFX->whitePixel = WhitePixelOfScreen(XtScreen(firstGFX->mainWindow));
-	//	  firstGFX->blackPixel = BlackPixelOfScreen(XtScreen(firstGFX->mainWindow));
-	//
-	//	  /* Make two attempts at getting a grey colour. */
-	//	  if (!XAllocNamedColor(XtDisplay(firstGFX->mainWindow),
-	//	                    DefaultColormapOfScreen(XtScreen(firstGFX->mainWindow)),
-	//	                        "grey", &col, &dummy))
-	//	    {
-	//	      if (!XAllocNamedColor(XtDisplay(firstGFX->mainWindow),
-	//	          DefaultColormapOfScreen(XtScreen(firstGFX->mainWindow)),
-	//	                            "light grey", &col, &dummy))
-	//	        {
-	//	          firstGFX->greyPixel = firstGFX->blackPixel;
-	//	        }
-	//	      else
-	//	        firstGFX->greyPixel = col.pixel;
-	//	    }
-	//	  else
-	//	    firstGFX->greyPixel = col.pixel;
-	//
-	//	  if (InitPixmaps( firstGFX ))
-	//	    return FALSE;
-	//	  if (InitMainWindow( firstGFX ))
-	//	    return FALSE;
-	//	  if (InitBoardWindows( firstGFX ))
-	//	    return FALSE;
-	//
-	//	  XtRealizeWidget(firstGFX->mainWindow);
-	//
-	//	  return TRUE;
-	//	}
-	//
-	//	Global int
-	//	InitPixmaps( GfxInfo *gfx )
-	//	{
-	//	  Colour bwCol;
-	//	  Title nTitle;
-	//	  int ret = 0;
-	//	  XpmAttributes attrs;
-	//	  XpmColorSymbol cols[2];
-	//
-	//	  cols[0].name = strdup("foreground");
-	//	  cols[0].value = NULL;
-	//
-	//	  cols[1].name = strdup("edge");
-	//	  cols[1].value = NULL;
-	//
-	//	  attrs.valuemask = XpmColorSymbols;
-	//	  attrs.colorsymbols = cols;
-	//	  attrs.numsymbols = 2;
-	//
-	//	  for (bwCol = WHITE; bwCol <= BLACK; ++bwCol)
-	//	    {
-	//	      if (bwCol == WHITE)
-	//	        {
-	//	          cols[0].pixel = gfx->whitePixel;
-	//	          cols[1].pixel = gfx->blackPixel;
-	//	        }
-	//	      else
-	//	        {
-	//	          cols[0].pixel = gfx->blackPixel;
-	//	          cols[1].pixel = gfx->whitePixel;
-	//	        }
-	//
-	//	      for (nTitle = king; nTitle <= pawn; ++nTitle)
-	//	        {
-	//	          ret |= XpmCreatePixmapFromData(XtDisplay(gfx->mainWindow),
-	//	                        XRootWindowOfScreen(XtScreen(gfx->mainWindow)),
-	//	                        XPMpixmaps[nTitle],
-	//	                        &(gfx->face[bwCol][nTitle]),
-	//	                        bwCol == WHITE ? &(gfx->mask[nTitle]) : NULL,
-	//	                        &attrs);
-	//	        }
-	//	    }
-	//
-	//	  free(cols[0].name);
-	//	  free(cols[1].name);
-	//
-	//	  if (ret != 0)
-	//	    {
-	//	      printf("Error reading XPM images.\n");
-	//	      return 1;
-	//	    }
-	//
-	//	  return 0;
-	//	}
-	//
-	//	Global int
-	//	InitMainWindow( GfxInfo *gfx )
-	//	{
-	//	  Widget
-	//	    form,
-	//	      /*   remark,   */
-	//	      /* undo, */ resign,
-	//	      musterTitle
-	//	      /* muster */;
-	//	  int bg;
-	//
-	//	  form = XtVaCreateManagedWidget("form", formWidgetClass, gfx->mainWindow,
-	//	                                 NULL);
-	//
-	//	  gfx->remark =
-	//	    XtVaCreateManagedWidget("remark", labelWidgetClass, form,
-	//	                            XtNlabel, "Welcome to 3Dc",
-	//	                            XtNright, XtChainRight,
-	//	                            XtNwidth, 175,
-	//	                            NULL);
-	//
-	//	  /* Eliminate border */
-	//	  XtVaGetValues(gfx->remark, XtNbackground, &bg, NULL);
-	//	  XtVaSetValues(gfx->remark, XtNborder, bg, NULL);
-	//
-	//	  gfx->undo =
-	//	    XtVaCreateManagedWidget("Undo", commandWidgetClass, form,
-	//	                            XtNlabel, "Undo",
-	//	                            XtNfromVert, gfx->remark,
-	//	                            NULL);
-	//
-	//	  resign =
-	//	    XtVaCreateManagedWidget("Resign", commandWidgetClass, form,
-	//	                            XtNlabel, "Resign",
-	//	                            XtNfromVert, gfx->remark,
-	//	                            XtNfromHoriz, gfx->undo,
-	//	                            NULL);
-	//
-	//	  musterTitle =
-	//	    XtVaCreateManagedWidget("mtitle", labelWidgetClass, form,
-	//	                            XtNlabel, "Muster",
-	//	                            XtNfromVert, resign,
-	//	                            NULL);
-	//
-	//	  /* Eliminate border */
-	//	  XtVaGetValues(musterTitle, XtNbackground, &bg, NULL);
-	//	  XtVaSetValues(musterTitle, XtNborder, bg, NULL);
-	//
-	//	  gfx->muster =
-	//	    XtVaCreateManagedWidget("muster", drawingAreaWidgetClass, form,
-	//	                            XtNfromVert, musterTitle,
-	//	                            XtNwidth, 175,
-	//	                            XtNheight, 250,
-	//	                            NULL);
-	//
-	//	  gfx->font = XLoadQueryFont(XtDisplay(gfx->muster), "fixed");
-	//	  XSetFont(XtDisplay(gfx->muster), gfx->gc, gfx->font->fid);
-	//
-	//	  XtAddCallback(gfx->undo, XtNcallback, UndoMove, NULL);
-	//	  XtAddCallback(resign, XtNcallback, ResignGame, NULL);
-	//	  XtAddCallback(gfx->muster, XtNresizeCallback, DrawMuster, NULL);
-	//	  XtAddCallback(gfx->muster, XtNexposeCallback, DrawMuster, NULL);
-	//
-	//	  return 0;
-	//	}
-	//
-	//	Global int
-	//	InitBoardWindows( GfxInfo *gfx )
-	//	{
-	//	  Widget curShell;
-	//	  char *boardName;
-	//	  int zCounter, x, y;
-	//
-	//	  boardName = (char *)malloc(14);
-	//	  if ( boardName == NULL )
-	//	    exit(1);
-	//
-	//	  sprintf(boardName, "3Dc board ?");
-	//
-	//	  /* These equation determine the best place for the second
-	//	   * board by either placing the windows corner-to-corner
-	//	   * or (if there isn't enough screen space) halving the
-	//	   * difference between the top left and the place where the
-	//	   * last screen will be (i.e. one screen from the bottom right).
-	//	   * The equation ignores window decorations but that isn't much. */
-	//	  x = MIN( (XWidthOfScreen(  XtScreen( gfx->mainWindow ) ) -
-	//	            (XPM_SIZE * FILES))/2,
-	//	          XPM_SIZE * FILES );
-	//	  y = MIN( (XHeightOfScreen( XtScreen( gfx->mainWindow ) ) -
-	//	            (XPM_SIZE * RANKS))/2,
-	//	          XPM_SIZE * RANKS );
-	//
-	//	  for (zCounter = 0; zCounter < LEVELS; ++zCounter)
-	//	    {
-	//	      boardName[10] = zCounter + 'X';
-	//	      curShell =
-	//	        XtVaAppCreateShell( boardName, "3Dc", applicationShellWidgetClass,
-	//	                           XtDisplay( gfx->mainWindow ),
-	//	                           XtNx, x * zCounter,
-	//	                           XtNy, y * zCounter,
-	//	                           NULL);
-	//
-	//	      gfx->board[zCounter] =
-	//	        XtVaCreateManagedWidget(boardName, drawingAreaWidgetClass, curShell,
-	//	                                XtNbackground, gfx->whitePixel,
-	//	                                XtNwidth, XPM_SIZE * FILES,
-	//	                                XtNheight, XPM_SIZE * RANKS,
-	//	                                NULL);
-	//	      XtAddCallback(gfx->board[zCounter],
-	//	                    XtNinputCallback, MouseInput, NULL);
-	//	      XtAddCallback(gfx->board[zCounter],
-	//	                    XtNexposeCallback, DrawBoard, NULL);
-	//	      XtAddCallback(gfx->board[zCounter],
-	//	                    XtNresizeCallback, DrawBoard, NULL);
-	//	      XtRealizeWidget(curShell);
-	//
-	//	      gfx->width [zCounter] = XPM_SIZE * FILES;
-	//	      gfx->height[zCounter] = XPM_SIZE * RANKS;
-	//	      XtPopup(curShell, XtGrabNone);
-	//	    }
-	//
-	//	  return 0;
-	//	}
-	//
-	//	Global void
-	//	PieceDisplay(const Piece *piece, const Boolean bDraw)
-	//	{
-	//	  XRectangle rect = {0, 0, XPM_SIZE, XPM_SIZE};
-	//	  int centX, centY;
-	//	  GfxInfo *gfx;
-	//
-	//	  if (!piece)
-	//	    return;
-	//
-	//	  gfx = firstGFX;
-	//	  while ( gfx != NULL )
-	//	    {
-	//	      rect.width  = gfx->width [piece->xyzPos.zLevel] / FILES;
-	//	      rect.height = gfx->height[piece->xyzPos.zLevel] / RANKS;
-	//
-	//	      XSetForeground(XtDisplay(gfx->mainWindow), gfx->gc, gfx->greyPixel);
-	//
-	//	      XSetClipRectangles(XtDisplay(gfx->mainWindow), gfx->gc,
-	//	                         SQ_POS_X(gfx, piece->xyzPos.zLevel,
-	//	                                  piece->xyzPos.xFile),
-	//	                         SQ_POS_Y(gfx, piece->xyzPos.zLevel,
-	//	                                 piece->xyzPos.yRank),
-	//	                         &rect, 1, Unsorted);
-	//
-	//	      if (((piece->xyzPos.xFile + piece->xyzPos.yRank) % 2) == 1)
-	//	        {
-	//	          XFillRectangle(XtDisplay(gfx->mainWindow),
-	//	                         XtWindow(gfx->board[piece->xyzPos.zLevel]),
-	//	                         gfx->gc,
-	//	                         SQ_POS_X(gfx, piece->xyzPos.zLevel,
-	//	                                  piece->xyzPos.xFile),
-	//	                         SQ_POS_Y(gfx, piece->xyzPos.zLevel,
-	//	                                  piece->xyzPos.yRank),
-	//	                         rect.width, rect.height);
-	//	        }
-	//	      else
-	//	        {
-	//	          XClearArea(XtDisplay(gfx->mainWindow),
-	//	                     XtWindow(gfx->board[piece->xyzPos.zLevel]),
-	//	                     SQ_POS_X(gfx, piece->xyzPos.zLevel,
-	//	                              piece->xyzPos.xFile),
-	//	                     SQ_POS_Y(gfx, piece->xyzPos.zLevel,
-	//	                              piece->xyzPos.yRank),
-	//	                     rect.width, rect.height, FALSE);
-	//	        }
-	//
-	//	      if (piece->bVisible && bDraw)
-	//	        {
-	//	          centX = (rect.width  - XPM_SIZE) /2;
-	//	          centY = (rect.height - XPM_SIZE) /2;
-	//
-	//	          XSetClipOrigin(XtDisplay(gfx->mainWindow), gfx->gc,
-	//	                         SQ_POS_X(gfx, piece->xyzPos.zLevel,
-	//	                                  piece->xyzPos.xFile) + centX,
-	//	                         SQ_POS_Y(gfx, piece->xyzPos.zLevel,
-	//	                                 piece->xyzPos.yRank) + centY);
-	//	          XSetClipMask(XtDisplay(gfx->mainWindow), gfx->gc,
-	//	                       gfx->mask[piece->nName]);
-	//	          XCopyArea(XtDisplay(gfx->mainWindow),
-	//	                    gfx->face[piece->bwSide][piece->nName],
-	//	                    XtWindow(gfx->board[piece->xyzPos.zLevel]),
-	//	                    gfx->gc,
-	//	                    0, 0, XPM_SIZE, XPM_SIZE,
-	//	                    SQ_POS_X(gfx, piece->xyzPos.zLevel,
-	//	                             piece->xyzPos.xFile) + centX,
-	//	                    SQ_POS_Y(gfx, piece->xyzPos.zLevel,
-	//	                             piece->xyzPos.yRank) + centY);
-	//	        }
-	//
-	//	      if ( gfx == firstGFX )
-	//	        gfx = secondGFX;
-	//	      else
-	//	        gfx = NULL;
-	//	    }
-	//
-	//	  return;
-	//	}
-	//
-	//	Global void
-	//	Draw3DcBoard( void )
-	//	{
-	//	  Level z;
-	//
-	//	  for (z = 0; z < LEVELS; z++)
-	//	    DrawBoard(firstGFX->board[z], NULL, NULL);
-	//
-	//	  if ( secondGFX != NULL )
-	//	    {
-	//	      for (z = 0; z < LEVELS; z++)
-	//	        DrawBoard(secondGFX->board[z], NULL, NULL);
-	//	    }
-	//
-	//	  return;
-	//	}
-	//
-	//	Global int
-	//	Err3Dc( const GfxInfo *gfx, const char *pszLeader, const Boolean beep )
-
 	private Vibrator vibe;
 
 	public int Err3Dc( String pszLeader, Boolean beep )
@@ -1960,74 +1605,78 @@ public class ThreeD_ChessActivity extends Activity {
 	//	/* Update the muster count for the given type/colour in the muster window */
 	//	Global void
 	//	UpdateMuster(Colour bwSide, Title nType, Bool redisplay)
-	public void UpdateMuster(int bwSide, int nType, Boolean redisplay)
-	{
-		int count, i, curX, curY;
-		//	  Dimension mWidth, mHeight;
-		//	  char cnt[2] = {' ', '0'};
-		//	  GfxInfo *gfx;
-		//
-		//	  gfx = firstGFX;
-		//	  while ( gfx != NULL )
-		//	    {
-		//	      XSetClipMask(XtDisplay(gfx->muster), gfx->gc, None);
-		//	      XSetForeground(XtDisplay(gfx->muster), gfx->gc, gfx->blackPixel);
-		//
-		count = 0;
-		for (i = 0; i < Board.getTitleCount()[nType]; ++i)
-		{
-			if (Board.getMuster()[bwSide][Piece.MusterIdx(Board, nType, i)].bVisible)
-				++count;
-		}
-		//
-		//	      cnt[0] = '0' + (count / 10);
-		//	      cnt[1] = '0' + (count % 10);
-		//	      if (cnt[0] == '0')
-		//	        cnt[0] = ' ';
-		//
-		//	      XtVaGetValues(gfx->muster,
-		//	                    XtNheight, &mHeight,
-		//	                    XtNwidth, &mWidth,
-		//	                    NULL);
-		//
-		//	      curY = (((mHeight / 5) - XPM_SIZE) / 2) + ((mHeight % 5) / 2) + 2;
-		//	      if (nType == pawn)
-		//	        {
-		//	          curX = (((mWidth / 2) - XPM_SIZE) / 2) + ((mWidth % 2) / 2) + 10;
-		//	          if (bwSide == BLACK)
-		//	            curX += mWidth / 2;
-		//	          curY += (2 * (mHeight / 5));
-		//	        }
-		//	      else if (bwSide == WHITE)
-		//	        {
-		//	          curX = (((mWidth / 5) - XPM_SIZE) / 2) + ((mWidth % 5) / 2) + 10;
-		//	          curX += (nType % 5) * (mWidth / 5);
-		//	          curY += ((mHeight / 5) * (nType / 5));
-		//	        }
-		//	      else /* bwSide == BLACK */
-		//	        {
-		//	          curX = (((mWidth / 5) - XPM_SIZE) / 2) + ((mWidth % 5) / 2) + 10;
-		//	          curX += (nType % 5) * (mWidth / 5);
-		//	          curY += (4 * bwSide * (mHeight / 5)) - ((mHeight / 5) * (nType / 5));
-		//	        }
-		//
-		//	      XClearArea(XtDisplay(gfx->muster), XtWindow(gfx->muster),
-		//	                 curX, curY - gfx->font->ascent,
-		//	                 XTextWidth(gfx->font, "MM", 2),
-		//	                 gfx->font->ascent + gfx->font->descent,
-		//	                 redisplay);
-		//	      XDrawString(XtDisplay(gfx->muster), XtWindow(gfx->muster),
-		//	                  gfx->gc, curX, curY,
-		//	                  cnt, 2);
-		//
-		//	      if ( gfx == firstGFX )
-		//	        gfx = secondGFX;
-		//	      else
-		//	        gfx = NULL;
-		//	    }
-		//
-		//	  return;
-	}
+//	public int UpdateMuster(int bwSide, int nType, Boolean redisplay)
+//	{
+//		int count, i, curX, curY;
+//		//	  Dimension mWidth, mHeight;
+//		//	  char cnt[2] = {' ', '0'};
+//		//	  GfxInfo *gfx;
+//		//
+//		//	  gfx = firstGFX;
+//		//	  while ( gfx != NULL )
+//		//	    {
+//		//	      XSetClipMask(XtDisplay(gfx->muster), gfx->gc, None);
+//		//	      XSetForeground(XtDisplay(gfx->muster), gfx->gc, gfx->blackPixel);
+//		//
+//		count = 0;
+//		for (i = 0; i < Board.getTitleCount()[nType]; ++i)
+//		{
+//			if (Board.getMuster()[bwSide][Piece.MusterIdx(Board, nType, i)].bVisible)
+//			{
+//				++count;
+//			}
+//		}
+//		
+//		return count;
+//		//
+//		//	      cnt[0] = '0' + (count / 10);
+//		//	      cnt[1] = '0' + (count % 10);
+//		//	      if (cnt[0] == '0')
+//		//	        cnt[0] = ' ';
+//		//
+//		//	      XtVaGetValues(gfx->muster,
+//		//	                    XtNheight, &mHeight,
+//		//	                    XtNwidth, &mWidth,
+//		//	                    NULL);
+//		//
+//		//	      curY = (((mHeight / 5) - XPM_SIZE) / 2) + ((mHeight % 5) / 2) + 2;
+//		//	      if (nType == pawn)
+//		//	        {
+//		//	          curX = (((mWidth / 2) - XPM_SIZE) / 2) + ((mWidth % 2) / 2) + 10;
+//		//	          if (bwSide == BLACK)
+//		//	            curX += mWidth / 2;
+//		//	          curY += (2 * (mHeight / 5));
+//		//	        }
+//		//	      else if (bwSide == WHITE)
+//		//	        {
+//		//	          curX = (((mWidth / 5) - XPM_SIZE) / 2) + ((mWidth % 5) / 2) + 10;
+//		//	          curX += (nType % 5) * (mWidth / 5);
+//		//	          curY += ((mHeight / 5) * (nType / 5));
+//		//	        }
+//		//	      else /* bwSide == BLACK */
+//		//	        {
+//		//	          curX = (((mWidth / 5) - XPM_SIZE) / 2) + ((mWidth % 5) / 2) + 10;
+//		//	          curX += (nType % 5) * (mWidth / 5);
+//		//	          curY += (4 * bwSide * (mHeight / 5)) - ((mHeight / 5) * (nType / 5));
+//		//	        }
+//		//
+//		//	      XClearArea(XtDisplay(gfx->muster), XtWindow(gfx->muster),
+//		//	                 curX, curY - gfx->font->ascent,
+//		//	                 XTextWidth(gfx->font, "MM", 2),
+//		//	                 gfx->font->ascent + gfx->font->descent,
+//		//	                 redisplay);
+//		//	      XDrawString(XtDisplay(gfx->muster), XtWindow(gfx->muster),
+//		//	                  gfx->gc, curX, curY,
+//		//	                  cnt, 2);
+//		//
+//		//	      if ( gfx == firstGFX )
+//		//	        gfx = secondGFX;
+//		//	      else
+//		//	        gfx = NULL;
+//		//	    }
+//		//
+//		//	  return;
+//	}
 
 	//	
 	//	/*
@@ -2037,11 +1686,6 @@ public class ThreeD_ChessActivity extends Activity {
 	//
 	//	    3Dc, a game of 3-Dimensional Chess
 	//	    Copyright (C) 1995  Paul Hicks
-	//
-	//	    This program is free software; you can redistribute it and/or modify
-	//	    it under the terms of the GNU General Public License as published by
-	//	    the Free Software Foundation; either version 2 of the License, or
-	//	    (at your option) any later version.
 	//	    E-Mail: paulh@euristix.ie
 	//	*/
 	//
@@ -2109,10 +1753,6 @@ public class ThreeD_ChessActivity extends Activity {
 	//	 * engine.c
 	//	 * The rules engine for 3Dc.
 	//	    Copyright (C) 1995  Paul Hicks
-	//	    This program is free software; you can redistribute it and/or modify
-	//	    it under the terms of the GNU General Public License as published by
-	//	    the Free Software Foundation; either version 2 of the License, or
-	//	    (at your option) any later version.
 	//	    E-Mail: paulh@euristix.ie
 
 
@@ -2138,16 +1778,6 @@ public class ThreeD_ChessActivity extends Activity {
 
 
 	//	/* DrawingA.c: The DrawingArea Widget Methods */
-	//
-	//	#include "DrawingAP.h"
-	//
-	//	static void	Initialize();
-	//	static void	Destroy();
-	//	static void	Redisplay();
-	//	static void	input_draw();
-	//	static void	motion_draw();
-	//	static void	resize_draw();
-	//
 	//	static char defaultTranslations[] = "<BtnDown>: input() \n <BtnUp>: input() \n <KeyDown>: input() \n <KeyUp>: input() \n <Motion>: motion() \n <Configure>: resize()";
 	//	static XtActionsRec actionsList[] = {
 	//	  { "input",  (XtActionProc)input_draw },
@@ -2424,9 +2054,6 @@ public class ThreeD_ChessActivity extends Activity {
 	//	  return;
 	//	}
 	//
-	//	/* If you want to use the cursor font, define FONTCURSOR.  It's not
-	//	 * really worth it, 'cos the pixmap cursors look better */
-	//	/* #define FONTCURSOR */
 	//	Global void
 	//	MouseInput(Widget w, XtPointer client, XtPointer call)
 	//	{
@@ -2949,30 +2576,10 @@ public class ThreeD_ChessActivity extends Activity {
 	//	  return;
 	//	}
 	//
-	//	Global void
-	//	Quit3Dc(Widget w, XtPointer client, XtPointer call)
-	//	{
-	//	  /* XCloseDisplay frees fonts, pixmaps, everything---cool! */
-	//	  XtDestroyApplicationContext( XtWidgetToApplicationContext(
-	//	                                             firstGFX->mainWindow ) );
-	//	  firstGFX->mainWindow = NULL;
-	//
-	//	  if (secondGFX != NULL)
-	//	    {
-	//	      XtDestroyApplicationContext( XtWidgetToApplicationContext(
-	//	                                             secondGFX->mainWindow ) );
-	//	    }
-	//	  
-	//	  return;
-	//	}
 
 	//	 * ai.c
 	//	 * An implementation of computer intelligence (you wot?) for 3Dc.
 	//	    Copyright (C) 1995,1996  Paul Hicks
-	//	    This program is free software; you can redistribute it and/or modify
-	//	    it under the terms of the GNU General Public License as published by
-	//	    the Free Software Foundation; either version 2 of the License, or
-	//	    (at your option) any later version.
 	//	    E-Mail: paulh@euristix.ie
 
 
@@ -3343,21 +2950,5 @@ public class ThreeD_ChessActivity extends Activity {
 //		return FALSE;
 //	}
 
-
-	//	/* This tries again for a move in case the last one failed for some reason */
-//	Move GenAltMove(int bwSide)
-//	{
-////		ret = PopMove();
-////		return TRUE;
-//		
-//		return PopMove();
-//	}
-
-
-
-
-//	public static int getTITLES() {
-//		return TITLES;
-//	}
 
 }
