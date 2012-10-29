@@ -2735,17 +2735,19 @@ public class ThreeD_ChessActivity extends Activity {
 		/* We used a second or later move */
 		else
 		{
-			int i;
-			Stack_el el = new Stack_el();
-			Stack_el temp = new Stack_el();
+			//removing for now... i think this was the ionly place stack_el was used... still
+//			int i;
+//			Stack_el el = new Stack_el();
+//			Stack_el temp = new Stack_el();
 
-			el = (Stack_el)bestMoves.stacks[randStack].firstElement();
+//			el = (Stack_el)bestMoves.stacks[randStack].firstElement();
+			stackList prefferedMoves = (stackList)bestMoves.stacks[randStack].firstElement();
 
 			//	      for (i = 1; (i < randMove) && (el->below != NULL); ++i)
-			for (i = 1; (i < randMove) && (el.below != NULL); ++i)
-			{
-				el = el.below;
-			}
+//			for (i = 1; (i < randMove) && (el.below != NULL); ++i)
+//			{
+//				el = el.below;
+//			}
 
 			//	      if (!CHECK((el->below != NULL) && (el->below->mvt == ret)))
 			//	        {
@@ -2753,8 +2755,8 @@ public class ThreeD_ChessActivity extends Activity {
 			// :) you think you hope it can never happen... I'm terrified it's important.
 			//	        }
 
-			temp = el.below; 			// !!! Is this legal... I think I should use a remove from index sorta
-			el.below = temp.below;	// !!! thing, but i need to re-refference .below anyhow, see how it goes for now
+//			temp = el.below; 			// !!! Is this legal... I think I should use a remove from index sorta
+//			el.below = temp.below;	// !!! thing, but i need to re-refference .below anyhow, see how it goes for now
 			//          bestMoves.stacks[randStack]->nSize--;
 			//	          free( temp );
 		}
