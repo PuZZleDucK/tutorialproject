@@ -330,6 +330,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 					ThreeD_ChessActivity.Board.setPossibleMoveStack(thisPiece.FindAllMoves(ThreeD_ChessActivity.Board));
 //					thisPiece.FindAllMoves(ThreeD_ChessActivity.Board);
 					//then flag possible moves on display
+					
+					
+					
+					
 				}
 
 				break;
@@ -372,6 +376,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			mCanvasHeight = canvas.getHeight();
 			mCanvasWidth = canvas.getWidth();
 
+			boolean isPortrait = mCanvasHeight - mCanvasWidth > 0;//if taller than wide
+			Log.d("chessDraw","chessDraw ::: isPortrait   = " + isPortrait);
+			
+			
 //			height / (3*8) = max block height
 //			width / (8) = max block width
 

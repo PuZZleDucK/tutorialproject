@@ -18,7 +18,7 @@ public class Stack_el {
 	//	public Stack_el below;
 	public Stack_el below;
 
-	public void Stack_el(){
+	public Stack_el(){
 		mvt = null;
 		below = null;
 	}
