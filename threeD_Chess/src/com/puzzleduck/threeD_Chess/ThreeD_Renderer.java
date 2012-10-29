@@ -372,12 +372,19 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 		private void doDraw(Canvas canvas) {
 			
-			
+
+			int debugX = 10;
+			int debugY = 110;
+			Paint thisPaint = new Paint();
+			thisPaint.setARGB(255, 0, 0, 0);
 			mCanvasHeight = canvas.getHeight();
 			mCanvasWidth = canvas.getWidth();
-
+			//	            // so this is like clearing the screen.
+			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
+			
 			boolean isPortrait = mCanvasHeight - mCanvasWidth > 0;//if taller than wide
-			Log.d("chessDraw","chessDraw ::: isPortrait   = " + isPortrait);
+			canvas.drawText("isPortrait   = "+ isPortrait, debugX+=10, debugY+=10, thisPaint);
+//			Log.d("chessDraw","chessDraw ::: isPortrait   = " + isPortrait);
 			
 			
 //			height / (3*8) = max block height
@@ -412,8 +419,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 			int levelOffsetX = cellSize*8;
 
-			//	            // so this is like clearing the screen.
-			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
 			
 			
 			Drawable cellBackImage;
@@ -493,7 +498,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						
 
 						//Debug: LEVELS
-						Paint thisPaint = new Paint();
 						thisPaint.setARGB(255, 255, 0, 0);
 						canvas.drawText("L-"+thisLevel, totalXOffset+10, totalYOffset+10, thisPaint);
 						thisPaint.setARGB(255, 0, 255, 0);
