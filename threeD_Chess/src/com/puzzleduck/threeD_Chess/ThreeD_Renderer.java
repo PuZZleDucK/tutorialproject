@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -383,27 +384,54 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawBitmap(mBackgroundImage, 0, 0, null);
 			
 			boolean isPortrait = mCanvasHeight - mCanvasWidth > 0;//if taller than wide
-			canvas.drawText("isPortrait   = "+ isPortrait, debugX+=10, debugY+=10, thisPaint);
-//			Log.d("chessDraw","chessDraw ::: isPortrait   = " + isPortrait);
+			canvas.drawText("isPortrait   = "+ isPortrait, debugX, debugY+=15, thisPaint);
+			canvas.drawText("X-width   = "+ mCanvasWidth, debugX, debugY+=15, thisPaint);
+			canvas.drawText("Y-height  = "+ mCanvasHeight, debugX, debugY+=15, thisPaint);
+			thisPaint.setStyle(Style.STROKE); 
+			canvas.drawRect(5, 5, mCanvasWidth-5, mCanvasHeight-5, thisPaint);
+			
+			int marginWidth = 5;
+			
+			int maxCellHeight;
+			int maxCellWidth;
+			//if portrait, split boards up and down... staggered ... need to fit two accross and down
+			if(isPortrait)
+			{
+				maxCellHeight = (mCanvasHeight-(2*marginWidth))/(2*8);
+				maxCellWidth = (mCanvasWidth-(2*marginWidth))/(2*8);
+				
+			}else//else, split left to right... slanted... only need to fit three accross
+			{
+				maxCellHeight = (mCanvasHeight-(2*marginWidth))/(8);
+				maxCellWidth = (mCanvasWidth-(2*marginWidth))/(3*8);
+				
+			}
+			canvas.drawText("maxCellHeight  = "+ maxCellHeight, debugX, debugY+=15, thisPaint);
+			canvas.drawText("maxCellWidth   = "+ maxCellWidth, debugX, debugY+=15, thisPaint);
+			int cellSize = maxCellHeight > maxCellWidth ? maxCellWidth : maxCellHeight;
+			canvas.drawText("   CellWidth   = "+ cellSize, debugX, debugY+=15, thisPaint);
+
+			
+			//			Log.d("chessDraw","chessDraw ::: cell      = " + cellSize);
+			
+			
+			
+			//			Log.d("chessDraw","chessDraw ::: isPortrait   = " + isPortrait);
+			
 			
 			
 //			height / (3*8) = max block height
 //			width / (8) = max block width
 
-			Log.d("chessDraw","chessDraw ::: height   = " + mCanvasHeight);
-			Log.d("chessDraw","chessDraw ::: width    = " + mCanvasWidth);
+//			Log.d("chessDraw","chessDraw ::: height   = " + mCanvasHeight);
+//			Log.d("chessDraw","chessDraw ::: width    = " + mCanvasWidth);
 			
 			
-			int maxCellHeight = mCanvasHeight/(3*8);
-			int maxCellWidth = mCanvasWidth/(8);
 			
 
 //			Log.d("chessDraw","chessDraw ::: max height= " + maxCellHeight);
 //			Log.d("chessDraw","chessDraw ::: max width = " + maxCellWidth);
 			
-			int cellSize = maxCellHeight > maxCellWidth ? maxCellWidth : maxCellHeight;
-			
-			Log.d("chessDraw","chessDraw ::: cell      = " + cellSize);
 
 		//	int xSize = cellSize;//seems to be ignored
 		//	int ySize = cellSize;//  margin
