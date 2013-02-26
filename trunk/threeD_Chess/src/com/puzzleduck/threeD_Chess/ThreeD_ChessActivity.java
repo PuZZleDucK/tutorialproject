@@ -339,34 +339,34 @@ public class ThreeD_ChessActivity extends Activity {
 		int StartBoard[][][] =
 		{ /* The boards */   //[Level][Rank][File]
 				{ /* Bottom board */
-					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{ Piece.c_galley,  Piece.c_cannon, Piece.c_abbey, Piece.c_prince, Piece.c_princess, Piece.c_abbey, Piece.c_cannon, Piece.c_galley},
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
+					{ Piece.c_galley,  Piece.c_cannon, Piece.c_abbey, Piece.c_prince, Piece.c_princess, Piece.c_abbey, Piece.c_cannon, Piece.c_galley},
 				},
 				{ /* Middle board */
-					{   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{   Piece.c_rook, Piece.c_knight, Piece.c_bishop,   Piece.c_king,  Piece.c_queen, Piece.c_bishop, Piece.c_knight,   Piece.c_rook},
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-					{   Piece.rook, Piece.knight, Piece.bishop,   Piece.king,  Piece.queen, Piece.bishop, Piece.knight,   Piece.rook}
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
+					{   Piece.c_rook, Piece.c_knight, Piece.c_bishop,   Piece.c_king,  Piece.c_queen, Piece.c_bishop, Piece.c_knight,   Piece.c_rook}
 				},
 				{ /* Top board */
-					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
+					{ Piece.c_galley,  Piece.c_cannon, Piece.c_abbey, Piece.c_prince, Piece.c_princess, Piece.c_abbey, Piece.c_cannon, Piece.c_galley},
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
 					{   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none,   Piece.none},
-					{   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn,   Piece.pawn},
-					{ Piece.galley,  Piece.cannon, Piece.abbey, Piece.prince, Piece.princess, Piece.abbey, Piece.cannon, Piece.galley},
+					{   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn,   Piece.c_pawn},
+					{ Piece.c_galley,  Piece.c_cannon, Piece.c_abbey, Piece.c_prince, Piece.c_princess, Piece.c_abbey, Piece.c_cannon, Piece.c_galley},
 				}
 		}; /* StartBoard */
 
@@ -553,20 +553,20 @@ public class ThreeD_ChessActivity extends Activity {
 		Context context = getApplicationContext();
 		CharSequence text = "Black:" + Piece.BLACK 
 		+ "\nWhite: " +  Piece.WHITE
-		+ "\nKing: " +  Piece.king
+		+ "\nKing: " +  Piece.c_king
 		+ "\n...";
 		int duration = Toast.LENGTH_LONG;
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
 
-		blackKingVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.king, 0)].bVisible;
-		whiteKingVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.king, 0)].bVisible;
+		blackKingVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.c_king, 0)].bVisible;
+		whiteKingVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.c_king, 0)].bVisible;
 
-		blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.prince, 0)].bVisible;
-		whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.prince, 0)].bVisible;
+		blackFirstPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.c_prince, 0)].bVisible;
+		whiteFirstPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.c_prince, 0)].bVisible;
 
-		blackSecondPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.prince, 1)].bVisible;
-		whiteSecondPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.prince, 1)].bVisible;
+		blackSecondPrinceVisible = Board.getMuster()[Piece.BLACK][Piece.MusterIdx(Board, Piece.c_prince, 1)].bVisible;
+		whiteSecondPrinceVisible = Board.getMuster()[Piece.WHITE][Piece.MusterIdx(Board, Piece.c_prince, 1)].bVisible;
 
 		if ((!whiteKingVisible || 
 				(!whiteFirstPrinceVisible && !whiteSecondPrinceVisible)) ||
@@ -1101,7 +1101,7 @@ public class ThreeD_ChessActivity extends Activity {
 			//		            1) /* Dummy line to reduce no. of changes */
 
 			if (Board.getPieceAt(newLevel,newRank - rankInc,newFile) != null && /* 'Takable' piece */
-					(Board.getPieceAt(newLevel,newRank - rankInc,newFile).thisType == Piece.pawn) && /* Is pawn */
+					(Board.getPieceAt(newLevel,newRank - rankInc,newFile).thisType == Piece.c_pawn) && /* Is pawn */
 					(Board.getPieceAt(newLevel,newRank - rankInc,newFile).thisSide != piece.thisSide) ) /* Dummy line to reduce no. of changes */
 			{
 				//		            return EnPASSANT;
@@ -2774,7 +2774,7 @@ public class ThreeD_ChessActivity extends Activity {
 		bwEnemy = ( bwSide == Piece.WHITE ) ? Piece.BLACK : Piece.WHITE;
 
 		/* Rate taking king */
-		if (move.pVictim == Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )])
+		if (move.pVictim == Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.c_king, 0 )])
 			return INT_MAX;
 
 		//	  /* Fake the move for simple lookahead */
@@ -2790,7 +2790,7 @@ public class ThreeD_ChessActivity extends Activity {
 		//	   * inside the move faked below but that would mean nasty code
 		//	   * duplication re: finding king coords and so on.  This code
 		//	   * is easier to maintain. */
-		if ( Board.getMuster()[ bwSide ][ Piece.MusterIdx(Board, Piece.king, 0 )].FakeMoveAndIsKingChecked( Board,
+		if ( Board.getMuster()[ bwSide ][ Piece.MusterIdx(Board, Piece.c_king, 0 )].FakeMoveAndIsKingChecked( Board,
 				move.xyzAfter.thisLevel,
 				move.xyzAfter.thisRank,
 				move.xyzAfter.thisFile ))
@@ -2803,9 +2803,9 @@ public class ThreeD_ChessActivity extends Activity {
 			storing.bVisible = FALSE;
 
 		/* Rate check */
-		xyzPos = (Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.king, 0 )]).xyzPos;
+		xyzPos = (Board.getMuster()[ bwEnemy ][ Piece.MusterIdx(Board, Piece.c_king, 0 )]).xyzPos;
 		if ( move.pVictim.SquareThreatened(Board, bwSide, xyzPos.thisLevel, xyzPos.thisRank, xyzPos.thisFile) != null )
-			rating += values[ Piece.king ];
+			rating += values[ Piece.c_king ];
 
 		/* Rate danger: if there's a chance of being captured in the new pos. */
 		xyzPos = move.xyzAfter;
@@ -2841,10 +2841,10 @@ public class ThreeD_ChessActivity extends Activity {
 		//	  /* En passant and castling not yet possible for computer */
 		if (( move.pVictim != null ) && ( move.pVictim.thisSide == bwSide))
 			rating += 10; /* Castling */
-		if (( move.xyzAfter.thisRank == (bwSide == Piece.WHITE ? RANKS-1 : 0) ) && ( moving.thisType == Piece.pawn ))
-			rating += values[Piece.queen]; /* Promotion */
+		if (( move.xyzAfter.thisRank == (bwSide == Piece.WHITE ? RANKS-1 : 0) ) && ( moving.thisType == Piece.c_pawn ))
+			rating += values[Piece.c_queen]; /* Promotion */
 		/* Note the horrible magic numbers below */
-		if ( (ABS( move.xyzAfter.thisRank - move.xyzBefore.thisRank ) == 2) && ( moving.thisType == Piece.pawn ))
+		if ( (ABS( move.xyzAfter.thisRank - move.xyzBefore.thisRank ) == 2) && ( moving.thisType == Piece.c_pawn ))
 			rating += 1; /* Two-forward by pawn: the computer doesn't
 			 * usually like opening its attack routes otherwise */
 
