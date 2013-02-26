@@ -548,7 +548,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						{
 							switch(ThreeD_ChessActivity.Board.getPieceAt(thisLevel, thisRank, thisFile).thisType)
 							{
-							case(Piece.c_pawn):
+							case(Piece.pawn):
 								pawnImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -563,7 +563,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}								
 							pawnImage.draw(canvas);
 							break;
-							case(Piece.c_galley):
+							case(Piece.galley):
 								galleyImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -578,7 +578,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							galleyImage.draw(canvas);
 							break;
-							case(Piece.c_cannon):
+							case(Piece.cannon):
 								cannonImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -593,7 +593,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							cannonImage.draw(canvas);
 							break;
-							case(Piece.c_abbey):
+							case(Piece.abbey):
 								abbeyImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -608,7 +608,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							abbeyImage.draw(canvas);
 							break;
-							case(Piece.c_princess):
+							case(Piece.princess):
 								princessImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -623,7 +623,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							princessImage.draw(canvas);
 							break;
-							case(Piece.c_prince):
+							case(Piece.prince):
 								princeImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -638,7 +638,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							princeImage.draw(canvas);
 							break;
-							case(Piece.c_rook):
+							case(Piece.rook):
 								rookImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -653,7 +653,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							rookImage.draw(canvas);
 							break;
-							case(Piece.c_knight):
+							case(Piece.knight):
 								knightImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -668,7 +668,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							knightImage.draw(canvas);
 							break;
-							case(Piece.c_bishop):
+							case(Piece.bishop):
 								bishopImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -683,7 +683,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							bishopImage.draw(canvas);
 							break;
-							case(Piece.c_queen):
+							case(Piece.queen):
 								queenImage.setBounds(
 										totalXOffset,
 										totalYOffset, 
@@ -698,7 +698,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 							}
 							queenImage.draw(canvas);
 							break;
-							case(Piece.c_king):
+							case(Piece.king):
 								kingImage.setBounds(
 										totalXOffset,
 										totalYOffset, 

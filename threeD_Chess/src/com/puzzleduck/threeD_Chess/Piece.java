@@ -6,19 +6,19 @@ public class Piece {
 
 	private static final int TITLES = 11;
 	
-	public static final int c_select = -1; //used for signaling selected square
-	public static final int c_king = 0;
-	public static final int c_queen = 1;
-	public static final int c_bishop = 2;
-	public static final int c_knight = 3;
-	public static final int c_rook = 4;
-	public static final int c_prince = 5;
-	public static final int c_princess = 6;
-	public static final int c_abbey = 7;
-	public static final int c_cannon = 8;
-	public static final int c_galley = 9;
-	public static final int c_pawn = 10;
-	static int none = 11;
+	protected static final int selectionIndicator = -1; //used for signaling selected square
+	protected static final int king = 0;
+	protected static final int queen = 1;
+	protected static final int bishop = 2;
+	protected static final int knight = 3;
+	protected static final int rook = 4;
+	protected static final int prince = 5;
+	protected static final int princess = 6;
+	protected static final int abbey = 7;
+	protected static final int cannon = 8;
+	protected static final int galley = 9;
+	protected static final int pawn = 10;
+	protected static int none = 11;
 
 	private static char[] pieceChar = {'k','q','b','k','r','p','s','a','c','g','i',' '};
 
@@ -128,7 +128,7 @@ public class Piece {
 		int originLevel = (this.xyzPos.thisLevel);
 		enemyColor = ((this.thisSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE);
 
-		if (this.thisType == Piece.c_knight)
+		if (this.thisType == Piece.knight)
 		{
 			for (currentFile = 0; currentFile < ThreeD_ChessActivity.LEVELS; currentFile++)
 			{
@@ -172,7 +172,7 @@ public class Piece {
 				} /* End y loop */
 			} /* End z loop */
 		} /* End knight */
-		else if (this.thisType == Piece.c_cannon)
+		else if (this.thisType == Piece.cannon)
 		{
 			for (currentFile = 0; currentFile < ThreeD_ChessActivity.LEVELS; currentFile++)
 			{
@@ -214,7 +214,7 @@ public class Piece {
 				} /* End y loop */
 			} /* End z loop */
 		} /* End cannon */
-		else if (this.thisType == Piece.c_pawn) /* Don't bother searching for en passant */
+		else if (this.thisType == Piece.pawn) /* Don't bother searching for en passant */
 		{
 			//			  not sure what this was meant to do... removing:   ohhh, got it now moving in positive dir for white and negative for black
 			//		      currentY_Rank = ((this.bwSide == Piece.WHITE) ? 1 : -1);
@@ -275,7 +275,7 @@ public class Piece {
 			 * For a regular board, this is 7.  (Not 8: If you moved 8
 			 * in any direction you would be off the edge of the board)
 			 */
-			if ((this.thisType == Piece.c_king) || (this.thisType == Piece.c_prince))
+			if ((this.thisType == Piece.king) || (this.thisType == Piece.prince))
 				dist = 1;
 			else
 				dist = ThreeD_ChessActivity.MAX(ThreeD_ChessActivity.FILES, ThreeD_ChessActivity.RANKS) -1;
@@ -285,8 +285,8 @@ public class Piece {
 				/*
 				 * Cater for pieces that can't change level.
 				 */
-				if (((this.thisType == Piece.c_prince) || (this.thisType == Piece.c_princess) || (this.thisType == Piece.c_abbey)
-						|| (this.thisType == Piece.c_galley)) && (currentFile != 0))
+				if (((this.thisType == Piece.prince) || (this.thisType == Piece.princess) || (this.thisType == Piece.abbey)
+						|| (this.thisType == Piece.galley)) && (currentFile != 0))
 					continue;
 
 				for (currentRank = -1; currentRank <= 1; ++currentRank)
@@ -300,13 +300,13 @@ public class Piece {
 						 * Cater for the pieces that can only move
 						 * horizontally/vertically.
 						 */
-						if (((this.thisType == Piece.c_rook) || (this.thisType == Piece.c_galley)) && !ThreeD_ChessActivity.HORZ(currentLevel, currentRank))
+						if (((this.thisType == Piece.rook) || (this.thisType == Piece.galley)) && !ThreeD_ChessActivity.HORZ(currentLevel, currentRank))
 							continue;
 						//		           /*
 						//		            * Cater for the pieces that can only move
 						//		            * diagonally.
 						//		            */
-						else if (((this.thisType == Piece.c_bishop) || (this.thisType == Piece.c_abbey)) && !ThreeD_ChessActivity.DIAG(currentLevel, currentRank))
+						else if (((this.thisType == Piece.bishop) || (this.thisType == Piece.abbey)) && !ThreeD_ChessActivity.DIAG(currentLevel, currentRank))
 							continue;
 
 						for (d = 1; d <= dist; ++d)
@@ -381,7 +381,7 @@ public class Piece {
 			return Board.getSQUARE_INVALID();
 		}
 
-		if ((this.thisType != Piece.c_knight) && (this.thisType != Piece.c_cannon))
+		if ((this.thisType != Piece.knight) && (this.thisType != Piece.cannon))
 		{
 			//		      /* Make all directions be 1, -1 or 0 */
 			if (xDir != 0) xDir /= ThreeD_ChessActivity.ABS(xDir);
@@ -469,7 +469,7 @@ public class Piece {
 		board.getBoard()[z][y][x] = this;
 		board.getBoard()[xyz.thisLevel][xyz.thisRank][xyz.thisFile] = null;
 
-		if (this.thisType == Piece.c_king)
+		if (this.thisType == Piece.king)
 		{
 			//		      /* We're moving the king, so it's xyzPos may not be accurate.
 			//		       * check manually. */
@@ -501,7 +501,7 @@ public class Piece {
 		//	public Boolean IsKingChecked( int bwSide )
 		//	{
 		//	  Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
-		Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.c_king, 0 ) ].xyzPos;
+		Coord xyz = board.getMuster()[ bwSide ][ MusterIdx(board, Piece.king, 0 ) ].xyzPos;
 
 		return ( SquareThreatened(board, (bwSide == Piece.WHITE) ? Piece.BLACK : Piece.WHITE, xyz.thisFile, xyz.thisRank, xyz.thisLevel ) != ThreeD_ChessActivity.NULL );
 		//	}
