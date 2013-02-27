@@ -2,7 +2,10 @@ package com.puzzleduck.threeD_Chess;
 
 import java.util.Stack;
 
-public class stackList {
+//import com.example.puzzleduck.threeD_Chess.Move;
+//import com.example.puzzleduck.threeD_Chess.Stack_el;
+
+public class stackList<Stack_el> {
 
 	//	Local struct stackList
 	//	{
@@ -12,7 +15,7 @@ public class stackList {
 	//
 	//	#define BEST_STACKS 5
 
-	public Stack stacks[] = {null,null,null,null,null};
+	public Stack<Stack_el> stacks[];
 	public int   ratings[] = {0,0,0,0,0};
 
 	public stackList()

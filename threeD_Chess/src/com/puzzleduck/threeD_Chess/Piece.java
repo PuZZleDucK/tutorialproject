@@ -2,6 +2,8 @@ package com.puzzleduck.threeD_Chess;
 
 import java.util.Stack;
 
+//import com.example.puzzleduck.threeD_Chess.Move;
+
 public class Piece {
 
 	private static final int TITLES = 11;
@@ -113,7 +115,7 @@ public class Piece {
 
 	}
 
-	public Stack FindAllMoves(Board board) {
+	public Stack<Move> FindAllMoves(Board board) {
 
 		//		/* Creates a stack of legal moves that this piece can take in this go */
 		//This is where i will flag to shade/highlight possible moves during draw
