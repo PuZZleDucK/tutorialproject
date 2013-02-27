@@ -560,7 +560,7 @@ public class Piece {
 	//[Level][Rank][File]
 	boolean PieceMayMove(Board board, int newLevel, int newRank, int newFile) {
 		//		private boolean PieceMayMove(Piece piece, int xNew, int yNew, int zNew)
-		boolean retval;
+		//boolean retval;
 		if (!this.bVisible)
 		{
 			//				  ThreeD_ChessActivity.n3DcErr = ThreeD_ChessActivity.E3DcINVIS;

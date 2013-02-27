@@ -26,7 +26,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 //Simplifying things (hopefully) by using basic android rendering instead of GL
 class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
@@ -56,7 +55,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private Drawable cannonImage;
 		private Drawable galleyImage;
 		private Drawable pawnImage;
-		private Drawable noneImage;
+//		private Drawable noneImage;
 
 		//Color
 		//		private ColorFilter cf;
@@ -121,7 +120,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private boolean mRun = false;
 		//
 		//	        /** Scratch rect object. */
-		private RectF mScratchRect;
+//		private RectF mScratchRect;
 		//
 		//	        /** Handle to the surface manager object we interact with */
 		private SurfaceHolder mSurfaceHolder;
@@ -145,13 +144,13 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			cannonImage = context.getResources().getDrawable( R.drawable.k_cannon);
 			galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
 			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
-			noneImage = context.getResources().getDrawable( R.drawable.k_none);
+//			noneImage = context.getResources().getDrawable( R.drawable.k_none);
 
 			//	            // load background image as a Bitmap instead of a Drawable b/c
 			//	            // we don't need to transform it and it's faster to draw this way
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
 
-			mScratchRect = new RectF(0, 0, 0, 0);
+//			mScratchRect = new RectF(0, 0, 0, 0);
 		}
 
 		//	         * Starts the game, setting parameters for the current difficulty.
