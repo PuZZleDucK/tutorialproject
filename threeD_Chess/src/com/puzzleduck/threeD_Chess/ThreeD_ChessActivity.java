@@ -5,18 +5,14 @@ import java.util.Stack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -270,13 +266,13 @@ public class ThreeD_ChessActivity extends Activity {
 	public static final int LEVELS = 3;
 
 	//	/* Directions */
-	private static final int LEFT  = -1;
-	private static final int RIGHT  = 1;
-	private static final int FORW   = 1;  /* if colour is black => -1 */
-	private static final int BACK  = -1;  /* if colour is black => +1 */
-	private static final int UP    = 1;
-	private static final int DOWN  = -1;
-	private static final int NODIR  = 0;
+//	private static final int LEFT  = -1;
+//	private static final int RIGHT  = 1;
+//	private static final int FORW   = 1;  /* if colour is black => -1 */
+//	private static final int BACK  = -1;  /* if colour is black => +1 */
+//	private static final int UP    = 1;
+//	private static final int DOWN  = -1;
+//	private static final int NODIR  = 0;
 
 	private String winString = "";
 	private Random rng = new Random();
@@ -1215,9 +1211,9 @@ public class ThreeD_ChessActivity extends Activity {
 	{
 		Move thisMove = new Move();
 		//	  Boolean moveType; /* Not quite Boolean... */
-		boolean moveType; /* Not quite Boolean... */
+//		boolean moveType; /* Not quite Boolean... */
 
-		if (!(moveType = piece.PieceMayMove(Board, newLevel, newRank, newFile)))
+		if (!piece.PieceMayMove(Board, newLevel, newRank, newFile))
 			return FALSE;
 
 		//	   * Keep record of move
@@ -1505,7 +1501,7 @@ public class ThreeD_ChessActivity extends Activity {
 	public int Err3Dc( String pszLeader, Boolean beep )
 	{
 		//		  char *err;
-		String err = "";
+//		String err = "";
 
 		/*
 		 * All strings are designed to be printed thus:
