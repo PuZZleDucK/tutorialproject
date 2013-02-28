@@ -285,7 +285,7 @@ public class ThreeD_ChessActivity extends Activity {
 	static int n3DcErr;
 
 	public static Board Board = new Board(new Piece[LEVELS][RANKS][FILES], new Piece[COLOURS][PIECES], new int[] {1,1,2,2,2,2,2,4,4,4,24});
-	public static Piece selectedSquare = new Piece(-1,0,0,1,-1);
+	public static Piece selectedSquare;
 
 
 	private int RANDDIR()
@@ -335,6 +335,7 @@ public class ThreeD_ChessActivity extends Activity {
 		int thisColor;
 		int[][] count = {{0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0}};
 		int thisTitle;
+		selectedSquare = new Piece(-1,0,0,1,-1, this);
 
 		/* This structure is mainly for "obviousness"; it is entirely trivial */
 		int StartBoard[][][] =
@@ -385,7 +386,7 @@ public class ThreeD_ChessActivity extends Activity {
 					thisTitle = StartBoard[thisLevel][thisRank][thisFile];
 					if(thisTitle != Piece.none)
 					{
-						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor);
+						temp = new Piece(thisTitle, thisLevel, thisRank, thisFile, thisColor, this);
 //						Context context = getApplicationContext();
 
 						Board.getMuster()[thisColor][Piece.MusterIdx(Board, thisTitle, count[thisColor][thisTitle])] = temp;
@@ -398,8 +399,8 @@ public class ThreeD_ChessActivity extends Activity {
 		}
 		n3DcErr = 0;
 
-		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0));
-		Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0));
+		Board.setSQUARE_INVALID(new Piece(0,0,0,0,0, this));
+		Board.setSQUARE_EMPTY(new Piece(0,0,0,0,0, this));
 
 	}
 
