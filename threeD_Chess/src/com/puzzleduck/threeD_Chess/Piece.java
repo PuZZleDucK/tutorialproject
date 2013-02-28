@@ -2,12 +2,14 @@ package com.puzzleduck.threeD_Chess;
 
 import java.util.Stack;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
 //import com.example.puzzleduck.threeD_Chess.Move;
 
 public class Piece {
 
 	private static final int TITLES = 11;
-	
 	protected static final int selectionIndicator = -1; //used for signaling selected square
 	protected static final int king = 0;
 	protected static final int queen = 1;
@@ -21,6 +23,10 @@ public class Piece {
 	protected static final int galley = 9;
 	protected static final int pawn = 10;
 	protected static int none = 11;
+	
+	static int BLACK = 1;
+	static int WHITE = 0;
+	static int NOCOL = -1;
 
 	private static char[] pieceChar = {'k','q','b','k','r','p','s','a','c','g','i',' '};
 
@@ -29,10 +35,8 @@ public class Piece {
 	public int thisType;
 	public boolean bVisible;
 	public boolean bHasMoved;/* For king, rook, pawn only */
+	private Drawable thisDrawable;
 
-	static int BLACK = 1;
-	static int WHITE = 0;
-	static int NOCOL = -1;
 
 //	static int king = c_king;
 //	static int queen = c_queen;
@@ -46,7 +50,7 @@ public class Piece {
 //	static int galley = c_galley;
 //	static int pawn = c_pawn;
 
-	public Piece (int type, int file, int rank, int level, int side) {
+	public Piece (int type, int file, int rank, int level, int side, Context context) {
 		//EXAMPLE USAGE
 		//		Piece blackKing = new Piece(KING, //title/type
 		//									1, //file
@@ -63,6 +67,9 @@ public class Piece {
 		thisSide = side;
 		bVisible = true;
 		bHasMoved = false;
+		
+		//switch on type :D
+		thisDrawable = context.getResources().getDrawable( R.drawable.k_king);
 
 	}
 
