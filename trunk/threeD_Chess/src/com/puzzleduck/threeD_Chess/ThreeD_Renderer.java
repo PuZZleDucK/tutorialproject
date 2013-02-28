@@ -119,29 +119,29 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
 		} //threeD_Thread
 
-		//	         * Starts the game, setting parameters for the current difficulty.
-		public void doStart() {
-			synchronized (mSurfaceHolder) {
-//				setState(ThreeD_ChessActivity.STATE_RUNNING);
-			}
-		} //doStart
+//		//	         * Starts the game, setting parameters for the current difficulty.
+//		public void doStart() {
+//			synchronized (mSurfaceHolder) {
+////				setState(ThreeD_ChessActivity.STATE_RUNNING);
+//			}
+//		} //doStart
 
 		//	         * Pauses the physics update & animation.
-		public void pause() {
-			synchronized (mSurfaceHolder) {
-//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) setState(ThreeD_ChessActivity.STATE_PAUSE);
-			}
-		}
+//		public void pause() {
+//			synchronized (mSurfaceHolder) {
+////				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) setState(ThreeD_ChessActivity.STATE_PAUSE);
+//			}
+//		}
 
 		//	         * Restores game state from the indicated Bundle. Typically called when
 		//	         * the Activity is being restored after having been previously destroyed
-		public synchronized void restoreState(Bundle savedState) {
-			synchronized (mSurfaceHolder) {
-//				setState(ThreeD_ChessActivity.STATE_PAUSE);
-				//	                mRotating = 0;
-				//	                mDifficulty = savedState.getInt(KEY_DIFFICULTY);
-			}
-		}
+//		public synchronized void restoreState(Bundle savedState) {
+//			synchronized (mSurfaceHolder) {
+////				setState(ThreeD_ChessActivity.STATE_PAUSE);
+//				//	                mRotating = 0;
+//				//	                mDifficulty = savedState.getInt(KEY_DIFFICULTY);
+//			}
+//		}
 
 		public void run() {
 			while (mRun) {
@@ -182,57 +182,57 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		//	         * Sets the game mode. That is, whether we are running, paused, in the
 		//	         * failure state, in the victory state, etc.
-		public void setState(int mode) {
-			synchronized (mSurfaceHolder) {
-				setState(mode, null);
-			}
-		}
+//		public void setState(int mode) {
+//			synchronized (mSurfaceHolder) {
+//				setState(mode, null);
+//			}
+//		}
 
 		//	         * Sets the game mode. That is, whether we are running, paused, in the
 		//	         * failure state, in the victory state, etc.
-		public void setState(int mode, CharSequence message) {
-			//	             * This method optionally can cause a text message to be displayed
-			//	             * to the user when the mode changes. Since the View that actually
-			//	             * renders that text is part of the main View hierarchy and not
-			//	             * owned by this thread, we can't touch the state of that View.
-			//	             * Instead we use a Message + Handler to relay commands to the main
-			//	             * thread, which updates the user-text View.
-			synchronized (mSurfaceHolder) {
-				mMode = mode;
-
-//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
-					Message msg = mHandler.obtainMessage();
-					Bundle b = new Bundle();
-					b.putString("text", "");
-					//	                    b.putInt("viz", View.INVISIBLE);
-					msg.setData(b);
-					mHandler.sendMessage(msg);
-//				} else {
-////					Resources res = mContext.getResources();
-//					CharSequence str = "";
-//					//	                    if (mMode == STATE_READY)
-//					//	                        str = res.getText(R.string.mode_ready);
-//					//	                    else if (mMode == STATE_PAUSE)
-//					//	                        str = res.getText(R.string.mode_pause);
-//					//	                    else if (mMode == STATE_LOSE)
-//					//	                        str = res.getText(R.string.mode_lose);
-//					//	                    else if (mMode == STATE_WIN)
-//					//	                        str = res.getString(R.string.mode_win_prefix)
-//					//	                                + mWinsInARow + " "
-//					//	                                + res.getString(R.string.mode_win_suffix);
-//					//
-//					//	                    if (message != null) {
-//					//	                        str = message + "\n" + str;
-//					//	                    }
+//		public void setState(int mode, CharSequence message) {
+//			//	             * This method optionally can cause a text message to be displayed
+//			//	             * to the user when the mode changes. Since the View that actually
+//			//	             * renders that text is part of the main View hierarchy and not
+//			//	             * owned by this thread, we can't touch the state of that View.
+//			//	             * Instead we use a Message + Handler to relay commands to the main
+//			//	             * thread, which updates the user-text View.
+//			synchronized (mSurfaceHolder) {
+//				mMode = mode;
+//
+////				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
 //					Message msg = mHandler.obtainMessage();
 //					Bundle b = new Bundle();
-//					b.putString("text", str.toString());
-//					//	                    b.putInt("viz", View.VISIBLE);
+//					b.putString("text", "");
+//					//	                    b.putInt("viz", View.INVISIBLE);
 //					msg.setData(b);
 //					mHandler.sendMessage(msg);
-//				}
-			}
-		}
+////				} else {
+//////					Resources res = mContext.getResources();
+////					CharSequence str = "";
+////					//	                    if (mMode == STATE_READY)
+////					//	                        str = res.getText(R.string.mode_ready);
+////					//	                    else if (mMode == STATE_PAUSE)
+////					//	                        str = res.getText(R.string.mode_pause);
+////					//	                    else if (mMode == STATE_LOSE)
+////					//	                        str = res.getText(R.string.mode_lose);
+////					//	                    else if (mMode == STATE_WIN)
+////					//	                        str = res.getString(R.string.mode_win_prefix)
+////					//	                                + mWinsInARow + " "
+////					//	                                + res.getString(R.string.mode_win_suffix);
+////					//
+////					//	                    if (message != null) {
+////					//	                        str = message + "\n" + str;
+////					//	                    }
+////					Message msg = mHandler.obtainMessage();
+////					Bundle b = new Bundle();
+////					b.putString("text", str.toString());
+////					//	                    b.putInt("viz", View.VISIBLE);
+////					msg.setData(b);
+////					mHandler.sendMessage(msg);
+////				}
+//			}
+//		}
 
 		//	        /* Callback invoked when the surface dimensions change. */
 		public void setSurfaceSize(int width, int height) {
@@ -248,13 +248,13 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		//	         * Resumes from a pause.
-		public void unpause() {
-			//	            // Move the real time clock up to now
-			synchronized (mSurfaceHolder) {
-				//	                mLastTime = System.currentTimeMillis() + 100;
-			}
-//			setState(ThreeD_ChessActivity.STATE_RUNNING);
-		}
+//		public void unpause() {
+//			//	            // Move the real time clock up to now
+//			synchronized (mSurfaceHolder) {
+//				//	                mLastTime = System.currentTimeMillis() + 100;
+//			}
+////			setState(ThreeD_ChessActivity.STATE_RUNNING);
+//		}
 
 		public boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
@@ -703,14 +703,14 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 
-//    @Override
-	public boolean onTouch(View v, MotionEvent event) {
-///does not seem to be attached
-//		fail
-
-		
-	    return true;
-	}
+////    @Override
+//	public boolean onTouch(View v, MotionEvent event) {
+/////does not seem to be attached
+////		fail
+//
+//		
+//	    return true;
+//	}
 	
 	
 	
@@ -751,10 +751,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 	//	     * Standard window-focus override. Notice focus lost so we can pause on
 	//	     * focus lost. e.g. user switches to take a call.
-	@Override
-	public void onWindowFocusChanged(boolean hasWindowFocus) {
-		if (!hasWindowFocus) thread.pause();
-	}
+//	@Override
+//	public void onWindowFocusChanged(boolean hasWindowFocus) {
+//		if (!hasWindowFocus) thread.pause();
+//	}
 
 	//	     * Installs a pointer to the text view used for messages.
 	public void setTextView(TextView textView) {

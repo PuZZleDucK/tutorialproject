@@ -219,7 +219,7 @@ public class ThreeD_ChessActivity extends Activity {
 			Log.w(this.getClass().getName(), "SIS is null");
 		} else {
 			// we are being restored: resume a previous game
-			mthreeD_Thread.restoreState(savedInstanceState);
+//			mthreeD_Thread.restoreState(savedInstanceState);
 			Log.w(this.getClass().getName(), "SIS is nonnull");
 		}
 	}
