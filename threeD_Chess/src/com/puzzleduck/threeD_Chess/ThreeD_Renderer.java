@@ -119,30 +119,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
 		} //threeD_Thread
 
-//		//	         * Starts the game, setting parameters for the current difficulty.
-//		public void doStart() {
-//			synchronized (mSurfaceHolder) {
-////				setState(ThreeD_ChessActivity.STATE_RUNNING);
-//			}
-//		} //doStart
-
-		//	         * Pauses the physics update & animation.
-//		public void pause() {
-//			synchronized (mSurfaceHolder) {
-////				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) setState(ThreeD_ChessActivity.STATE_PAUSE);
-//			}
-//		}
-
-		//	         * Restores game state from the indicated Bundle. Typically called when
-		//	         * the Activity is being restored after having been previously destroyed
-//		public synchronized void restoreState(Bundle savedState) {
-//			synchronized (mSurfaceHolder) {
-////				setState(ThreeD_ChessActivity.STATE_PAUSE);
-//				//	                mRotating = 0;
-//				//	                mDifficulty = savedState.getInt(KEY_DIFFICULTY);
-//			}
-//		}
-
+		
 		public void run() {
 			while (mRun) {
 				Canvas c = null;
@@ -180,82 +157,18 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		public void setRunning(boolean b) {
 			mRun = b;
 		}
-		//	         * Sets the game mode. That is, whether we are running, paused, in the
-		//	         * failure state, in the victory state, etc.
-//		public void setState(int mode) {
-//			synchronized (mSurfaceHolder) {
-//				setState(mode, null);
-//			}
-//		}
 
-		//	         * Sets the game mode. That is, whether we are running, paused, in the
-		//	         * failure state, in the victory state, etc.
-//		public void setState(int mode, CharSequence message) {
-//			//	             * This method optionally can cause a text message to be displayed
-//			//	             * to the user when the mode changes. Since the View that actually
-//			//	             * renders that text is part of the main View hierarchy and not
-//			//	             * owned by this thread, we can't touch the state of that View.
-//			//	             * Instead we use a Message + Handler to relay commands to the main
-//			//	             * thread, which updates the user-text View.
-//			synchronized (mSurfaceHolder) {
-//				mMode = mode;
-//
-////				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
-//					Message msg = mHandler.obtainMessage();
-//					Bundle b = new Bundle();
-//					b.putString("text", "");
-//					//	                    b.putInt("viz", View.INVISIBLE);
-//					msg.setData(b);
-//					mHandler.sendMessage(msg);
-////				} else {
-//////					Resources res = mContext.getResources();
-////					CharSequence str = "";
-////					//	                    if (mMode == STATE_READY)
-////					//	                        str = res.getText(R.string.mode_ready);
-////					//	                    else if (mMode == STATE_PAUSE)
-////					//	                        str = res.getText(R.string.mode_pause);
-////					//	                    else if (mMode == STATE_LOSE)
-////					//	                        str = res.getText(R.string.mode_lose);
-////					//	                    else if (mMode == STATE_WIN)
-////					//	                        str = res.getString(R.string.mode_win_prefix)
-////					//	                                + mWinsInARow + " "
-////					//	                                + res.getString(R.string.mode_win_suffix);
-////					//
-////					//	                    if (message != null) {
-////					//	                        str = message + "\n" + str;
-////					//	                    }
-////					Message msg = mHandler.obtainMessage();
-////					Bundle b = new Bundle();
-////					b.putString("text", str.toString());
-////					//	                    b.putInt("viz", View.VISIBLE);
-////					msg.setData(b);
-////					mHandler.sendMessage(msg);
-////				}
-//			}
-//		}
-
-		//	        /* Callback invoked when the surface dimensions change. */
-		public void setSurfaceSize(int width, int height) {
-			// synchronized to make sure these all change atomically
-			synchronized (mSurfaceHolder) {
+		
+		public void setSurfaceSize(int width, int height) {   // Callback invoked when dimensions change. */
+			synchronized (mSurfaceHolder) {   // synchronized to make sure these all change atomically
 				mCanvasWidth = width;
 				mCanvasHeight = height;
-
 				// don't forget to resize the background image
 				mBackgroundImage = Bitmap.createScaledBitmap( mBackgroundImage, width, height, true);
-				
 			}
 		}
 
-		//	         * Resumes from a pause.
-//		public void unpause() {
-//			//	            // Move the real time clock up to now
-//			synchronized (mSurfaceHolder) {
-//				//	                mLastTime = System.currentTimeMillis() + 100;
-//			}
-////			setState(ThreeD_ChessActivity.STATE_RUNNING);
-//		}
-
+		
 		public boolean doKeyDown(int keyCode, KeyEvent msg) {
 			synchronized (mSurfaceHolder) {
 				switch(keyCode)
@@ -304,21 +217,18 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 
-		//	         * Handles a key-up event.
-		boolean doKeyUp(int keyCode, KeyEvent msg) {
+		
+		boolean doKeyUp(int keyCode, KeyEvent msg) {    // Handles a key-up event.
 			boolean handled = false;
 
 			synchronized (mSurfaceHolder) {
-//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
 					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
 							|| keyCode == KeyEvent.KEYCODE_SPACE) {
-						//	                        setFiring(false);
 						handled = true;
 					} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
 							|| keyCode == KeyEvent.KEYCODE_Q
 							|| keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
 							|| keyCode == KeyEvent.KEYCODE_W) {
-						//	                        mRotating = 0;
 						handled = true;
 					}
 //				}
@@ -327,8 +237,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		private void doDraw(Canvas canvas) {
-			
-
 			int debugX = 10;
 			int debugY = 110;
 			Paint thisPaint = new Paint();
