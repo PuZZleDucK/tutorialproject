@@ -28,6 +28,12 @@ import android.widget.TextView;
 
 //Simplifying things (hopefully) by using basic android rendering instead of GL
 class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
+
+
+
+	private static float touchX = 0;
+	private static float touchY = 0;
+	
 	class threeD_Thread extends Thread {
 
 
@@ -55,6 +61,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private Drawable galleyImage;
 		private Drawable pawnImage;
 //		private Drawable noneImage;
+
 
 		//Color
 		//		private ColorFilter cf;
@@ -409,6 +416,9 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			int cellSize = maxCellHeight > maxCellWidth ? maxCellWidth : maxCellHeight;
 			canvas.drawText("   CellWidth   = "+ cellSize, debugX, debugY+=15, thisPaint);
 
+			//TOUCH INTERFACE
+			canvas.drawCircle(touchX, touchY, 20, thisPaint);
+			
 			
 			//			Log.d("chessDraw","chessDraw ::: cell      = " + cellSize);
 			
@@ -438,10 +448,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			int widthMargin = (mCanvasWidth - (8*cellSize)) /4; // div 3 for three levels centered
 			
 
-			Log.d("chessDraw","chessDraw ::: 8*3 cell      = " + (3*8*cellSize));
-			Log.d("chessDraw","chessDraw ::: 8* cell       = " + (8*cellSize));
-			Log.d("chessDraw","chessDraw ::: h marg        = " + heightMargin);
-			Log.d("chessDraw","chessDraw ::: v marg        = " + widthMargin);
+//			Log.d("chessDraw","chessDraw ::: 8*3 cell      = " + (3*8*cellSize));
+//			Log.d("chessDraw","chessDraw ::: 8* cell       = " + (8*cellSize));
+//			Log.d("chessDraw","chessDraw ::: h marg        = " + heightMargin);
+//			Log.d("chessDraw","chessDraw ::: v marg        = " + widthMargin);
 
 			int levelOffsetX = cellSize*8;
 
@@ -720,12 +730,40 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						}
 					}
 				}
-			}
+			}//for
 
-		}
+		}//doDraw
 
+		
+
+		
+	}//3d_thread
+
+	
+	
+	
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODOne Auto-generated method stub
+		touchX = event.getX();
+		touchY = event.getY();
+//		System.out.println("Touch ("+touchX+","+touchY+")");
+		return super.onTouchEvent(event);
 	}
+	
 
+//    @Override
+	public boolean onTouch(View v, MotionEvent event) {
+///does not seem to be attached
+//		fail
+
+		
+	    return true;
+	}
+	
+	
+	
 	//	    /** Handle to the application context, used to e.g. fetch Drawables. */
 //	private Context mContext;
 
@@ -757,11 +795,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		return thread;
 	}
 
-		public boolean onTouch(View v, MotionEvent event) {
-	///does not seem to be attached
-//			fail
-		    return true;
-		}
 
 
 	//ThreeD_ChessActivity.DoMain3DcLoop();

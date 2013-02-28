@@ -163,6 +163,11 @@ public class ThreeD_ChessActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+
+//		System.out.println("Create");
+		
+		
 		//eventually replace this with android propperties/settings
 		//Define Black and White as Human, AI or remote
 		//                    if (!strcmp(argv[argNum], "-play"))
