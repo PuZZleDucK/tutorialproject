@@ -26,28 +26,17 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-//Simplifying things (hopefully) by using basic android rendering instead of GL
 class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
-
-
 
 	private static float touchX = 0;
 	private static float touchY = 0;
 	
 	class threeD_Thread extends Thread {
 
-
-		//	        /** The drawable to use as the background of the animation canvas */
-		private Bitmap mBackgroundImage;
-
-		//	         * Current height of the surface/canvas.
-		private int mCanvasHeight = 0;
-
-		//	         * Current width of the surface/canvas.
-		private int mCanvasWidth = 0;
-
-		//	        /** Message handler used by thread to interact with TextView */
-		private Handler mHandler;
+		private Bitmap mBackgroundImage;  // the background of the animation canvas */
+		private int mCanvasHeight = 0; // height of the surface/canvas.
+		private int mCanvasWidth = 0; // width of the surface/canvas.
+		private Handler mHandler; // Message handler used by thread to interact with TextView */
 
 		private Drawable kingImage;
 		private Drawable queenImage;
@@ -60,8 +49,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		private Drawable cannonImage;
 		private Drawable galleyImage;
 		private Drawable pawnImage;
-//		private Drawable noneImage;
 
+		private int mMode; // state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
+		private boolean mRun = false; //  whether the surface has been created & is ready to draw */
+		private SurfaceHolder mSurfaceHolder; // Handle to the surface manager object we interact with */
 
 		//Color
 		//		private ColorFilter cf;
@@ -71,7 +62,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//				0, 0, 1, 0, 1,
 		//				0, 0, 0, 1, 0,
 		//		};
-
 		float[] redMatrix = new float[] {
 				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
@@ -79,67 +69,43 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
-
 		float[] blueMatrix = new float[] {
-				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
-
 		float[] blackishMatrix = new float[] {
-				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 0.5f, 0.0f,
 		};
 		float[] whiteMatrix = new float[] {
-				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 		float[] greenMatrix = new float[] {
-				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
-		//this is cyan --v
 		float[] cyanMatrix = new float[] {
-				//   R     G     B     A     X
 				/* R */	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				/* G */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* B */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 				/* A */	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		};
 
-
-		//	        /** The state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
-		private int mMode;
-
-		//	        /** Indicate whether the surface has been created & is ready to draw */
-		private boolean mRun = false;
-		//
-		//	        /** Scratch rect object. */
-//		private RectF mScratchRect;
-		//
-		//	        /** Handle to the surface manager object we interact with */
-		private SurfaceHolder mSurfaceHolder;
-
 		public threeD_Thread(SurfaceHolder surfaceHolder, Context context, Handler handler) {
-			// get handles to some important objects
-			mSurfaceHolder = surfaceHolder;
-			mHandler = handler;
-//			mContext = context;
-
+			mSurfaceHolder = surfaceHolder; 
+			mHandler = handler; // get handles to some important objects
 			Resources res = context.getResources();
-			// cache handles to our drawables
-			kingImage = context.getResources().getDrawable( R.drawable.k_king);
+			
+			kingImage = context.getResources().getDrawable( R.drawable.k_king);  // cache handles to our drawables
 			queenImage = context.getResources().getDrawable( R.drawable.k_queen);
 			bishopImage = context.getResources().getDrawable( R.drawable.k_bishop);
 			knightImage = context.getResources().getDrawable( R.drawable.k_knight);
@@ -150,27 +116,15 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			cannonImage = context.getResources().getDrawable( R.drawable.k_cannon);
 			galleyImage = context.getResources().getDrawable( R.drawable.k_galley);
 			pawnImage = context.getResources().getDrawable( R.drawable.k_pawn);
-//			noneImage = context.getResources().getDrawable( R.drawable.k_none);
-
-			//	            // load background image as a Bitmap instead of a Drawable b/c
-			//	            // we don't need to transform it and it's faster to draw this way
 			mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
-
-//			mScratchRect = new RectF(0, 0, 0, 0);
-		}
+		} //threeD_Thread
 
 		//	         * Starts the game, setting parameters for the current difficulty.
 		public void doStart() {
 			synchronized (mSurfaceHolder) {
-				//	                // First set the game for Medium difficulty
-				//	                // Adjust difficulty params for EASY/HARD
-				//	                // pick a convenient initial location for the lander sprite
-				//	                // start with a little random motion
-				//	                // Figure initial spot for landing, not too near center
-				//	                mLastTime = System.currentTimeMillis() + 100;
 				setState(ThreeD_ChessActivity.STATE_RUNNING);
 			}
-		}
+		} //doStart
 
 		//	         * Pauses the physics update & animation.
 		public void pause() {
@@ -180,8 +134,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		//	         * Restores game state from the indicated Bundle. Typically called when
-		//	         * the Activity is being restored after having been previously
-		//	         * destroyed.
+		//	         * the Activity is being restored after having been previously destroyed
 		public synchronized void restoreState(Bundle savedState) {
 			synchronized (mSurfaceHolder) {
 				setState(ThreeD_ChessActivity.STATE_PAUSE);
@@ -190,15 +143,12 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 
-		//	        @Override
 		public void run() {
 			while (mRun) {
 				Canvas c = null;
 				try {
 					c = mSurfaceHolder.lockCanvas(null);
 					synchronized (mSurfaceHolder) {
-						//						if (mMode == STATE_RUNNING) updatePhysics();
-						//if running do main game loop
 						doDraw(c);
 					}
 				} finally {
