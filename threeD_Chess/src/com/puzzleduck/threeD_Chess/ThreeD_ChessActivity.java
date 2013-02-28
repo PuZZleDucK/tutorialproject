@@ -30,12 +30,12 @@ import com.puzzleduck.threeD_Chess.ThreeD_Renderer.threeD_Thread;
 public class ThreeD_ChessActivity extends Activity {
 
 
-	//	         * State-tracking constants
-	public static final int STATE_LOSE = 1;
-	public static final int STATE_PAUSE = 2;
-	public static final int STATE_READY = 3;
-	public static final int STATE_RUNNING = 4;
-	public static final int STATE_WIN = 5;
+//	//	         * State-tracking constants
+//	public static final int STATE_LOSE = 1;
+//	public static final int STATE_PAUSE = 2;
+//	public static final int STATE_READY = 3;
+//	public static final int STATE_RUNNING = 4;
+//	public static final int STATE_WIN = 5;
 	
 	//	stackList bestMoves = new stackList();
 	private static Stack currentPossibleMoves = new Stack();
@@ -215,7 +215,7 @@ public class ThreeD_ChessActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			// we were just launched: set up a new game
-			mthreeD_Thread.setState(STATE_READY);
+//			mthreeD_Thread.setState(STATE_READY);
 			Log.w(this.getClass().getName(), "SIS is null");
 		} else {
 			// we are being restored: resume a previous game

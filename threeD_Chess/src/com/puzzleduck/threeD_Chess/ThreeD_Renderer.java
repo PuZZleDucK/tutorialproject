@@ -122,14 +122,14 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * Starts the game, setting parameters for the current difficulty.
 		public void doStart() {
 			synchronized (mSurfaceHolder) {
-				setState(ThreeD_ChessActivity.STATE_RUNNING);
+//				setState(ThreeD_ChessActivity.STATE_RUNNING);
 			}
 		} //doStart
 
 		//	         * Pauses the physics update & animation.
 		public void pause() {
 			synchronized (mSurfaceHolder) {
-				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) setState(ThreeD_ChessActivity.STATE_PAUSE);
+//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) setState(ThreeD_ChessActivity.STATE_PAUSE);
 			}
 		}
 
@@ -137,7 +137,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 		//	         * the Activity is being restored after having been previously destroyed
 		public synchronized void restoreState(Bundle savedState) {
 			synchronized (mSurfaceHolder) {
-				setState(ThreeD_ChessActivity.STATE_PAUSE);
+//				setState(ThreeD_ChessActivity.STATE_PAUSE);
 				//	                mRotating = 0;
 				//	                mDifficulty = savedState.getInt(KEY_DIFFICULTY);
 			}
@@ -200,37 +200,37 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized (mSurfaceHolder) {
 				mMode = mode;
 
-				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
+//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
 					Message msg = mHandler.obtainMessage();
 					Bundle b = new Bundle();
 					b.putString("text", "");
 					//	                    b.putInt("viz", View.INVISIBLE);
 					msg.setData(b);
 					mHandler.sendMessage(msg);
-				} else {
-//					Resources res = mContext.getResources();
-					CharSequence str = "";
-					//	                    if (mMode == STATE_READY)
-					//	                        str = res.getText(R.string.mode_ready);
-					//	                    else if (mMode == STATE_PAUSE)
-					//	                        str = res.getText(R.string.mode_pause);
-					//	                    else if (mMode == STATE_LOSE)
-					//	                        str = res.getText(R.string.mode_lose);
-					//	                    else if (mMode == STATE_WIN)
-					//	                        str = res.getString(R.string.mode_win_prefix)
-					//	                                + mWinsInARow + " "
-					//	                                + res.getString(R.string.mode_win_suffix);
-					//
-					//	                    if (message != null) {
-					//	                        str = message + "\n" + str;
-					//	                    }
-					Message msg = mHandler.obtainMessage();
-					Bundle b = new Bundle();
-					b.putString("text", str.toString());
-					//	                    b.putInt("viz", View.VISIBLE);
-					msg.setData(b);
-					mHandler.sendMessage(msg);
-				}
+//				} else {
+////					Resources res = mContext.getResources();
+//					CharSequence str = "";
+//					//	                    if (mMode == STATE_READY)
+//					//	                        str = res.getText(R.string.mode_ready);
+//					//	                    else if (mMode == STATE_PAUSE)
+//					//	                        str = res.getText(R.string.mode_pause);
+//					//	                    else if (mMode == STATE_LOSE)
+//					//	                        str = res.getText(R.string.mode_lose);
+//					//	                    else if (mMode == STATE_WIN)
+//					//	                        str = res.getString(R.string.mode_win_prefix)
+//					//	                                + mWinsInARow + " "
+//					//	                                + res.getString(R.string.mode_win_suffix);
+//					//
+//					//	                    if (message != null) {
+//					//	                        str = message + "\n" + str;
+//					//	                    }
+//					Message msg = mHandler.obtainMessage();
+//					Bundle b = new Bundle();
+//					b.putString("text", str.toString());
+//					//	                    b.putInt("viz", View.VISIBLE);
+//					msg.setData(b);
+//					mHandler.sendMessage(msg);
+//				}
 			}
 		}
 
@@ -253,7 +253,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized (mSurfaceHolder) {
 				//	                mLastTime = System.currentTimeMillis() + 100;
 			}
-			setState(ThreeD_ChessActivity.STATE_RUNNING);
+//			setState(ThreeD_ChessActivity.STATE_RUNNING);
 		}
 
 		public boolean doKeyDown(int keyCode, KeyEvent msg) {
@@ -309,7 +309,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			boolean handled = false;
 
 			synchronized (mSurfaceHolder) {
-				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
+//				if (mMode == ThreeD_ChessActivity.STATE_RUNNING) {
 					if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER
 							|| keyCode == KeyEvent.KEYCODE_SPACE) {
 						//	                        setFiring(false);
@@ -321,7 +321,7 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						//	                        mRotating = 0;
 						handled = true;
 					}
-				}
+//				}
 			}
 			return handled;
 		}
