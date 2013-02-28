@@ -286,22 +286,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 			
 			
 			
-//			height / (3*8) = max block height
-//			width / (8) = max block width
-
-//			Log.d("chessDraw","chessDraw ::: height   = " + mCanvasHeight);
-//			Log.d("chessDraw","chessDraw ::: width    = " + mCanvasWidth);
-			
-			
-			
-
-//			Log.d("chessDraw","chessDraw ::: max height= " + maxCellHeight);
-//			Log.d("chessDraw","chessDraw ::: max width = " + maxCellWidth);
-			
-
-		//	int xSize = cellSize;//seems to be ignored
-		//	int ySize = cellSize;//  margin
-			
 			int heightMargin = (mCanvasHeight - (3*8*cellSize))/4; //leaving two 'margins worth' of space to split boards
 			int widthMargin = (mCanvasWidth - (8*cellSize)) /4; // div 3 for three levels centered
 			
@@ -313,35 +297,26 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 
 			int levelOffsetX = cellSize*8;
 
-			
-			
 			Drawable cellBackImage;
-			
-			
-			
-			
-//			fail2
 			int totalXOffset = 0;
 			int totalYOffset = 0; 
-			//	            canvas.restore();
+
 			for (int thisLevel = 0; thisLevel < ThreeD_ChessActivity.LEVELS; ++thisLevel)//[Level][Rank][File]
 			{
 				for (int thisRank = 0; thisRank < ThreeD_ChessActivity.RANKS; ++thisRank)
 				{
 					for (int thisFile = 0; thisFile < ThreeD_ChessActivity.FILES; ++thisFile)
 					{
-						//background
-						if( (thisRank + thisFile) % 2 == 0 )
+						if( (thisRank + thisFile) % 2 == 0 )// BACKGROUND
 						{
-							cellBackImage = getResources().getDrawable(R.drawable.metal_light);
+							cellBackImage = getResources().getDrawable(R.drawable.metal_light); //crash on orientation change???
 							//cellBackImage.setColorFilter(new ColorMatrixColorFilter(whiteMatrix));
 						}else
 						{
 							cellBackImage = getResources().getDrawable(R.drawable.metal_dark);
 							//cellBackImage.setColorFilter(new ColorMatrixColorFilter(blackishMatrix));
 						}
-						//check for selected square and highlight "green"
-						if(thisLevel == ThreeD_ChessActivity.selectedSquare.xyzPos.thisLevel && 
+						if(thisLevel == ThreeD_ChessActivity.selectedSquare.xyzPos.thisLevel &&  //check for selected square and highlight "green"
 								thisRank == ThreeD_ChessActivity.selectedSquare.xyzPos.thisRank &&
 								thisFile == ThreeD_ChessActivity.selectedSquare.xyzPos.thisFile)
 						{
@@ -369,10 +344,6 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						}
 						
 						
-
-//						totalXOffset = heightMargin + (thisFile*cellSize) + (thisLevel*levelOffsetX);
-//						totalYOffset = widthMargin + (thisRank*cellSize) + (thisLevel*widthMargin);// + thisLevel*levelSplit;
-
 						totalXOffset = widthMargin + (thisFile*cellSize) + (thisLevel*levelOffsetX) + thisLevel*10;
 						totalYOffset = heightMargin + (thisRank*cellSize) + (thisLevel*heightMargin) + thisLevel*50;// + thisLevel*levelSplit;
 						cellBackImage.setBounds(
@@ -381,16 +352,10 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 								cellSize+totalXOffset, 
 								cellSize+totalYOffset);								
 
-
 						//cellBackImage.setColorFilter(null);
-
-						
-
-
 						cellBackImage.draw(canvas);
 						
 						
-
 						//Debug: LEVELS
 						thisPaint.setARGB(255, 255, 0, 0);
 						canvas.drawText("L-"+thisLevel, totalXOffset+10, totalYOffset+10, thisPaint);
@@ -586,21 +551,15 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 						}else{//might not need..ok, i do
 
 						}
-					}
-				}
+					}//for
+				}//for
 			}//for
 
 		}//doDraw
-
-		
-
 		
 	}//3d_thread
 
 	
-	
-	
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODOne Auto-generated method stub
@@ -611,87 +570,42 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 
-////    @Override
-//	public boolean onTouch(View v, MotionEvent event) {
-/////does not seem to be attached
-////		fail
-//
-//		
-//	    return true;
-//	}
-	
-	
-	
-	//	    /** Handle to the application context, used to e.g. fetch Drawables. */
-//	private Context mContext;
-
-	//	    /** Pointer to the text view to display "Paused.." etc. */
-	private TextView mStatusText;
-
-	//	    /** The thread that actually draws the animation */
-	private threeD_Thread thread;
+	private threeD_Thread thread; //	    /** The thread that actually draws the animation */
 
 	public ThreeD_Renderer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		// register our interest in hearing about changes to our surface
 		SurfaceHolder holder = getHolder();
-		holder.addCallback(this);
+		holder.addCallback(this);   // register our interest in hearing about changes to our surface
 
-		//	        // create thread only; it's started in surfaceCreated()
-		thread = new threeD_Thread(holder, context, new Handler() {
+		thread = new threeD_Thread(holder, context, new Handler() {   // create thread only; it's started in surfaceCreated()
 			@Override
 			public void handleMessage(Message m) {
 			}
 		});
-		//
 		setFocusable(true); // make sure we get key events
 	}
 
-	//	     * Fetches the animation thread 
-	public threeD_Thread getThread() {
+	
+	public threeD_Thread getThread() { //	     * Fetches the animation thread 
 		return thread;
 	}
 
 
-
-	//ThreeD_ChessActivity.DoMain3DcLoop();
-
-	//	     * Standard window-focus override. Notice focus lost so we can pause on
-	//	     * focus lost. e.g. user switches to take a call.
-//	@Override
-//	public void onWindowFocusChanged(boolean hasWindowFocus) {
-//		if (!hasWindowFocus) thread.pause();
-//	}
-
-	//	     * Installs a pointer to the text view used for messages.
-	public void setTextView(TextView textView) {
-		mStatusText = textView;
-	}
-
-	public void setDebugText(String debugText) {
-		mStatusText.setText(debugText);
-	}
-
-	/* Callback invoked when the surface dimensions change. */
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {   // Callback invoked when the surface dimensions change.
 		thread.setSurfaceSize(width, height);
 	}
 
-	//	     * Callback invoked when the Surface has been created and is ready to be
-	//	     * used.
-	public void surfaceCreated(SurfaceHolder holder) {
+	
+	public void surfaceCreated(SurfaceHolder holder) {  // invoked when the Surface has been created and is ready to be used
 		// start the thread here so that we don't busy-wait in run()
 		// waiting for the surface to be created
 		thread.setRunning(true);
 		thread.start();
 	}
 
-	//	     * Callback invoked when the Surface has been destroyed and must no longer
-	//	     * be touched. WARNING: after this method returns, the Surface/Canvas must
-	//	     * never be touched again!
-	public void surfaceDestroyed(SurfaceHolder holder) {
+	
+	public void surfaceDestroyed(SurfaceHolder holder) {   // Callback invoked when the Surface has been destroyed
 		// we have to tell thread to shut down & wait for it to finish, or else
 		// it might touch the Surface after we return and explode
 		boolean retry = true;
@@ -706,24 +620,16 @@ class ThreeD_Renderer extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 
-	//	     * Standard override to get key-press events.
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent msg) {
-		//moving to new key handler above.
-		//        Context context = getApplicationContext();
-
+	public boolean onKeyDown(int keyCode, KeyEvent msg) {   //	     * Standard override to get key-press events.
 		return thread.doKeyDown(keyCode, msg);
 	}
 
 
-	//	     * Standard override for key-up. We actually care about these, so we can
-	//	     * turn off the engine or stop rotating.
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent msg) {
+	public boolean onKeyUp(int keyCode, KeyEvent msg) {   //	     * Standard override for key-up.
 		return thread.doKeyUp(keyCode, msg);
 	}
 
 
-
-
-}
+}//class
